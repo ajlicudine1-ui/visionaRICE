@@ -55,14 +55,12 @@ CSRF_COOKIE_SECURE = not DEBUG
 # -----------------------------------------------------------------------------
 
 INSTALLED_APPS = [
-    "cloudinary_storage",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "cloudinary",
     "rice_disease",
     "accounts",
     "widget_tweaks",
@@ -224,13 +222,6 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
-
-# Compatibility for dj3-cloudinary-storage
-STATICFILES_STORAGE = (
-    "django.contrib.staticfiles.storage.StaticFilesStorage"
-)
-
-
 # -----------------------------------------------------------------------------
 # Email
 # -----------------------------------------------------------------------------
