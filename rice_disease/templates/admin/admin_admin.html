@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> VISIONARICE </title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body, input, button, select, textarea, h1, h2, h3, h4, h5, h6, p, span, label, a, div {
+      font-family: 'Poppins', sans-serif !important;
+    }
+    #installBtn {
+      display: none;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p9z+5Fil2qEkm8N+gZJbn5SSEgfkgzN0M1hYcOYMGVvKSnXJzjhk1Z9Lacr6yb+YnapmMdbgON4Q2FqbpGd3Ug==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    #installBtn {
+      display: none;
+    }
+  </style>
+</body>
+<script>
+  // Register service worker for PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/service-worker.js');
+    });
+  }
+</script>
+</head>
+<body class="bg-white min-h-screen flex">
+
+  <!-- Sidebar -->
+  <aside class="fixed top-0 left-0 w-64 h-screen bg-gradient-to-b from-[#1b5e20] to-[#2e7d32] shadow-md flex flex-col justify-between">
+    <div>
+      <div class="p-6 border-b border-white/20">
+        <h2 class="text-xl font-bold text-white mb-8 text-center">🌱 VISIONARICE Admin Panel</h2>
+      </div>
+      <nav class="mt-6 flex flex-col gap-2 px-4">
+        <a href="{% url 'admin_dashboard' %}" class="px-6 py-2 rounded-lg bg-white text-green-800 font-semibold"><i class="fa-solid fa-gauge mr-2"></i>Dashboard</a>
+        <a href="{% url 'predictions_page' %}" class="px-6 py-2 rounded-lg text-white hover:bg-white/20"><i class="fa-solid fa-star-of-life mr-2"></i>Predictions</a>
+        <a href="{% url 'users_page' %}" class="px-6 py-2 rounded-lg text-white hover:bg-white/20"><i class="fa-solid fa-users mr-2"></i>Users</a>
+        <a href="{% url 'admins_profile' %}" class="px-6 py-2 rounded-lg text-white hover:bg-white/20"><i class="fa-solid fa-id-badge mr-2"></i>Profile</a>
+        <a href="{% url 'notifications' %}" class="px-6 py-2 rounded-lg text-white hover:bg-white/20"><i class="fa-solid fa-bell mr-2"></i>Notifications</a>
+      </nav>
+    </div>
+    <div class="p-4 border-t border-white/20">
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button 
+          type="submit" 
+          class="w-full bg-transparent text-white hover:bg-red-500 py-2 rounded-lg font-semibold transition duration-200">
+          Logout
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="ml-64 flex-1 p-6 bg-white">
+
+    <!-- Header -->
+    <header class="shadow-md rounded-2xl bg-white flex items-center justify-center p-4">
+      <img src="{% static 'images/HEADER.png' %}" alt="VISIONARICE Logo" class="h-20 object-contain">
+    </header>
+
+    <!-- Stats -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+      <div class="rounded-2xl shadow-lg p-6 text-center bg-gradient-to-br from-[#42a5f5] to-[#1e88e5]">
+        <h2 class="text-3xl font-bold text-white">{{ total_predictions }}</h2>
+        <p class="text-white">Total Predictions</p>
+      </div>
+      <div class="rounded-2xl shadow-lg p-6 text-center bg-gradient-to-br from-orange-400 to-orange-600">
+        <h2 class="text-3xl font-bold text-white">{{ active_users }}</h2>
+        <p class="text-white">Active Users</p>
+      </div>
+      <div class="rounded-2xl shadow-lg p-6 text-center bg-gradient-to-br from-[#66bb6a] to-[#43a047]">
+        <h2 class="text-3xl font-bold text-white">{{ accuracy_rate }}%</h2>
+        <p class="text-white">Accuracy Rate</p>
+      </div>
+      <div class="rounded-2xl shadow-lg p-6 text-center bg-gradient-to-br from-[#ff7043] to-[#f4511e]">
+        <h2 class="text-3xl font-bold text-white">{{ today_scans }}</h2>
+        <p class="text-white">Today's Scans</p>
+      </div>
+    </section>
+
+    <!-- Disease Chart -->
+    <section class="bg-white rounded-2xl shadow-lg p-6 mt-10">
+      <h2 class="text-xl font-semibold text-indigo-700 mb-4">Disease Occurrences</h2>
+
+      <!-- Dynamic Filters -->
+      <div class="flex flex-wrap items-center gap-4 mb-6">
+        <div>
+          <label for="municipality" class="font-semibold text-gray-700">Municipality:</label>
+          <select id="municipality" class="border border-gray-300 rounded-lg p-2">
+            <option value="">Loading...</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="barangay" class="font-semibold text-gray-700">Barangay:</label>
+          <select id="barangay" class="border border-gray-300 rounded-lg p-2" disabled>
+            <option value="">Select a municipality first</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="w-full h-64">
+        <canvas id="diseaseChart"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================= -->
+<!-- Chart + Dynamic Location Loader -->
+<!-- ========================= -->
+<script>
+  const LA_UNION_CODE = "013300000"; // PSGC code for La Union
+  const municipalitySelect = document.getElementById("municipality");
+  const barangaySelect = document.getElementById("barangay");
+  const ctx = document.getElementById("diseaseChart").getContext("2d");
+  let diseaseChart;
+
+  // =========================
+  // Render Chart
+  // =========================
+  function renderChart(labels, data) {
+    if (diseaseChart) diseaseChart.destroy();
+    diseaseChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Number of Predictions',
+          data,
+          backgroundColor: [
+            'rgba(139, 69, 19, 0.7)',
+            'rgba(75, 192, 192, 0.7)',
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(255, 159, 64, 0.7)',
+            'rgba(144, 238, 144, 0.7)'
+          ],
+          borderColor: [
+            'rgba(139, 69, 19, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(144, 238, 144, 1)'
+          ],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+      }
+    });
+  }
+
+  // Initialize chart with Django-provided data
+  renderChart({{ disease_labels|safe }}, {{ disease_data|safe }});
+
+  // =========================
+  // Load Municipalities
+  // =========================
+  async function loadMunicipalities() {
+    try {
+      const muniRes = await fetch(`https://psgc.gitlab.io/api/provinces/${LA_UNION_CODE}/cities-municipalities/`);
+      const municipalities = await muniRes.json();
+
+      municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
+      barangaySelect.innerHTML = '<option value="">Select a municipality first</option>';
+      barangaySelect.disabled = true;
+
+      municipalities.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.code;
+        opt.textContent = m.name;
+        municipalitySelect.appendChild(opt);
+      });
+    } catch (err) {
+      console.error("Error loading municipalities:", err);
+    }
+  }
+
+  // =========================
+  // Load Barangays (Filtered)
+  // =========================
+  async function loadBarangaysForMunicipality(muniCode) {
+    try {
+      barangaySelect.disabled = true;
+      barangaySelect.innerHTML = '<option value="">Loading...</option>';
+
+      if (!muniCode) {
+        barangaySelect.innerHTML = '<option value="">Select a municipality first</option>';
+        return;
+      }
+
+      const res = await fetch(`https://psgc.gitlab.io/api/cities-municipalities/${muniCode}/barangays/`);
+      const barangays = await res.json();
+
+      barangaySelect.innerHTML = '<option value="">All</option>';
+      barangays.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.name;
+        opt.textContent = b.name;
+        barangaySelect.appendChild(opt);
+      });
+
+      barangaySelect.disabled = false;
+    } catch (err) {
+      console.error("Error loading barangays:", err);
+    }
+  }
+
+  // =========================
+  // AJAX Filter Update
+  // =========================
+  function fetchFilteredData() {
+    const municipality = municipalitySelect.options[municipalitySelect.selectedIndex].text;
+    const barangay = barangaySelect.value;
+
+    fetch(`?municipality=${encodeURIComponent(municipality)}&barangay=${encodeURIComponent(barangay)}`, {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(res => res.json())
+    .then(data => renderChart(data.labels, data.data))
+    .catch(err => console.error("Error fetching filtered data:", err));
+  }
+
+  // =========================
+  // Event Listeners
+  // =========================
+  municipalitySelect.addEventListener("change", async () => {
+    const muniCode = municipalitySelect.value;
+    await loadBarangaysForMunicipality(muniCode);
+    fetchFilteredData();
+  });
+
+  barangaySelect.addEventListener("change", fetchFilteredData);
+
+  // =========================
+  // Initialize
+  // =========================
+  loadMunicipalities();
+
+  // Auto-refresh the page every 10 seconds
+  setInterval(() => {
+    window.location.reload();
+  }, 10000);
+
+  // Refresh on sidebar navigation click (safe)
+  var navLinks = document.querySelectorAll('aside nav a');
+  if (navLinks && navLinks.length > 0) {
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        window.location.reload();
+      });
+    });
+  }
+</script>
+
+
+</body>
+</html>

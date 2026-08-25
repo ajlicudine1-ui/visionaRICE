@@ -1,0 +1,27 @@
+{% load static %}
+<div class="sidebar">
+  <h2 style="display: flex; align-items: center; gap: 10px;">
+    <img src="{% static 'images/VISIONARICE.png' %}" 
+         alt="VisionaRice Logo" 
+         style="width: 35px; height: 35px; border-radius: 50%;">
+    <span>VISIONARICE&nbsp;&nbsp;&nbsp;</span>
+  </h2>
+
+  <a href="#" class="nav-link active" data-target="analyze"><i class="fas fa-camera"></i> Analyze Plant</a>
+  <a href="#" class="nav-link" data-target="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+  <a href="#" class="nav-link" data-target="history"><i class="fas fa-history"></i> History</a>
+  <a href="#" class="nav-link" data-target="profile"><i class="fas fa-user"></i> Profile</a>
+  <a href="#" class="nav-link" data-target="notifications">
+    <i class="fas fa-bell"></i> Notifications
+  </a>
+  <a href="#" class="nav-link" data-target="support"><i class="fas fa-question-circle"></i> Help & Support</a>
+
+  <div class="logout-container">
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="logout-btn">
+        Logout
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+﻿{% extends 'user/base.html' %}
+
+{% block content %}
+  <!-- Include all section partials -->
+  {% include 'user/partials/analyze_section.html' %}
+  {% include 'user/partials/dashboard_section.html' %}
+  {% include 'user/partials/history_section.html' %}
+  {% include 'user/partials/profile_section.html' %}
+  {% include 'user/partials/notifications_section.html' %}
+  {% include 'user/partials/support_section.html' %}
+  
+  <!-- Include modals -->
+  {% include 'user/partials/modals.html' %}
+{% endblock %}

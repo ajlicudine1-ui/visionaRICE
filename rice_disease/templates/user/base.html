@@ -1,0 +1,758 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#ffffff"
+  >
+
+  <title>VISIONARICE</title>
+
+  <!-- PWA -->
+  <link
+    rel="manifest"
+    href="/manifest.json"
+  >
+
+
+  <!-- =========================================
+       GOOGLE FONT
+  ========================================== -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <!-- =========================================
+       FONT AWESOME
+  ========================================== -->
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  >
+
+
+  <!-- =========================================
+       LEAFLET
+  ========================================== -->
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  >
+
+
+  <!-- =========================================
+       CROPPER
+  ========================================== -->
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.css"
+  >
+
+
+  <!-- =========================================
+       YOUR MAIN CSS
+  ========================================== -->
+
+  <link
+    rel="stylesheet"
+    href="{% static 'css/styles.css' %}?v=21"
+  >
+
+
+  <!-- =========================================
+       HEADER + MOBILE BOTTOM NAV
+  ========================================== -->
+
+  <style>
+
+    /* =========================================
+       GLOBAL
+    ========================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    body,
+    input,
+    button,
+    select,
+    textarea,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    span,
+    label,
+    a,
+    div {
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+
+    body {
+      background: #f5f6f8;
+      color: #333;
+      overflow-x: hidden;
+
+      /* space for desktop fixed header */
+      padding-top: 100px;
+    }
+
+
+    .container {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    /* =========================================
+       DESKTOP HEADER
+    ========================================= */
+
+    header {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+      right: 0;
+
+      z-index: 9999;
+
+      width: 100%;
+      min-height: 100px;
+
+      padding: 10px 28px;
+
+      background: #ffffff;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* =========================================
+       LOGO
+    ========================================= */
+
+    header .header-logo {
+      display: block;
+
+      width: auto;
+      height: 80px;
+
+      object-fit: contain;
+
+      flex-shrink: 0;
+    }
+
+
+    /* =========================================
+       DESKTOP NAVIGATION
+    ========================================= */
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+
+      gap: 8px;
+
+      margin-left: auto;
+    }
+
+
+    .header-nav .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 7px;
+
+      padding: 9px 11px;
+
+      color: #222;
+
+      text-decoration: none;
+
+      font-size: 14px;
+      font-weight: 500;
+
+      white-space: nowrap;
+
+      border-radius: 8px;
+
+      transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+
+    .header-nav .nav-link i {
+      font-size: 17px;
+    }
+
+
+    .header-nav .nav-link:hover {
+      background: #f3f5f3;
+      color: #2e7d32;
+    }
+
+
+    .header-nav .nav-link.active {
+      background: #eef7ee;
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+
+
+
+    /* =========================================
+       TABLET
+    ========================================= */
+
+    @media (max-width: 1050px) and (min-width: 769px) {
+
+      header {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+
+      header .header-logo {
+        height: 66px;
+      }
+
+
+      .header-nav {
+        gap: 3px;
+      }
+
+
+      .header-nav .nav-link {
+        padding: 8px 7px;
+        gap: 5px;
+
+        font-size: 12px;
+      }
+
+
+      .header-nav .nav-link i {
+        font-size: 15px;
+      }
+}
+
+
+    /* =========================================
+       MOBILE
+       Logo on top
+       Navigation at bottom
+    ========================================= */
+
+    @media (max-width: 768px) {
+
+      body {
+        /*
+          Top = mobile logo header
+          Bottom = bottom navigation
+        */
+        padding-top: 72px;
+        padding-bottom: 84px;
+      }
+
+
+      /* -----------------------------------------
+         TOP HEADER
+      ----------------------------------------- */
+
+      header {
+        top: 0;
+        left: 0;
+        right: 0;
+
+        width: 100%;
+
+        min-height: 72px;
+        height: 72px;
+
+        padding: 6px 14px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #ffffff;
+
+        box-shadow:
+          0 3px 12px rgba(0, 0, 0, 0.07);
+      }
+
+
+      header .header-logo {
+        width: auto;
+        height: 58px;
+
+        margin: 0 auto;
+
+        object-fit: contain;
+      }
+
+
+      /* -----------------------------------------
+         BOTTOM NAVIGATION
+      ----------------------------------------- */
+
+      .header-nav {
+        position: fixed;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        z-index: 10000;
+
+        width: 100%;
+        height: 76px;
+
+        margin: 0;
+
+        padding:
+          5px
+          3px
+          max(5px, env(safe-area-inset-bottom));
+
+        display: grid;
+
+        /*
+          Analyze
+          Dashboard
+          History
+          Profile
+          Notifications
+          Help
+        */
+
+        grid-template-columns:
+          repeat(6, minmax(0, 1fr));
+
+        align-items: stretch;
+
+        gap: 0;
+
+        background: #ffffff;
+
+        border-top:
+          1px solid rgba(0, 0, 0, 0.09);
+
+        box-shadow:
+          0 -4px 18px rgba(0, 0, 0, 0.08);
+      }
+
+
+      /* -----------------------------------------
+         MOBILE NAV ITEM
+      ----------------------------------------- */
+
+      .header-nav .nav-link {
+        width: 100%;
+        min-width: 0;
+        height: 100%;
+
+        margin: 0;
+        padding: 6px 1px;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        color: #60756c;
+
+        background: transparent;
+
+        border-radius: 8px;
+
+        font-size: 9px;
+        font-weight: 500;
+
+        line-height: 1;
+
+        text-align: center;
+
+        white-space: nowrap;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+      }
+
+
+      .header-nav .nav-link i {
+        margin: 0;
+
+        font-size: 20px;
+
+        line-height: 1;
+      }
+
+
+      .header-nav .nav-link:hover {
+        background: transparent;
+        color: #2e7d32;
+      }
+
+
+      .header-nav .nav-link.active {
+        background: transparent;
+
+        color: #2e7d32;
+
+        font-weight: 600;
+      }
+
+
+      /* Active icon */
+
+      .header-nav .nav-link.active i {
+        color: #2e7d32;
+      }
+
+
+
+
+      /* -----------------------------------------
+         CONTENT
+      ----------------------------------------- */
+
+      .content-section {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 0;
+      }
+
+    }
+
+
+    /* =========================================
+       SMALL PHONES
+    ========================================= */
+
+    @media (max-width: 480px) {
+
+      body {
+        padding-top: 66px;
+        padding-bottom: 80px;
+      }
+
+
+      header {
+        height: 66px;
+        min-height: 66px;
+
+        padding: 5px 10px;
+      }
+
+
+      header .header-logo {
+        height: 52px;
+      }
+
+
+      .header-nav {
+        height: 72px;
+
+        padding-left: 2px;
+        padding-right: 2px;
+      }
+
+
+      .header-nav .nav-link {
+        font-size: 8px;
+
+        gap: 4px;
+
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+
+      .header-nav .nav-link i {
+        font-size: 19px;
+      }
+
+    }
+
+
+    /* =========================================
+       VERY SMALL PHONES
+    ========================================= */
+
+    @media (max-width: 370px) {
+
+      .header-nav .nav-link {
+        font-size: 7px;
+      }
+
+
+      .header-nav .nav-link i {
+        font-size: 17px;
+      }
+
+    }
+
+  </style>
+
+
+  <script>
+
+    /* Register Service Worker */
+
+    if ('serviceWorker' in navigator) {
+
+      window.addEventListener('load', function () {
+
+        navigator.serviceWorker.register(
+          '/service-worker.js'
+        );
+
+      });
+
+    }
+
+  </script>
+
+</head>
+
+
+<body>
+
+
+  <div class="container">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header>
+
+
+      <!-- Logo -->
+
+      <img
+        src="{% static 'images/HEADER.png' %}"
+        alt="VISIONARICE Logo"
+        class="header-logo"
+      >
+
+
+      <!-- =====================================
+           NAVIGATION
+
+           Desktop = top right
+           Mobile  = bottom navigation
+      ====================================== -->
+
+      <nav class="header-nav">
+
+
+        <!-- Analyze -->
+
+        <a
+          href="#"
+          class="nav-link active"
+          data-target="analyze"
+        >
+
+          <i class="fas fa-camera"></i>
+
+          <span>Analyze</span>
+
+        </a>
+
+
+        <!-- Dashboard -->
+
+        <a
+          href="#"
+          class="nav-link"
+          data-target="dashboard"
+        >
+
+          <i class="fas fa-tachometer-alt"></i>
+
+          <span>Dashboard</span>
+
+        </a>
+
+
+        <!-- History -->
+
+        <a
+          href="#"
+          class="nav-link"
+          data-target="history"
+        >
+
+          <i class="fas fa-history"></i>
+
+          <span>History</span>
+
+        </a>
+
+
+        <!-- Profile -->
+
+        <a
+          href="#"
+          class="nav-link"
+          data-target="profile"
+        >
+
+          <i class="fas fa-user"></i>
+
+          <span>Profile</span>
+
+        </a>
+
+
+        <!-- Notifications -->
+
+        <a
+          href="#"
+          class="nav-link"
+          data-target="notifications"
+        >
+
+          <i class="fas fa-bell"></i>
+
+          <span>Notifications</span>
+
+        </a>
+
+
+        <!-- Help -->
+
+        <a
+          href="#"
+          class="nav-link"
+          data-target="support"
+        >
+
+          <i class="fas fa-question-circle"></i>
+
+          <span>Help</span>
+
+        </a>
+</nav>
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    {% block content %}
+    {% endblock %}
+
+
+  </div>
+
+
+
+  <!-- =========================================
+       EXTERNAL JAVASCRIPT
+  ========================================== -->
+
+  <!-- Leaflet -->
+
+  <script
+    src="https://unpkg.com/leaflet/dist/leaflet.js"
+  ></script>
+
+
+  <!-- Cropper.js -->
+
+  <script
+    src="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.js"
+  ></script>
+
+
+  <!-- Chart.js -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+  ></script>
+
+
+  <!-- =========================================
+       YOUR JAVASCRIPT
+  ========================================== -->
+
+  <script
+    src="{% static 'js/scripts.js' %}"
+  ></script>
+
+
+  <!-- Page-specific scripts -->
+
+  {% block scripts %}
+  {% endblock %}
+
+
+</body>
+
+</html>

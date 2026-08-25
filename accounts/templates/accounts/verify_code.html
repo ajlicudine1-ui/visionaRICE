@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Enter Verification Code</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e8f5e8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      padding: 50px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      width: 450px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      color: #333;
+      font-size: 28px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 25px;
+      font-size: 16px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 18px;
+      text-align: center;
+      letter-spacing: 3px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #4CAF50;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #43a047;
+    }
+
+    .error {
+      margin-top: 15px;
+      color: #e53935;
+      font-size: 14px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      html { zoom: 1.1; }
+      .container {
+        width: 100%;
+        padding: 50px;
+        margin: 5vh auto;
+      }
+
+      h2 {
+        font-size: 26px;
+      }
+
+      input[type="text"] {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Enter Verification Code</h2>
+    <p>The code will expire in 5 minutes.</p>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="text" name="code" placeholder="Enter code" required>
+      <button type="submit">Verify</button>
+    </form>
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+  </div>
+</body>
+</html>

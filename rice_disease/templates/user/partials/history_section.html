@@ -1,0 +1,727 @@
+<section id="history" class="content-section" style="display:none;">
+<style>
+/* The top nav uses position:fixed, so it's out of normal flow and doesn't
+   push page content down. Without this, this section sits underneath it
+   on load/nav-switch, and any #anchor jump lands under it too. Adjust 90px
+   to match your actual fixed-header height if it still looks off. */
+html { scroll-padding-top: 90px; }
+
+#history {
+  scroll-margin-top: 90px;
+
+  width: 100%;
+  min-height: calc(100vh - 90px);
+
+  margin: 0 !important;
+  padding: 25px 24px 50px !important;
+
+  box-sizing: border-box;
+  background: #f7f4ea;
+}
+
+/* Main centered history card */
+#history-section {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 5px auto 0 !important;
+  padding: 30px !important;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border: 1px solid #e5e9e2;
+  border-radius: 24px;
+
+  box-shadow:
+    0 8px 30px rgba(23, 63, 50, 0.08);
+}
+
+/* Layout: filter sidebar (left) + results panel (right) */
+#history-section h3 {
+  margin: 0 0 24px !important;
+  font-size: 1.5rem !important;
+  font-weight: 800;
+  color: #173f32;
+}
+
+#history-section .history-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+#history-section .filters {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 0 0 220px;
+  width: 220px;
+  padding: 18px;
+  box-sizing: border-box;
+  border: 1px solid #e5e9e2;
+  border-radius: 14px;
+  background: #f8faf7;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+}
+
+#history-section .results-panel {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #e5e9e2;
+  border-radius: 14px;
+  padding: 18px;
+  overflow-x: auto;
+  background: #ffffff;
+}
+
+/* History Table */
+#history-section table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+#history-section th,
+#history-section td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+}
+
+#history-section th {
+  background: #f0f0f0;
+}
+
+#history-section img {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+
+  height: 80px !important;
+  min-height: 80px !important;
+  max-height: 80px !important;
+
+  border-radius: 8px;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filter-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.history-row {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.history-row:hover {
+  background: #f5f5f5;
+}
+
+/* =========================================================
+   MOBILE HISTORY VIEW — card layout inspired by reference
+   ========================================================= */
+
+.history-title-mobile,
+.mobile-disease-filter-icon {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  #history {
+    min-height: 100vh;
+    padding: 28px 18px 110px !important;
+    background: #eef7ef;
+  }
+
+  /* Remove the large desktop outer card on mobile so each history
+     record becomes the visible card, like the reference design. */
+  #history-section {
+    width: 100%;
+    max-width: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #history-section h3.history-title {
+    margin: 0 0 26px !important;
+    font-size: clamp(2rem, 8vw, 2.65rem) !important;
+    line-height: 1.05;
+    font-weight: 850;
+    letter-spacing: -0.04em;
+    color: #173f32;
+  }
+
+  .history-title-desktop {
+    display: none;
+  }
+
+  .history-title-mobile {
+    display: inline;
+  }
+
+  #history-section .history-layout {
+    display: block;
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* ==========================
+     MOBILE SEARCH + FILTER
+     ========================== */
+
+  #history-section .filters {
+    width: 100%;
+    margin: 0 0 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    position: static;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #history-section .date-filter-group {
+    grid-column: 1;
+  }
+
+  #history-section .disease-filter-group {
+    grid-column: 2;
+  }
+
+  #history-section .confidence-filter-group {
+    grid-column: 1;
+  }
+
+  #history-section #resetFilters {
+    grid-column: 2;
+    align-self: end;
+  }
+
+
+  #history-section .date-filter-group,
+  #history-section .disease-filter-group,
+  #history-section .confidence-filter-group {
+    display: flex !important;
+  }
+
+  #history-section #resetFilters {
+    display: block !important;
+  }
+
+  #history-section .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 100%;
+  }
+
+  #history-section .filter-group label {
+    display: block;
+    margin: 0 0 2px;
+    color: #173f32;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  #history-section .filter-input {
+    width: 100%;
+    height: 56px;
+    padding: 0 16px;
+    border: 1px solid #d7e4d9;
+    border-radius: 18px;
+    outline: none;
+    background: rgba(255,255,255,.78);
+    color: #173f32;
+    font-size: 15px;
+    font-weight: 600;
+    box-sizing: border-box;
+  }
+
+  #history-section select.filter-input {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 46px;
+    background:
+      linear-gradient(45deg, transparent 50%, #7c8d82 50%) calc(100% - 23px) 25px/6px 6px no-repeat,
+      linear-gradient(135deg, #7c8d82 50%, transparent 50%) calc(100% - 17px) 25px/6px 6px no-repeat,
+      rgba(255,255,255,.78);
+  }
+
+  #history-section .filter-input:focus {
+    border-color: #8caf94;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(110,146,117,.10);
+  }
+
+  #history-section .disease-filter-group {
+    position: relative;
+  }
+
+  #history-section .disease-filter-group .filter-input {
+    padding-left: 46px;
+  }
+
+  .mobile-disease-filter-icon {
+    display: block;
+    position: absolute;
+    left: 17px;
+    bottom: 19px;
+    z-index: 2;
+    color: #173f32;
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  #history-section #resetFilters {
+    width: 100%;
+    min-height: 50px;
+    margin: 2px 0 0;
+    border: 0;
+    border-radius: 16px;
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 7px 16px rgba(220,38,38,.20);
+  }
+
+  #history-section #resetFilters:hover {
+    background: #b91c1c !important;
+  }
+
+  /* ==========================
+     HISTORY CARDS
+     ========================== */
+
+  #history-section .results-panel {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  #history-section table,
+  #history-section thead,
+  #history-section tbody {
+    display: block;
+    width: 100%;
+  }
+
+  #history-section thead {
+    display: none;
+  }
+
+  #history-section tbody {
+    display: grid;
+    gap: 16px;
+  }
+
+  #history-section tr.history-row {
+    width: 100%;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 16px !important;
+    box-sizing: border-box;
+
+    display: grid !important;
+    grid-template-columns: 86px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "photo disease confidence"
+      "photo date confidence"
+      "location location location";
+    column-gap: 14px;
+    row-gap: 8px;
+
+    background: #ffffff;
+    border: 1px solid rgba(23,63,50,.06);
+    border-radius: 22px;
+
+    box-shadow:
+      0 12px 26px rgba(70, 103, 82, 0.10);
+
+    overflow: hidden;
+    cursor: pointer;
+
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease;
+  }
+
+  #history-section tr.history-row:active {
+    transform: scale(.99);
+  }
+
+  #history-section tr.history-row:hover {
+    background: #ffffff;
+    box-shadow:
+      0 14px 30px rgba(70, 103, 82, 0.13);
+  }
+
+  #history-section td {
+    width: auto !important;
+    min-width: 0;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    word-break: normal;
+    box-sizing: border-box;
+  }
+
+  /* Remove desktop label prefixes. */
+  #history-section td::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* Image */
+  #history-section td:nth-child(1) {
+    grid-area: photo;
+    align-self: start;
+  }
+
+  #history-section td:nth-child(1) img,
+  #history-section img {
+    width: 86px !important;
+    max-width: 86px !important;
+    height: 86px !important;
+    border-radius: 18px !important;
+    object-fit: cover !important;
+    display: block;
+  }
+
+  /* Disease name */
+  #history-section td:nth-child(2) {
+    grid-area: disease;
+    align-self: end;
+    color: #173f32;
+    font-size: 17px;
+    line-height: 1.25;
+    font-weight: 800;
+  }
+
+  /* Confidence pill */
+  #history-section td:nth-child(3) {
+    grid-area: confidence;
+    align-self: start;
+    justify-self: end;
+    width: max-content !important;
+    padding: 6px 12px !important;
+    border: 1px solid #d9e2da !important;
+    border-radius: 999px;
+    background: #fff;
+    color: #173f32;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  /* Date */
+  #history-section td:nth-child(5) {
+    grid-area: date;
+    align-self: start;
+    color: #6e8176;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  /* Location becomes the soft-green information band at the bottom */
+  #history-section td:nth-child(4) {
+    grid-area: location;
+    margin-top: 6px !important;
+    padding: 14px 16px !important;
+    border-radius: 16px;
+    background: #e7f4e9;
+    color: #61766a;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  #history-section td:nth-child(4)::before {
+    content: "Location" !important;
+    display: block !important;
+    margin-bottom: 4px;
+    color: #173f32;
+    font-size: 13px;
+    line-height: 1.2;
+    font-weight: 800;
+  }
+
+  /* Empty / error rows returned by filtering should remain readable. */
+  #history-section tr:not(.history-row) {
+    display: block !important;
+    padding: 18px !important;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid #e0e8e1;
+  }
+
+  #history-section tr:not(.history-row) td {
+    display: block !important;
+    color: #6b7d72;
+  }
+}
+
+@media (max-width: 480px) {
+
+  #history-section .filters {
+    grid-template-columns: 1fr;
+  }
+
+  #history-section .date-filter-group,
+  #history-section .disease-filter-group,
+  #history-section .confidence-filter-group,
+  #history-section #resetFilters {
+    grid-column: 1;
+  }
+
+  #history {
+    padding: 24px 14px 104px !important;
+  }
+
+  #history-section h3.history-title {
+    margin-bottom: 24px !important;
+  }
+
+  #history-section .filter-input {
+    height: 54px;
+    border-radius: 16px;
+    font-size: 14px;
+  }
+
+  #history-section tr.history-row {
+    grid-template-columns: 78px minmax(0, 1fr) auto;
+    column-gap: 12px;
+    padding: 14px !important;
+    border-radius: 20px;
+  }
+
+  #history-section td:nth-child(1) img,
+  #history-section img {
+    width: 78px !important;
+    max-width: 78px !important;
+    height: 78px !important;
+    border-radius: 16px !important;
+  }
+
+  #history-section td:nth-child(2) {
+    font-size: 16px;
+  }
+
+  #history-section td:nth-child(3) {
+    padding: 5px 10px !important;
+    font-size: 13px;
+  }
+
+  #history-section td:nth-child(4) {
+    padding: 13px 14px !important;
+  }
+}
+
+</style>
+  <!-- Upload History -->
+  <div class="card" id="history-section">
+    <h3 class="history-title">
+      <span class="history-title-desktop">Prediction History</span>
+      <span class="history-title-mobile">Scan History</span>
+    </h3>
+
+    {% if history %}
+    <div class="history-layout">
+      <!-- Filters (left sidebar) -->
+      <div class="filters">
+<div class="filter-group date-filter-group">
+          <label for="dateFilter">Date</label>
+          <input type="date" id="dateFilter" class="filter-input" />
+        </div>
+
+        <div class="filter-group disease-filter-group">
+          <label for="diseaseFilter">Disease</label>
+          <i class="fas fa-filter mobile-disease-filter-icon" aria-hidden="true"></i>
+          <select id="diseaseFilter" class="filter-input">
+            <option value="">All Diseases</option>
+            <option value="Bacterial Leaf Blight">Bacterial Leaf Blight</option>
+            <option value="Leaf Blast">Leaf Blast</option>
+            <option value="Brown Spot">Brown Spot</option>
+            <option value="Healthy Rice Plant">Healthy Rice Plant</option>
+          </select>
+        </div>
+
+        <div class="filter-group confidence-filter-group">
+          <label for="confidenceFilter">Min Accuracy</label>
+          <select id="confidenceFilter" class="filter-input">
+            <option value="">Any</option>
+            <option value="90">90%+</option>
+            <option value="75">75%+</option>
+            <option value="50">50%+</option>
+          </select>
+        </div>
+
+        <button id="resetFilters" class="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600">Reset</button>
+      </div>
+
+      <!-- Results (right panel) -->
+      <div class="results-panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Disease (English)</th>
+              <th>Confidence</th>
+              <th>Location</th>  
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body">
+            {% for record in history|slice:":10" %}
+              <tr class="history-row cursor-pointer hover:bg-gray-100"
+                  data-disease="{{ record.disease }}"
+                  data-confidence="{{ record.confidence }}"
+                  data-date="{{ record.created_at|date:'Y-m-d' }}"
+                  onclick="openHistoryModal({
+                    id: {{ record.id }},
+                    disease: '{{ record.disease }}',
+                    confidence: {{ record.confidence }},
+                    location: '{{ record.location|escapejs }}',
+                    display_date: '{{ record.created_at|date:'M d, Y H:i' }}',
+                    image_url: '{{ record.image.url }}',
+                    recommendations: '{{ record.recommendations|escapejs|default:'{}' }}',
+                    cultural_control: '{{ record.cultural_control|escapejs|default:'{}' }}',
+                    biological_control: '{{ record.biological_control|escapejs|default:'{}' }}',
+                    chemical_control: '{{ record.chemical_control|escapejs|default:'{}' }}'
+                  })">
+                
+                <td data-label="Image"><img src="{{ record.image.url }}" alt="Image" style="width:80px; height:80px; object-fit:cover; object-position:center;"></td>
+                <td data-label="Disease">{{ record.disease }}</td>
+                <td data-label="Confidence">{{ record.confidence|floatformat:2 }}%</td>
+                <td data-label="Location">{{ record.location }}</td> 
+                <td data-label="Date">{{ record.created_at|date:"M d, Y H:i" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% else %}
+    <p>No predictions yet.</p>
+    {% endif %}
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const dateFilter = document.getElementById("dateFilter");
+      const diseaseFilter = document.getElementById("diseaseFilter");
+      const confidenceFilter = document.getElementById("confidenceFilter");
+      const resetFilters = document.getElementById("resetFilters");
+      const tbody = document.getElementById("history-table-body");
+
+      // URL resolved by Django template tag so path/prefix is correct
+      const filterUrl = "{% url 'filter_history_json' %}";
+
+      async function fetchAndRender() {
+        const params = new URLSearchParams();
+        if (dateFilter.value) params.set('date', dateFilter.value);
+        if (diseaseFilter.value) params.set('disease', diseaseFilter.value);
+        if (confidenceFilter.value) params.set('confidence', confidenceFilter.value);
+
+        try {
+          const url = filterUrl + (params.toString() ? `?${params.toString()}` : '');
+          const res = await fetch(url, {
+            credentials: 'same-origin',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          });
+
+          const contentType = res.headers.get('content-type') || '';
+          if (!res.ok || !contentType.includes('application/json')) {
+            const text = await res.text();
+            console.error('Filter fetch failed. Status:', res.status, 'Response:', text);
+            tbody.innerHTML = `<tr><td colspan="5">Unable to load filtered results (see console).</td></tr>`;
+            return;
+          }
+
+          const data = await res.json();
+          renderRows(data.history || []);
+        } catch (err) {
+          console.error('Fetch error', err);
+          tbody.innerHTML = `<tr><td colspan="5">Network error while loading results.</td></tr>`;
+        }
+      }
+
+      function renderRows(rows) {
+        if (!tbody) return;
+        if (!rows.length) {
+          tbody.innerHTML = `<tr><td colspan="5" class="text-gray-500 italic">No records found.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = rows.map(r => `
+          <tr class="history-row cursor-pointer hover:bg-gray-100" 
+              data-date="${r.date}" 
+              data-disease="${r.disease}" 
+              data-confidence="${r.confidence}"
+              onclick="openHistoryModal(${JSON.stringify(r).replace(/"/g, '&quot;')})">
+            <td data-label="Image"><img src="${r.image_url}" alt="Image" style="width:80px; height:80px; object-fit:cover; object-position:center;"></td>
+            <td data-label="Disease">${r.disease}</td>
+            <td data-label="Confidence">${parseFloat(r.confidence).toFixed(2)}%</td>
+            <td data-label="Location">${r.location}</td>
+            <td data-label="Date">${r.display_date}</td>
+          </tr>
+        `).join('');
+      }
+
+      // Attach listeners
+      [dateFilter, diseaseFilter, confidenceFilter].forEach(el => {
+        if (el) el.addEventListener('change', fetchAndRender);
+      });
+
+      if (resetFilters) {
+        resetFilters.addEventListener('click', () => {
+          dateFilter.value = "";
+          diseaseFilter.value = "";
+          confidenceFilter.value = "";
+          fetchAndRender();
+        });
+      }
+    });
+
+    // Navigate to Prediction Detail Page
+    function openHistoryModal(record) {
+      window.location.href = `/user-prediction/${record.id}/`;
+    }
+
+    function safeJsonParse(jsonStr) {
+      try {
+        return typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr;
+      } catch (e) {
+        return {};
+      }
+    }
+  </script>
+</section>

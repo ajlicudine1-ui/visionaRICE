@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.*
+
+# Local database and uploads
+db.sqlite3
+media/
+
+# Generated static files
+staticfiles/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Large training models
+*.h5
+models/*_float32.tflite
+
+# Database exports
+*.sql

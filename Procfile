@@ -1,0 +1,1 @@
+web: gunicorn disease_detection_project.wsgi
