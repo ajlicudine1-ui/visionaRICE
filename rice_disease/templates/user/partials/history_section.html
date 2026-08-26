@@ -611,14 +611,21 @@ html { scroll-padding-top: 90px; }
                     confidence: {{ record.confidence }},
                     location: '{{ record.location|escapejs }}',
                     display_date: '{{ record.created_at|date:'M d, Y H:i' }}',
-                    image_url: '{{ record.image.url }}',
+                    image_url: '{% if record.image %}{{ record.image.url|escapejs }}{% endif %}',
                     recommendations: '{{ record.recommendations|escapejs|default:'{}' }}',
                     cultural_control: '{{ record.cultural_control|escapejs|default:'{}' }}',
                     biological_control: '{{ record.biological_control|escapejs|default:'{}' }}',
                     chemical_control: '{{ record.chemical_control|escapejs|default:'{}' }}'
                   })">
-                
-                <td data-label="Image"><img src="{{ record.image.url }}" alt="Image" style="width:80px; height:80px; object-fit:cover; object-position:center;"></td>
+
+                <td data-label="Image">
+                    {% if record.image %}
+                        <img src="{{ record.image.url }}" alt="Image"
+                            style="width:80px; height:80px; object-fit:cover; object-position:center;">
+                    {% else %}
+                        <span>No image stored</span>
+                    {% endif %}
+                </td>
                 <td data-label="Disease">{{ record.disease }}</td>
                 <td data-label="Confidence">{{ record.confidence|floatformat:2 }}%</td>
                 <td data-label="Location">{{ record.location }}</td> 
@@ -687,7 +694,12 @@ html { scroll-padding-top: 90px; }
               data-disease="${r.disease}" 
               data-confidence="${r.confidence}"
               onclick="openHistoryModal(${JSON.stringify(r).replace(/"/g, '&quot;')})">
-            <td data-label="Image"><img src="${r.image_url}" alt="Image" style="width:80px; height:80px; object-fit:cover; object-position:center;"></td>
+            <td data-label="Image">
+                ${r.image_url
+                    ? '<img src="' + r.image_url + '" alt="Image" style="width:80px; height:80px; object-fit:cover; object-position:center;">'
+                    : '<span>No image stored</span>'
+                }
+            </td>
             <td data-label="Disease">${r.disease}</td>
             <td data-label="Confidence">${parseFloat(r.confidence).toFixed(2)}%</td>
             <td data-label="Location">${r.location}</td>
