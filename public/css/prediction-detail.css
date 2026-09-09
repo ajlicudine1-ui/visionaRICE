@@ -953,3 +953,82 @@ a {
         text-decoration: none !important;
     }
 }
+
+
+/* =====================================================
+   STORED PREDICTION IMAGE
+===================================================== */
+
+.saved-image-section {
+    overflow: hidden;
+}
+
+.saved-image-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 240px;
+
+    padding: 14px;
+
+    border:
+        1px solid
+        #e4ebe5;
+
+    border-radius: 14px;
+
+    background:
+        #f8fbf8;
+}
+
+.saved-image-wrap img {
+    display: block;
+
+    width: auto;
+    max-width: 100%;
+
+    max-height: 520px;
+
+    object-fit: contain;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 5px 18px
+        rgba(28, 69, 43, 0.08);
+}
+
+@media screen and (max-width: 760px) {
+
+    .saved-image-wrap {
+        min-height: 190px;
+
+        padding: 10px;
+    }
+
+    .saved-image-wrap img {
+        max-height: 420px;
+    }
+}
+
+@media print {
+
+    .saved-image-section {
+        break-inside: avoid;
+    }
+
+    .saved-image-wrap {
+        min-height: 0 !important;
+
+        padding: 8px !important;
+
+        background: #ffffff !important;
+    }
+
+    .saved-image-wrap img {
+        max-height: 280px !important;
+
+        box-shadow: none !important;
+    }
+}

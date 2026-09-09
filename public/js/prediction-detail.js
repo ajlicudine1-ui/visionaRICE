@@ -278,6 +278,16 @@
                 "chemicalControl"
             ),
 
+        savedImageSection:
+            document.getElementById(
+                "savedImageSection"
+            ),
+
+        savedImage:
+            document.getElementById(
+                "savedPredictionImage"
+            ),
+
         print:
             document.getElementById(
                 "printResultButton"
@@ -574,6 +584,36 @@
             prediction.id ||
             "—";
 
+        /*
+         * Show the Cloudinary image stored in
+         * predictions.image_url. Old records that have
+         * no stored image simply hide this section.
+         */
+        if (
+            prediction.image_url
+        ) {
+            elements.savedImage.src =
+                prediction.image_url;
+
+            elements.savedImageSection
+                .classList
+                .remove(
+                    "hidden"
+                );
+
+        } else {
+            elements.savedImage
+                .removeAttribute(
+                    "src"
+                );
+
+            elements.savedImageSection
+                .classList
+                .add(
+                    "hidden"
+                );
+        }
+
         elements.diseaseName.textContent =
             prediction.disease ||
             "Unknown";
@@ -743,6 +783,20 @@
             );
         }
     }
+
+    if (elements.savedImage) {
+        elements.savedImage.addEventListener(
+            "error",
+            () => {
+                elements.savedImageSection
+                    .classList
+                    .add(
+                        "hidden"
+                    );
+            }
+        );
+    }
+
 
     elements.language.addEventListener(
         "change",
