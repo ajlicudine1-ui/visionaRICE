@@ -635,7 +635,12 @@ function openCropModal(src) {
 
                 // Dragging outside the crop box creates a new crop area.
                 // The crop box itself remains movable/resizable.
-                dragMode: 'move',
+                dragMode:
+                    window.matchMedia(
+                        '(max-width: 760px)'
+                    ).matches
+                        ? 'none'
+                        : 'move',
 
                 autoCrop: true,
                 autoCropArea: 0.88,
@@ -651,9 +656,18 @@ function openCropModal(src) {
 
                 checkOrientation: true,
 
-                movable: true,
+                movable:
+                    !window.matchMedia(
+                        '(max-width: 760px)'
+                    ).matches,
+
                 zoomable: true,
-                zoomOnTouch: true,
+
+                zoomOnTouch:
+                    !window.matchMedia(
+                        '(max-width: 760px)'
+                    ).matches,
+
                 zoomOnWheel: false,
 
                 rotatable: true,
