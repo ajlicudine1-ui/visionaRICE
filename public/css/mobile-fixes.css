@@ -1,0 +1,996 @@
+/* =====================================================
+   VISIONARICE - MOBILE MODAL / CROP FIX
+   Load this AFTER sidebar.css and analyze.css
+===================================================== */
+
+@media screen and (max-width: 760px) {
+
+    /* -------------------------------------------------
+       Keep page usable above the fixed bottom nav
+    ------------------------------------------------- */
+
+    body {
+        padding-bottom:
+            calc(
+                82px +
+                env(safe-area-inset-bottom)
+            ) !important;
+    }
+
+
+    /* -------------------------------------------------
+       Hide bottom nav while a modal is open
+    ------------------------------------------------- */
+
+    body:has(.modal:not(.hidden)) .sidebar-nav {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(100%) !important;
+    }
+
+
+    /* =================================================
+       IMAGE PREVIEW
+       The preview uses the exact cropped aspect ratio.
+    ================================================= */
+
+    #uploadZone:has(#previewBox:not(.hidden)),
+    .upload:has(.preview:not(.hidden)) {
+        min-height: 0 !important;
+        height: auto !important;
+
+        padding: 14px !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+    }
+
+
+    #previewBox,
+    .preview {
+        position: relative !important;
+
+        width:
+            var(
+                --crop-preview-width,
+                100%
+            ) !important;
+
+        max-width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+
+        padding: 0 !important;
+        margin: 0 auto !important;
+
+        display: block !important;
+
+        overflow: hidden !important;
+
+        border-radius: 18px !important;
+
+        background: #eef5ec !important;
+    }
+
+
+    #previewBox.hidden,
+    .preview.hidden {
+        display: none !important;
+    }
+
+
+    #imagePreview,
+    .preview #imagePreview,
+    .preview img {
+        display: block !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: none !important;
+
+        margin: 0 !important;
+
+        object-fit: contain !important;
+        object-position: center center !important;
+
+        aspect-ratio: auto !important;
+
+        transform: none !important;
+
+        border-radius: 18px !important;
+    }
+
+
+    /* -------------------------------------------------
+       Crop preview button
+    ------------------------------------------------- */
+
+    #editCropButton,
+    .preview .crop-chip,
+    .crop-chip {
+        position: absolute !important;
+
+        left: 12px !important;
+        bottom: 12px !important;
+
+        top: auto !important;
+        right: auto !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        min-width: 0 !important;
+        min-height: 0 !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        margin: 0 !important;
+
+        padding: 9px 13px !important;
+
+        display: inline-flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        gap: 6px !important;
+
+        border:
+            1px solid
+            rgba(28, 94, 58, 0.12) !important;
+
+        border-radius: 12px !important;
+
+        background:
+            rgba(255, 255, 255, 0.95) !important;
+
+        box-shadow:
+            0 6px 18px
+            rgba(20, 60, 38, 0.12) !important;
+
+        color: #1c5e3a !important;
+
+        font-size: 12px !important;
+        font-weight: 600 !important;
+
+        line-height: 1 !important;
+
+        white-space: nowrap !important;
+
+        writing-mode: horizontal-tb !important;
+
+        transform: none !important;
+
+        z-index: 12 !important;
+    }
+
+
+    /* -------------------------------------------------
+       Remove image button
+    ------------------------------------------------- */
+
+    #removeImageButton,
+    .preview .remove {
+        position: absolute !important;
+
+        top: 12px !important;
+        right: 12px !important;
+
+        left: auto !important;
+        bottom: auto !important;
+
+        width: 42px !important;
+        height: 42px !important;
+
+        min-width: 42px !important;
+        min-height: 42px !important;
+
+        max-width: 42px !important;
+        max-height: 42px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: grid !important;
+
+        place-items: center !important;
+
+        border: 0 !important;
+
+        border-radius: 12px !important;
+
+        background:
+            rgba(255, 255, 255, 0.95) !important;
+
+        box-shadow:
+            0 6px 18px
+            rgba(20, 60, 38, 0.12) !important;
+
+        font-size: 25px !important;
+
+        line-height: 1 !important;
+
+        z-index: 13 !important;
+    }
+
+
+    #uploadZone,
+    .upload {
+        align-items: stretch !important;
+    }
+
+
+    #uploadZone button,
+    .upload button {
+        flex: none !important;
+    }
+
+
+    /* =================================================
+       MODAL SHELL
+    ================================================= */
+
+    .modal {
+        position: fixed !important;
+
+        inset: 0 !important;
+
+        width: 100% !important;
+        height: 100dvh !important;
+
+        padding: 12px !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+
+        background:
+            rgba(13, 37, 26, 0.48) !important;
+
+        z-index: 2147483647 !important;
+    }
+
+
+    .modal.hidden {
+        display: none !important;
+    }
+
+
+    /* =================================================
+       GENERIC DIALOG
+    ================================================= */
+
+    .dialog {
+        position: relative !important;
+
+        width:
+            min(
+                100%,
+                520px
+            ) !important;
+
+        max-width: none !important;
+
+        max-height:
+            calc(
+                100dvh - 24px
+            ) !important;
+
+        margin: 0 !important;
+
+        padding:
+            22px 16px 18px !important;
+
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+
+        overscroll-behavior:
+            contain !important;
+
+        border-radius:
+            24px !important;
+
+        background:
+            #ffffff !important;
+
+        -webkit-overflow-scrolling:
+            touch;
+    }
+
+
+    .dialog .x {
+        position: absolute !important;
+
+        top: 12px !important;
+        right: 12px !important;
+
+        z-index: 10 !important;
+    }
+
+
+    .dialog h2 {
+        padding-right:
+            38px !important;
+
+        font-size:
+            21px !important;
+
+        line-height:
+            1.25 !important;
+    }
+
+
+    .dialog > p {
+        margin-top:
+            7px !important;
+
+        font-size:
+            12px !important;
+
+        line-height:
+            1.5 !important;
+    }
+
+
+    /* =================================================
+       CROP MODAL
+    ================================================= */
+
+    .crop-dialog {
+        width: 100% !important;
+
+        max-width:
+            520px !important;
+
+        max-height:
+            calc(
+                100dvh - 20px
+            ) !important;
+
+        padding:
+            20px 14px 16px !important;
+
+        border:
+            1px solid
+            rgba(28, 94, 58, 0.08) !important;
+
+        border-radius:
+            24px !important;
+
+        box-shadow:
+            0 20px 60px
+            rgba(13, 37, 26, 0.18) !important;
+    }
+
+
+    .crop-dialog .modal-icon {
+        width: 40px !important;
+        height: 40px !important;
+
+        margin-bottom:
+            8px !important;
+
+        font-size:
+            18px !important;
+    }
+
+
+    /* -------------------------------------------------
+       Crop area
+    ------------------------------------------------- */
+
+    .crop-workspace {
+        position: relative !important;
+
+        width: 100% !important;
+
+        height:
+            min(
+                52dvh,
+                430px
+            ) !important;
+
+        min-height:
+            280px !important;
+
+        max-height:
+            430px !important;
+
+        margin:
+            14px 0 12px !important;
+
+        overflow:
+            hidden !important;
+
+        border:
+            1px solid
+            rgba(28, 94, 58, 0.10) !important;
+
+        border-radius:
+            18px !important;
+
+        background:
+            #111111 !important;
+
+        box-shadow:
+            inset 0 0 0 1px
+            rgba(255, 255, 255, 0.03) !important;
+    }
+
+
+    .crop-workspace img,
+    .crop-workspace .cropper-container,
+    .crop-workspace .cropper-wrap-box,
+    .crop-workspace .cropper-canvas {
+        max-width:
+            100% !important;
+    }
+
+
+    .crop-workspace .cropper-container {
+        width:
+            100% !important;
+
+        height:
+            100% !important;
+    }
+
+
+
+
+    /* -------------------------------------------------
+       Cropper.js visual polish only
+       IMPORTANT: no width/height/top/left overrides
+       on Cropper.js internals.
+    ------------------------------------------------- */
+
+    .crop-workspace .cropper-view-box {
+        outline:
+            2px solid #2e8b57 !important;
+
+        outline-offset:
+            -2px !important;
+    }
+
+    .crop-workspace .cropper-line {
+        background:
+            rgba(46, 139, 87, 0.55) !important;
+    }
+
+    .crop-workspace .cropper-point {
+        width: 10px !important;
+        height: 10px !important;
+
+        opacity: 1 !important;
+
+        border:
+            2px solid #ffffff !important;
+
+        border-radius:
+            50% !important;
+
+        background:
+            #2e8b57 !important;
+
+        box-shadow:
+            0 2px 6px
+            rgba(0, 0, 0, 0.22) !important;
+    }
+
+    .crop-workspace .cropper-modal {
+        background:
+            rgba(0, 0, 0, 0.58) !important;
+    }
+
+
+    /* -------------------------------------------------
+       Crop tools 2x2
+    ------------------------------------------------- */
+
+    .crop-tools {
+        width:
+            100% !important;
+
+        display:
+            grid !important;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            ) !important;
+
+        gap:
+            8px !important;
+
+        margin:
+            0 0 12px !important;
+    }
+
+
+    .crop-tools button {
+        width:
+            100% !important;
+
+        min-width:
+            0 !important;
+
+        min-height:
+            46px !important;
+
+        margin:
+            0 !important;
+
+        padding:
+            10px 8px !important;
+
+        border:
+            1px solid #dfe8df !important;
+
+        border-radius:
+            13px !important;
+
+        background:
+            #ffffff !important;
+
+        font-size:
+            12px !important;
+        font-weight:
+            600 !important;
+
+        white-space:
+            nowrap !important;
+
+        box-shadow:
+            0 4px 12px
+            rgba(17, 62, 38, 0.05) !important;
+    }
+
+
+    /* -------------------------------------------------
+       Cancel + Apply Crop
+    ------------------------------------------------- */
+
+    .crop-dialog .actions {
+        position:
+            sticky !important;
+
+        bottom:
+            0 !important;
+
+        width:
+            100% !important;
+
+        display:
+            grid !important;
+
+        grid-template-columns:
+            1fr 1.25fr !important;
+
+        gap:
+            9px !important;
+
+        margin-top:
+            4px !important;
+
+        padding:
+            8px 0 2px !important;
+
+        background:
+            #ffffff !important;
+
+        z-index:
+            20 !important;
+    }
+
+
+    .crop-dialog .actions button {
+        width:
+            100% !important;
+
+        min-height:
+            48px !important;
+
+        margin:
+            0 !important;
+
+        padding:
+            11px 8px !important;
+
+        border-radius:
+            13px !important;
+
+        font-size:
+            13px !important;
+
+        font-weight:
+            600 !important;
+    }
+
+
+    #applyCropButton {
+        background:
+            #1c6b43 !important;
+
+        color:
+            #ffffff !important;
+    }
+
+
+    /* =================================================
+       LOCATION MODALS
+    ================================================= */
+
+    .location-options {
+        gap:
+            9px !important;
+    }
+
+
+    .location-options button {
+        min-height:
+            62px !important;
+
+        padding:
+            11px 12px !important;
+    }
+
+
+    .form-grid {
+        grid-template-columns:
+            1fr !important;
+
+        gap:
+            10px !important;
+    }
+
+
+    .dialog:not(.crop-dialog) .actions {
+        display:
+            grid !important;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            ) !important;
+
+        gap:
+            9px !important;
+    }
+}
+
+
+/* =====================================================
+   EXTRA SMALL PHONES
+===================================================== */
+
+@media screen and (max-width: 420px) {
+
+    .modal {
+        padding:
+            8px !important;
+    }
+
+
+    .dialog {
+        max-height:
+            calc(
+                100dvh - 16px
+            ) !important;
+
+        border-radius:
+            20px !important;
+    }
+
+
+    .crop-dialog {
+        padding:
+            15px 12px 14px !important;
+    }
+
+
+    .crop-workspace {
+        height:
+            43dvh !important;
+
+        min-height:
+            225px !important;
+    }
+
+
+    .crop-tools button {
+        min-height:
+            42px !important;
+
+        font-size:
+            11px !important;
+    }
+
+
+    .crop-dialog .actions button {
+        min-height:
+            46px !important;
+    }
+
+
+    #editCropButton,
+    .preview .crop-chip,
+    .crop-chip {
+        left: 10px !important;
+        bottom: 10px !important;
+
+        padding:
+            8px 11px !important;
+
+        font-size:
+            11px !important;
+    }
+
+
+    #removeImageButton,
+    .preview .remove {
+        top: 10px !important;
+        right: 10px !important;
+
+        width: 38px !important;
+        height: 38px !important;
+
+        min-width: 38px !important;
+        min-height: 38px !important;
+
+        max-width: 38px !important;
+        max-height: 38px !important;
+
+        font-size: 22px !important;
+    }
+}
+
+/* =====================================================
+   MOBILE CROPPER - REAL RESIZE HANDLES
+   Makes all 4 edges + 4 corners easy to drag.
+===================================================== */
+@media screen and (max-width: 760px) {
+
+    .crop-workspace .cropper-container {
+        touch-action: none !important;
+    }
+
+    .crop-workspace .cropper-crop-box {
+        touch-action: none !important;
+    }
+
+    /* Visible crop border */
+    .crop-workspace .cropper-view-box {
+        outline:
+            2px solid #2196f3 !important;
+        outline-offset:
+            -2px !important;
+    }
+
+    /* Make the 4 edge drag zones large enough for fingers */
+    .crop-workspace .cropper-line {
+        display: block !important;
+        opacity: 1 !important;
+        background:
+            rgba(33, 150, 243, 0.18) !important;
+    }
+
+    .crop-workspace .cropper-line.line-e {
+        right: -8px !important;
+        width: 16px !important;
+        cursor: e-resize !important;
+    }
+
+    .crop-workspace .cropper-line.line-w {
+        left: -8px !important;
+        width: 16px !important;
+        cursor: w-resize !important;
+    }
+
+    .crop-workspace .cropper-line.line-n {
+        top: -8px !important;
+        height: 16px !important;
+        cursor: n-resize !important;
+    }
+
+    .crop-workspace .cropper-line.line-s {
+        bottom: -8px !important;
+        height: 16px !important;
+        cursor: s-resize !important;
+    }
+
+    /* Show ALL 8 resize handles */
+    .crop-workspace .cropper-point {
+        display: block !important;
+
+        width: 18px !important;
+        height: 18px !important;
+
+        opacity: 1 !important;
+
+        border:
+            2px solid #ffffff !important;
+
+        border-radius:
+            5px !important;
+
+        background:
+            #2196f3 !important;
+
+        box-shadow:
+            0 2px 7px
+            rgba(0, 0, 0, 0.25) !important;
+    }
+
+    /* Corners */
+    .crop-workspace .cropper-point.point-nw {
+        top: -9px !important;
+        left: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-ne {
+        top: -9px !important;
+        right: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-sw {
+        bottom: -9px !important;
+        left: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-se {
+        right: -9px !important;
+        bottom: -9px !important;
+
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    /* Middle edge handles */
+    .crop-workspace .cropper-point.point-n {
+        top: -9px !important;
+        left: 50% !important;
+
+        margin-left: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-s {
+        bottom: -9px !important;
+        left: 50% !important;
+
+        margin-left: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-w {
+        top: 50% !important;
+        left: -9px !important;
+
+        margin-top: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-e {
+        top: 50% !important;
+        right: -9px !important;
+
+        margin-top: -9px !important;
+    }
+
+    /* Keep the crop area itself draggable */
+    .crop-workspace .cropper-face {
+        cursor: move !important;
+    }
+}
+
+/* =====================================================
+   MOBILE CROPPER TOUCH FIX
+   Prevents horizontal/diagonal drags from moving or
+   scaling the image instead of resizing the crop box.
+===================================================== */
+@media screen and (max-width: 760px) {
+
+    .crop-workspace .cropper-face {
+        pointer-events: none !important;
+        cursor: default !important;
+    }
+
+    .crop-workspace .cropper-line,
+    .crop-workspace .cropper-point {
+        pointer-events: auto !important;
+        touch-action: none !important;
+    }
+
+    /* Bigger side-edge touch zones */
+    .crop-workspace .cropper-line.line-e,
+    .crop-workspace .cropper-line.line-w {
+        width: 28px !important;
+    }
+
+    .crop-workspace .cropper-line.line-e {
+        right: -14px !important;
+    }
+
+    .crop-workspace .cropper-line.line-w {
+        left: -14px !important;
+    }
+
+    .crop-workspace .cropper-line.line-n,
+    .crop-workspace .cropper-line.line-s {
+        height: 28px !important;
+    }
+
+    .crop-workspace .cropper-line.line-n {
+        top: -14px !important;
+    }
+
+    .crop-workspace .cropper-line.line-s {
+        bottom: -14px !important;
+    }
+
+    /* Larger corner/edge handles for fingers */
+    .crop-workspace .cropper-point {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .crop-workspace .cropper-point.point-nw {
+        top: -12px !important;
+        left: -12px !important;
+    }
+
+    .crop-workspace .cropper-point.point-ne {
+        top: -12px !important;
+        right: -12px !important;
+    }
+
+    .crop-workspace .cropper-point.point-sw {
+        bottom: -12px !important;
+        left: -12px !important;
+    }
+
+    .crop-workspace .cropper-point.point-se {
+        right: -12px !important;
+        bottom: -12px !important;
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .crop-workspace .cropper-point.point-n {
+        top: -12px !important;
+        margin-left: -12px !important;
+    }
+
+    .crop-workspace .cropper-point.point-s {
+        bottom: -12px !important;
+        margin-left: -12px !important;
+    }
+
+    .crop-workspace .cropper-point.point-w {
+        left: -12px !important;
+        margin-top: -12px !important;
+    }
+
+    .crop-workspace .cropper-point.point-e {
+        right: -12px !important;
+        margin-top: -12px !important;
+    }
+
+    /* The image itself should not capture swipe gestures on mobile. */
+    .crop-workspace .cropper-canvas,
+    .crop-workspace .cropper-wrap-box,
+    .crop-workspace .cropper-drag-box {
+        touch-action: none !important;
+    }
+}
