@@ -2101,3 +2101,542 @@ a {
             none !important;
     }
 }
+
+
+/* =====================================================
+   TEXT-DOCUMENT PRINT STYLE
+   Removes dashboard-style boxes/cards in print.
+===================================================== */
+
+@media print {
+
+    /*
+     * Remove every dashboard/card box.
+     */
+    .print-header,
+    .disease-card,
+    .result-section,
+    .top-prediction-item,
+    .recommendation-card,
+    .print-meta,
+    .saved-image-wrap,
+    .info-grid,
+    .info-item {
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    /*
+     * Main body reads like a formal document.
+     */
+    .prediction-result {
+        display: block !important;
+    }
+
+    .print-header {
+        display: block !important;
+
+        margin:
+            0 0 5mm !important;
+
+        padding:
+            0 0 3mm !important;
+
+        border-bottom:
+            1px solid
+            #666666 !important;
+    }
+
+    .print-header p {
+        margin:
+            0 !important;
+    }
+
+    .print-meta {
+        margin-top:
+            2mm !important;
+
+        padding:
+            0 !important;
+    }
+
+    .print-meta span,
+    .print-meta strong {
+        display:
+            inline !important;
+    }
+
+    .print-meta span::after {
+        content:
+            ": ";
+    }
+
+
+    /*
+     * Prediction result line
+     */
+    .document-overview {
+        display:
+            block !important;
+
+        margin:
+            0 0 5mm !important;
+    }
+
+    .disease-card {
+        display:
+            block !important;
+
+        padding:
+            0 !important;
+    }
+
+    .disease-icon {
+        display:
+            none !important;
+    }
+
+    .card-label {
+        display:
+            inline !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            7.5pt !important;
+
+        font-weight:
+            700 !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .card-label::after {
+        content:
+            ": ";
+    }
+
+    .disease-content h2 {
+        display:
+            inline !important;
+
+        margin:
+            0 !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            9pt !important;
+
+        font-weight:
+            700 !important;
+    }
+
+    .confidence-row {
+        display:
+            block !important;
+
+        margin-top:
+            2mm !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            7.5pt !important;
+    }
+
+    .confidence-row span::after {
+        content:
+            ": ";
+    }
+
+    .confidence-row strong {
+        color:
+            #000000 !important;
+
+        font-size:
+            7.5pt !important;
+    }
+
+    .confidence-track,
+    .mini-confidence-track {
+        display:
+            none !important;
+    }
+
+
+    /*
+     * Sections become headings + plain text.
+     */
+    .document-section {
+        margin:
+            0 0 5mm !important;
+
+        padding:
+            0 !important;
+    }
+
+    .section-heading {
+        display:
+            block !important;
+
+        margin:
+            0 0 2mm !important;
+
+        padding:
+            0 !important;
+
+        border-bottom:
+            1px solid
+            #777777 !important;
+    }
+
+    .section-heading > span {
+        display:
+            none !important;
+    }
+
+    .section-heading h2 {
+        margin:
+            0 0 1mm !important;
+
+        color:
+            #000000 !important;
+
+        font-family:
+            "Times New Roman",
+            serif !important;
+
+        font-size:
+            10pt !important;
+
+        font-weight:
+            700 !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .section-heading p {
+        display:
+            none !important;
+    }
+
+
+    /*
+     * Analysis Information becomes simple label/value text.
+     */
+    .info-grid {
+        display:
+            grid !important;
+
+        grid-template-columns:
+            1fr 1fr !important;
+
+        gap:
+            1.5mm 8mm !important;
+    }
+
+    .info-item {
+        min-height:
+            0 !important;
+
+        padding:
+            0 !important;
+    }
+
+    .info-item span,
+    .info-item strong {
+        display:
+            inline !important;
+    }
+
+    .info-item span {
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            700 !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .info-item span::after {
+        content:
+            ": ";
+    }
+
+    .info-item strong {
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            400 !important;
+    }
+
+
+    /*
+     * Fixed image size, but no surrounding box.
+     */
+    .saved-image-wrap {
+        width:
+            76mm !important;
+
+        height:
+            48mm !important;
+
+        min-height:
+            48mm !important;
+
+        margin:
+            2mm auto 0 !important;
+
+        padding:
+            0 !important;
+
+        display:
+            flex !important;
+
+        align-items:
+            center !important;
+
+        justify-content:
+            center !important;
+
+        overflow:
+            hidden !important;
+    }
+
+    .saved-image-wrap img {
+        width:
+            72mm !important;
+
+        height:
+            44mm !important;
+
+        max-width:
+            72mm !important;
+
+        max-height:
+            44mm !important;
+
+        object-fit:
+            contain !important;
+
+        object-position:
+            center !important;
+
+        border-radius:
+            0 !important;
+
+        box-shadow:
+            none !important;
+    }
+
+
+    /*
+     * Top 3 becomes a clean ranked text list.
+     */
+    .top-predictions-grid {
+        display:
+            block !important;
+    }
+
+    .top-prediction-item {
+        display:
+            grid !important;
+
+        grid-template-columns:
+            8mm
+            1fr
+            auto !important;
+
+        gap:
+            2mm !important;
+
+        align-items:
+            baseline !important;
+
+        margin:
+            0 0 1.5mm !important;
+
+        padding:
+            0 !important;
+    }
+
+    .prediction-rank {
+        width:
+            auto !important;
+
+        height:
+            auto !important;
+
+        display:
+            block !important;
+
+        color:
+            #000000 !important;
+
+        background:
+            transparent !important;
+
+        border:
+            0 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            700 !important;
+    }
+
+    .prediction-rank::after {
+        content:
+            ".";
+    }
+
+    .prediction-info {
+        display:
+            contents !important;
+    }
+
+    .prediction-info strong {
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            400 !important;
+
+        white-space:
+            normal !important;
+    }
+
+    .prediction-info span {
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            400 !important;
+    }
+
+
+    /*
+     * Recommendations become plain paragraphs.
+     */
+    .recommendation-grid {
+        display:
+            block !important;
+    }
+
+    .recommendation-card {
+        display:
+            block !important;
+
+        margin:
+            0 0 3mm !important;
+
+        padding:
+            0 !important;
+    }
+
+    .recommendation-icon {
+        display:
+            none !important;
+    }
+
+    .recommendation-card span {
+        display:
+            block !important;
+
+        margin:
+            0 0 .5mm !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            700 !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .recommendation-card p {
+        margin:
+            0 !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        line-height:
+            1.45 !important;
+
+        text-align:
+            justify !important;
+    }
+
+
+    /*
+     * Document note and signatures stay simple.
+     */
+    .official-certification {
+        border-top:
+            1px solid
+            #777777 !important;
+
+        padding-top:
+            3mm !important;
+    }
+
+    .official-cert-text strong {
+        font-family:
+            "Times New Roman",
+            serif !important;
+
+        font-size:
+            8pt !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .official-cert-text p {
+        color:
+            #000000 !important;
+
+        font-size:
+            6.5pt !important;
+    }
+
+    .signature-line {
+        border-bottom:
+            1px solid
+            #000000 !important;
+    }
+
+}
