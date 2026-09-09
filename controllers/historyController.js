@@ -299,6 +299,239 @@ async function getHistory(req, res) {
     }
 }
 
+
+async function getHistoryDetail(req, res) {
+    try {
+        const userId =
+            getSessionUserId(req);
+
+        if (!userId) {
+            return res
+                .status(401)
+                .json({
+                    success: false,
+                    message:
+                        'Not authenticated.'
+                });
+        }
+
+        const predictionId =
+            cleanText(
+                req.params.id
+            );
+
+        if (!predictionId) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message:
+                        'Prediction ID is required.'
+                });
+        }
+
+        const {
+            data: prediction,
+            error
+        } =
+            await supabaseAdmin
+                .from('predictions')
+                .select(`
+                    id,
+                    predicted_disease,
+                    confidence,
+                    image_url,
+                    latitude,
+                    longitude,
+                    municipality,
+                    province,
+                    status,
+                    created_at
+                `)
+                .eq(
+                    'id',
+                    predictionId
+                )
+                .eq(
+                    'user_id',
+                    userId
+                )
+                .maybeSingle();
+
+        if (error) {
+            console.error(
+                'History detail query error:',
+                error
+            );
+
+            return res
+                .status(500)
+                .json({
+                    success: false,
+                    message:
+                        error.message
+                });
+        }
+
+        if (!prediction) {
+            return res
+                .status(404)
+                .json({
+                    success: false,
+                    message:
+                        'Prediction record not found.'
+                });
+        }
+
+        const {
+            data: scores,
+            error: scoresError
+        } =
+            await supabaseAdmin
+                .from('prediction_scores')
+                .select(`
+                    class_name,
+                    confidence,
+                    ranking
+                `)
+                .eq(
+                    'prediction_id',
+                    predictionId
+                )
+                .order(
+                    'ranking',
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (scoresError) {
+            console.error(
+                'History detail scores error:',
+                scoresError
+            );
+        }
+
+        const displayDate =
+            prediction.created_at
+                ? new Intl.DateTimeFormat(
+                    'en-PH',
+                    {
+                        timeZone:
+                            'Asia/Manila',
+                        month:
+                            'long',
+                        day:
+                            '2-digit',
+                        year:
+                            'numeric',
+                        hour:
+                            '2-digit',
+                        minute:
+                            '2-digit'
+                    }
+                ).format(
+                    new Date(
+                        prediction.created_at
+                    )
+                )
+                : '';
+
+        return res.json({
+            success: true,
+
+            prediction: {
+                id:
+                    prediction.id,
+
+                predicted_disease:
+                    prediction.predicted_disease,
+
+                disease:
+                    prettyDisease(
+                        prediction.predicted_disease
+                    ),
+
+                confidence:
+                    Number(
+                        Number(
+                            prediction.confidence || 0
+                        ).toFixed(2)
+                    ),
+
+                image_url:
+                    prediction.image_url || '',
+
+                latitude:
+                    prediction.latitude,
+
+                longitude:
+                    prediction.longitude,
+
+                municipality:
+                    prediction.municipality || '',
+
+                province:
+                    prediction.province || '',
+
+                location:
+                    locationText(
+                        prediction
+                    ),
+
+                status:
+                    prediction.status || '',
+
+                created_at:
+                    prediction.created_at,
+
+                display_date:
+                    displayDate,
+
+                top3:
+                    (scores || [])
+                        .slice(0, 3)
+                        .map(
+                            score => ({
+                                class_name:
+                                    score.class_name,
+
+                                disease:
+                                    prettyDisease(
+                                        score.class_name
+                                    ),
+
+                                confidence:
+                                    Number(
+                                        Number(
+                                            score.confidence || 0
+                                        ).toFixed(2)
+                                    ),
+
+                                ranking:
+                                    score.ranking
+                            })
+                        )
+            }
+        });
+
+    } catch (error) {
+        console.error(
+            'History detail endpoint error:',
+            error
+        );
+
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message:
+                    error.message
+            });
+    }
+}
+
 module.exports = {
-    getHistory
+    getHistory,
+    getHistoryDetail
 };

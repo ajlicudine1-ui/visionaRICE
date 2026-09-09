@@ -5,7 +5,8 @@ const router =
     express.Router();
 
 const {
-    getHistory
+    getHistory,
+    getHistoryDetail
 } =
     require(
         '../controllers/historyController'
@@ -14,6 +15,11 @@ const {
 router.get(
     '/',
     getHistory
+);
+
+router.get(
+    '/:id',
+    getHistoryDetail
 );
 
 module.exports =
