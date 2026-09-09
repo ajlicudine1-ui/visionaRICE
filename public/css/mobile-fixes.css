@@ -680,4 +680,138 @@
     }
 }
 
+/* =====================================================
+   MOBILE CROPPER - REAL RESIZE HANDLES
+   Makes all 4 edges + 4 corners easy to drag.
+===================================================== */
+@media screen and (max-width: 760px) {
 
+    .crop-workspace .cropper-container {
+        touch-action: none !important;
+    }
+
+    .crop-workspace .cropper-crop-box {
+        touch-action: none !important;
+    }
+
+    /* Visible crop border */
+    .crop-workspace .cropper-view-box {
+        outline:
+            2px solid #2196f3 !important;
+        outline-offset:
+            -2px !important;
+    }
+
+    /* Make the 4 edge drag zones large enough for fingers */
+    .crop-workspace .cropper-line {
+        display: block !important;
+        opacity: 1 !important;
+        background:
+            rgba(33, 150, 243, 0.18) !important;
+    }
+
+    .crop-workspace .cropper-line.line-e {
+        right: -8px !important;
+        width: 16px !important;
+        cursor: e-resize !important;
+    }
+
+    .crop-workspace .cropper-line.line-w {
+        left: -8px !important;
+        width: 16px !important;
+        cursor: w-resize !important;
+    }
+
+    .crop-workspace .cropper-line.line-n {
+        top: -8px !important;
+        height: 16px !important;
+        cursor: n-resize !important;
+    }
+
+    .crop-workspace .cropper-line.line-s {
+        bottom: -8px !important;
+        height: 16px !important;
+        cursor: s-resize !important;
+    }
+
+    /* Show ALL 8 resize handles */
+    .crop-workspace .cropper-point {
+        display: block !important;
+
+        width: 18px !important;
+        height: 18px !important;
+
+        opacity: 1 !important;
+
+        border:
+            2px solid #ffffff !important;
+
+        border-radius:
+            5px !important;
+
+        background:
+            #2196f3 !important;
+
+        box-shadow:
+            0 2px 7px
+            rgba(0, 0, 0, 0.25) !important;
+    }
+
+    /* Corners */
+    .crop-workspace .cropper-point.point-nw {
+        top: -9px !important;
+        left: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-ne {
+        top: -9px !important;
+        right: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-sw {
+        bottom: -9px !important;
+        left: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-se {
+        right: -9px !important;
+        bottom: -9px !important;
+
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    /* Middle edge handles */
+    .crop-workspace .cropper-point.point-n {
+        top: -9px !important;
+        left: 50% !important;
+
+        margin-left: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-s {
+        bottom: -9px !important;
+        left: 50% !important;
+
+        margin-left: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-w {
+        top: 50% !important;
+        left: -9px !important;
+
+        margin-top: -9px !important;
+    }
+
+    .crop-workspace .cropper-point.point-e {
+        top: 50% !important;
+        right: -9px !important;
+
+        margin-top: -9px !important;
+    }
+
+    /* Keep the crop area itself draggable */
+    .crop-workspace .cropper-face {
+        cursor: move !important;
+    }
+}

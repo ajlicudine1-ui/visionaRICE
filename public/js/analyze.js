@@ -635,10 +635,10 @@ function openCropModal(src) {
 
                 // Dragging outside the crop box creates a new crop area.
                 // The crop box itself remains movable/resizable.
-                dragMode: 'crop',
+                dragMode: 'move',
 
                 autoCrop: true,
-                autoCropArea: 0.75,
+                autoCropArea: 0.88,
 
                 responsive: true,
                 restore: false,
