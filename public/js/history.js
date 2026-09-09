@@ -2,7 +2,7 @@
     "use strict";
 
     const API_URL =
-        "/api/predictions/history";
+        "/api/history";
 
     const DETAIL_URL =
         id =>

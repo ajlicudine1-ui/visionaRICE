@@ -5,11 +5,21 @@ const cors = require('cors');
 const cookieSession = require('cookie-session');
 const path = require('path');
 
-const { supabaseAdmin } = require('./config/supabase');
+const {
+    supabaseAdmin
+} = require('./config/supabase');
 
-const authRoutes = require('./routes/authRoutes');
-const dashboardRoutes = require('./routes/dashboardRoutes');
-const predictionRoutes = require('./routes/predictionRoutes');
+const authRoutes =
+    require('./routes/authRoutes');
+
+const dashboardRoutes =
+    require('./routes/dashboardRoutes');
+
+const predictionRoutes =
+    require('./routes/predictionRoutes');
+
+const historyRoutes =
+    require('./routes/historyRoutes');
 
 const {
     requireAdmin
@@ -54,6 +64,7 @@ app.use(
         ],
 
         httpOnly: true,
+
         sameSite: 'lax',
 
         secure:
@@ -90,7 +101,6 @@ app.use(
 app.get(
     '/',
     (req, res) => {
-
         res.sendFile(
             path.join(
                 __dirname,
@@ -98,23 +108,25 @@ app.get(
                 'login.html'
             )
         );
-
     }
 );
 
 
+// ===============================
+// Health Check
+// ===============================
+
 app.get(
     '/api/health',
     (req, res) => {
-
         res.json({
             success: true,
+
             status: 'online',
 
             timestamp:
                 new Date().toISOString()
         });
-
     }
 );
 
@@ -125,9 +137,7 @@ app.get(
 
 app.get(
     '/api/test-db',
-
     async (req, res) => {
-
         try {
 
             const {
@@ -155,20 +165,24 @@ app.get(
                     .status(500)
                     .json({
                         success: false,
+
                         message:
                             'Database connection failed.',
+
                         error:
                             error.message
                     });
-
             }
 
             return res.json({
                 success: true,
+
                 message:
                     'Supabase database connected successfully.',
+
                 count:
                     data.length,
+
                 diseases:
                     data
             });
@@ -184,14 +198,14 @@ app.get(
                 .status(500)
                 .json({
                     success: false,
+
                     message:
                         'Unexpected server error.',
+
                     error:
                         error.message
                 });
-
         }
-
     }
 );
 
@@ -217,6 +231,16 @@ app.use(
 
 
 // ===============================
+// History Routes
+// ===============================
+
+app.use(
+    '/api/history',
+    historyRoutes
+);
+
+
+// ===============================
 // Dashboard Routes
 // ===============================
 
@@ -232,19 +256,18 @@ app.use(
 
 app.get(
     '/api/admin/test',
-
     requireAdmin,
-
     (req, res) => {
 
         return res.json({
             success: true,
+
             message:
                 'Administrator access confirmed.',
+
             user:
                 req.session.user
         });
-
     }
 );
 
@@ -261,10 +284,10 @@ app.use(
             .status(404)
             .json({
                 success: false,
+
                 message:
                     'Route not found.'
             });
-
     }
 );
 
@@ -294,15 +317,15 @@ if (require.main === module) {
             );
 
             console.log(
-                ` Server:         http://localhost:${PORT}`
+                ` Server:          http://localhost:${PORT}`
             );
 
             console.log(
-                ` Health:         http://localhost:${PORT}/api/health`
+                ` Health:          http://localhost:${PORT}/api/health`
             );
 
             console.log(
-                ` Database Test:  http://localhost:${PORT}/api/test-db`
+                ` Database Test:   http://localhost:${PORT}/api/test-db`
             );
 
             console.log('');
@@ -312,19 +335,19 @@ if (require.main === module) {
             );
 
             console.log(
-                ` Register:       POST http://localhost:${PORT}/api/auth/register`
+                ` Register:        POST http://localhost:${PORT}/api/auth/register`
             );
 
             console.log(
-                ` Login:          POST http://localhost:${PORT}/api/auth/login`
+                ` Login:           POST http://localhost:${PORT}/api/auth/login`
             );
 
             console.log(
-                ` Current User:   GET  http://localhost:${PORT}/api/auth/me`
+                ` Current User:    GET  http://localhost:${PORT}/api/auth/me`
             );
 
             console.log(
-                ` Logout:         POST http://localhost:${PORT}/api/auth/logout`
+                ` Logout:          POST http://localhost:${PORT}/api/auth/logout`
             );
 
             console.log('');
@@ -335,6 +358,16 @@ if (require.main === module) {
 
             console.log(
                 ` Save Prediction: POST http://localhost:${PORT}/api/predictions`
+            );
+
+            console.log('');
+
+            console.log(
+                ' HISTORY ROUTES'
+            );
+
+            console.log(
+                ` History:         GET  http://localhost:${PORT}/api/history`
             );
 
             console.log('');
@@ -362,10 +395,8 @@ if (require.main === module) {
             );
 
             console.log('');
-
         }
     );
-
 }
 
 
