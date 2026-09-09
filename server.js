@@ -21,6 +21,9 @@ const predictionRoutes =
 const historyRoutes =
     require('./routes/historyRoutes');
 
+const notificationRoutes =
+    require('./routes/notificationRoutes');
+
 const {
     requireAdmin
 } = require('./middleware/authMiddleware');
@@ -42,7 +45,9 @@ app.use(
     })
 );
 
-app.use(express.json());
+app.use(
+    express.json()
+);
 
 app.use(
     express.urlencoded({
@@ -57,7 +62,8 @@ app.set(
 
 app.use(
     cookieSession({
-        name: 'visionarice_session',
+        name:
+            'visionarice_session',
 
         keys: [
             process.env.SESSION_SECRET
@@ -65,7 +71,8 @@ app.use(
 
         httpOnly: true,
 
-        sameSite: 'lax',
+        sameSite:
+            'lax',
 
         secure:
             process.env.NODE_ENV ===
@@ -101,6 +108,7 @@ app.use(
 app.get(
     '/',
     (req, res) => {
+
         res.sendFile(
             path.join(
                 __dirname,
@@ -119,13 +127,16 @@ app.get(
 app.get(
     '/api/health',
     (req, res) => {
+
         res.json({
             success: true,
 
-            status: 'online',
+            status:
+                'online',
 
             timestamp:
-                new Date().toISOString()
+                new Date()
+                    .toISOString()
         });
     }
 );
@@ -138,6 +149,7 @@ app.get(
 app.get(
     '/api/test-db',
     async (req, res) => {
+
         try {
 
             const {
@@ -145,12 +157,17 @@ app.get(
                 error
             } =
                 await supabaseAdmin
-                    .from('diseases')
-                    .select('*')
+                    .from(
+                        'diseases'
+                    )
+                    .select(
+                        '*'
+                    )
                     .order(
                         'id',
                         {
-                            ascending: true
+                            ascending:
+                                true
                         }
                     );
 
@@ -164,7 +181,8 @@ app.get(
                 return res
                     .status(500)
                     .json({
-                        success: false,
+                        success:
+                            false,
 
                         message:
                             'Database connection failed.',
@@ -175,7 +193,8 @@ app.get(
             }
 
             return res.json({
-                success: true,
+                success:
+                    true,
 
                 message:
                     'Supabase database connected successfully.',
@@ -197,7 +216,8 @@ app.get(
             return res
                 .status(500)
                 .json({
-                    success: false,
+                    success:
+                        false,
 
                     message:
                         'Unexpected server error.',
@@ -241,6 +261,16 @@ app.use(
 
 
 // ===============================
+// Notifications Routes
+// ===============================
+
+app.use(
+    '/api/notifications',
+    notificationRoutes
+);
+
+
+// ===============================
 // Dashboard Routes
 // ===============================
 
@@ -260,7 +290,8 @@ app.get(
     (req, res) => {
 
         return res.json({
-            success: true,
+            success:
+                true,
 
             message:
                 'Administrator access confirmed.',
@@ -283,7 +314,8 @@ app.use(
         return res
             .status(404)
             .json({
-                success: false,
+                success:
+                    false,
 
                 message:
                     'Route not found.'
@@ -296,7 +328,10 @@ app.use(
 // Start Server
 // ===============================
 
-if (require.main === module) {
+if (
+    require.main ===
+    module
+) {
 
     app.listen(
         PORT,
@@ -328,6 +363,7 @@ if (require.main === module) {
                 ` Database Test:   http://localhost:${PORT}/api/test-db`
             );
 
+
             console.log('');
 
             console.log(
@@ -350,6 +386,7 @@ if (require.main === module) {
                 ` Logout:          POST http://localhost:${PORT}/api/auth/logout`
             );
 
+
             console.log('');
 
             console.log(
@@ -359,6 +396,7 @@ if (require.main === module) {
             console.log(
                 ` Save Prediction: POST http://localhost:${PORT}/api/predictions`
             );
+
 
             console.log('');
 
@@ -370,6 +408,34 @@ if (require.main === module) {
                 ` History:         GET  http://localhost:${PORT}/api/history`
             );
 
+            console.log(
+                ` History Detail:  GET  http://localhost:${PORT}/api/history/:id`
+            );
+
+
+            console.log('');
+
+            console.log(
+                ' NOTIFICATION ROUTES'
+            );
+
+            console.log(
+                ` Overall:         GET  http://localhost:${PORT}/api/notifications?filter=overall`
+            );
+
+            console.log(
+                ` Daily:           GET  http://localhost:${PORT}/api/notifications?filter=daily`
+            );
+
+            console.log(
+                ` Weekly:          GET  http://localhost:${PORT}/api/notifications?filter=weekly`
+            );
+
+            console.log(
+                ` Monthly:         GET  http://localhost:${PORT}/api/notifications?filter=monthly`
+            );
+
+
             console.log('');
 
             console.log(
@@ -379,6 +445,7 @@ if (require.main === module) {
             console.log(
                 ` Summary:         GET  http://localhost:${PORT}/api/dashboard/summary`
             );
+
 
             console.log('');
 

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Notifications | VISIONARICE</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/sidebar.css?v=20260909-3"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/notifications.css?v=20260909-1"
+    >
+</head>
+
+<body>
+
+    <div id="sidebar-container"></div>
+
+
+    <main class="notifications-page">
+
+        <header class="page-heading">
+            <div>
+                <span class="page-kicker">
+                    VISIONARICE
+                </span>
+
+                <h1>
+                    Notifications
+                </h1>
+
+                <p>
+                    Review your rice leaf analysis activity
+                    and the most frequently detected disease.
+                </p>
+            </div>
+        </header>
+
+
+        <section class="filter-card">
+
+            <div class="filter-heading">
+                <span>
+                    Filter
+                </span>
+
+                <small id="filterDescription">
+                    Showing all records
+                </small>
+            </div>
+
+            <div
+                class="filter-pills"
+                role="group"
+                aria-label="Notification period"
+            >
+                <button
+                    type="button"
+                    class="filter-pill active"
+                    data-filter="overall"
+                >
+                    Overall
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-pill"
+                    data-filter="daily"
+                >
+                    Daily
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-pill"
+                    data-filter="weekly"
+                >
+                    Weekly
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-pill"
+                    data-filter="monthly"
+                >
+                    Monthly
+                </button>
+            </div>
+
+        </section>
+
+
+        <section
+            id="summaryGrid"
+            class="summary-grid"
+        >
+
+            <article class="summary-card">
+                <div class="summary-icon">
+                    🔔
+                </div>
+
+                <div>
+                    <span>
+                        Total Analyses
+                    </span>
+
+                    <strong id="totalScans">
+                        —
+                    </strong>
+                </div>
+            </article>
+
+
+            <article class="summary-card">
+                <div class="summary-icon">
+                    🩺
+                </div>
+
+                <div>
+                    <span>
+                        Disease Detections
+                    </span>
+
+                    <strong id="diseaseDetections">
+                        —
+                    </strong>
+                </div>
+            </article>
+
+
+            <article class="summary-card frequent-card">
+                <div class="summary-icon">
+                    🌾
+                </div>
+
+                <div>
+                    <span>
+                        Most Frequent Disease
+                    </span>
+
+                    <strong id="mostFrequentDisease">
+                        —
+                    </strong>
+
+                    <small id="mostFrequentCount">
+                        —
+                    </small>
+                </div>
+            </article>
+
+        </section>
+
+
+        <section class="notification-panel">
+
+            <div class="panel-header">
+                <div>
+                    <h2>
+                        Analysis Notifications
+                    </h2>
+
+                    <p id="recordCount">
+                        Loading records...
+                    </p>
+                </div>
+            </div>
+
+
+            <div
+                id="notificationLoading"
+                class="notification-state"
+            >
+                <div class="spinner"></div>
+
+                <span>
+                    Loading notifications
+                </span>
+            </div>
+
+
+            <div
+                id="notificationEmpty"
+                class="notification-state hidden"
+            >
+                <div class="empty-icon">
+                    🔔
+                </div>
+
+                <strong>
+                    No notifications found
+                </strong>
+
+                <p>
+                    There are no prediction records
+                    for this filter yet.
+                </p>
+            </div>
+
+
+            <div
+                id="notificationError"
+                class="notification-state hidden"
+            >
+                <div class="empty-icon">
+                    !
+                </div>
+
+                <strong>
+                    Unable to load notifications
+                </strong>
+
+                <p id="notificationErrorText">
+                    Please try again.
+                </p>
+            </div>
+
+
+            <div
+                id="notificationList"
+                class="notification-list hidden"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <script
+        src="/js/sidebar.js?v=20260909-3"
+    ></script>
+
+    <script
+        src="/js/notifications.js?v=20260909-1"
+    ></script>
+
+</body>
+</html>
