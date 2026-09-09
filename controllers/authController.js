@@ -236,48 +236,25 @@ exports.login = async (req, res) => {
             });
         }
 
-        // Create session
-        req.session.user = {
-            id: user.id,
-            email: user.email,
-            role: user.role,
-            first_name: user.first_name,
-            last_name: user.last_name
-        };
-
         // Remove password hash before returning user
-       const {
+        const {
             password_hash,
             ...safeUser
         } = user;
 
+        // Create stateless cookie session
         req.session.user = {
             id: safeUser.id,
             email: safeUser.email,
-            role: safeUser.role
+            role: safeUser.role,
+            first_name: safeUser.first_name,
+            last_name: safeUser.last_name
         };
 
-        req.session.save((error) => {
-
-            if (error) {
-
-                console.error(
-                    'Session save error:',
-                    error
-                );
-
-                return res.status(500).json({
-                    success: false,
-                    message: 'Unable to save login session.'
-                });
-            }
-
-            return res.json({
-                success: true,
-                message: 'Login successful.',
-                user: safeUser
-            });
-
+        return res.json({
+            success: true,
+            message: 'Login successful.',
+            user: safeUser
         });
 
     } catch (error) {
@@ -297,29 +274,11 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
     try {
-        if (!req.session) {
-            return res.json({
-                success: true,
-                message: 'Already logged out.'
-            });
-        }
+        req.session = null;
 
-        req.session.destroy((error) => {
-            if (error) {
-                console.error('Logout error:', error);
-
-                return res.status(500).json({
-                    success: false,
-                    message: 'Unable to log out.'
-                });
-            }
-
-            res.clearCookie('connect.sid');
-
-            return res.json({
-                success: true,
-                message: 'Logout successful.'
-            });
+        return res.json({
+            success: true,
+            message: 'Logout successful.'
         });
 
     } catch (error) {

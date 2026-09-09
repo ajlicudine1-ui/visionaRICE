@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const path = require('path');
 
 const { supabaseAdmin } = require('./config/supabase');
@@ -40,23 +40,31 @@ app.use(
     })
 );
 
+app.set(
+    'trust proxy',
+    1
+);
+
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
+    cookieSession({
+        name: 'visionarice_session',
 
-        cookie: {
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: false,
+        keys: [
+            process.env.SESSION_SECRET
+        ],
 
-            maxAge:
-                1000 *
-                60 *
-                60 *
-                24
-        }
+        httpOnly: true,
+        sameSite: 'lax',
+
+        secure:
+            process.env.NODE_ENV ===
+            'production',
+
+        maxAge:
+            1000 *
+            60 *
+            60 *
+            24
     })
 );
 
@@ -127,18 +135,14 @@ app.get(
                 error
             } =
                 await supabaseAdmin
-                    .from(
-                        'diseases'
-                    )
+                    .from('diseases')
                     .select('*')
                     .order(
                         'id',
                         {
-                            ascending:
-                                true
+                            ascending: true
                         }
                     );
-
 
             if (error) {
 
@@ -151,30 +155,23 @@ app.get(
                     .status(500)
                     .json({
                         success: false,
-
                         message:
                             'Database connection failed.',
-
                         error:
                             error.message
                     });
 
             }
 
-
             return res.json({
                 success: true,
-
                 message:
                     'Supabase database connected successfully.',
-
                 count:
                     data.length,
-
                 diseases:
                     data
             });
-
 
         } catch (error) {
 
@@ -187,10 +184,8 @@ app.get(
                 .status(500)
                 .json({
                     success: false,
-
                     message:
                         'Unexpected server error.',
-
                     error:
                         error.message
                 });
@@ -244,10 +239,8 @@ app.get(
 
         return res.json({
             success: true,
-
             message:
                 'Administrator access confirmed.',
-
             user:
                 req.session.user
         });
@@ -268,7 +261,6 @@ app.use(
             .status(404)
             .json({
                 success: false,
-
                 message:
                     'Route not found.'
             });
@@ -276,10 +268,6 @@ app.use(
     }
 );
 
-
-// ===============================
-// Start Server
-// ===============================
 
 // ===============================
 // Start Server
