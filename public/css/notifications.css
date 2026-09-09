@@ -208,7 +208,7 @@ button {
     font-size: 9px;
     font-weight: 700;
 
-    cursor: pointer;
+    cursor: default;
 
     transition:
         .16s ease;
@@ -416,8 +416,7 @@ button {
 
     grid-template-columns:
         42px
-        minmax(0, 1fr)
-        24px;
+        minmax(0, 1fr);
 
     align-items: center;
 
@@ -452,7 +451,7 @@ button {
 
 .notification-item:hover {
     background:
-        #f7fbf7;
+        #ffffff;
 }
 
 .notification-item.disease {
@@ -720,8 +719,7 @@ button {
     .notification-item {
         grid-template-columns:
             38px
-            minmax(0, 1fr)
-            18px;
+            minmax(0, 1fr);
 
         gap: 9px;
 

@@ -265,16 +265,12 @@
                             "healthy";
 
                         return `
-                            <button
-                                type="button"
+                            <div
                                 class="notification-item ${
                                     healthy
                                         ? "healthy"
                                         : "disease"
                                 }"
-                                data-id="${escapeHtml(
-                                    item.id
-                                )}"
                             >
                                 <div class="notification-icon">
                                     ${
@@ -320,11 +316,7 @@
                                         </span>
                                     </div>
                                 </div>
-
-                                <span class="notification-arrow">
-                                    ›
-                                </span>
-                            </button>
+                            </div>
                         `;
                     }
                 )
@@ -445,30 +437,6 @@
                             loadNotifications();
                         }
                     );
-            }
-        );
-
-
-    elements.list
-        .addEventListener(
-            "click",
-            event => {
-                const item =
-                    event
-                        .target
-                        .closest(
-                            ".notification-item"
-                        );
-
-                if (
-                    !item ||
-                    !item.dataset.id
-                ) {
-                    return;
-                }
-
-                window.location.href =
-                    `/prediction-detail.html?id=${encodeURIComponent(item.dataset.id)}`;
             }
         );
 
