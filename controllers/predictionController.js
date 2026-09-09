@@ -5,18 +5,10 @@ const { supabaseAdmin } = require('../config/supabase');
 // =====================================================
 
 function getSessionUserId(req) {
-    console.log(
-        'VISIONARICE SESSION:',
-        req.session
-    );
-
     return (
         req.session?.user?.id ||
-        req.session?.user?.user_id ||
-        req.session?.user?.userId ||
         req.session?.user_id ||
         req.session?.userId ||
-        req.session?.id_user ||
         null
     );
 }
@@ -71,6 +63,42 @@ function cleanNumber(value) {
     return Number.isFinite(number)
         ? number
         : null;
+}
+
+
+function prettyClassName(value) {
+    const normalized =
+        normalizeClassName(value);
+
+    const names = {
+        bacterial_leaf_blight:
+            'Bacterial Leaf Blight',
+        brown_spot:
+            'Brown Spot',
+        healthy_rice_plant:
+            'Healthy Rice Plant',
+        leaf_blast:
+            'Leaf Blast'
+    };
+
+    return (
+        names[normalized] ||
+        String(value || '')
+            .replace(/_/g, ' ')
+            .replace(
+                /\b\w/g,
+                char => char.toUpperCase()
+            )
+    );
+}
+
+function buildLocation(row) {
+    return [
+        cleanText(row.municipality),
+        cleanText(row.province)
+    ]
+        .filter(Boolean)
+        .join(', ');
 }
 
 // =====================================================
@@ -464,6 +492,391 @@ async function createPrediction(req, res) {
     }
 }
 
+
+// =====================================================
+// GET /api/predictions/history
+// Logged-in user's prediction history with old-flow filters
+// =====================================================
+
+async function getPredictionHistory(req, res) {
+    try {
+        const userId =
+            getSessionUserId(req);
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: 'Not authenticated.'
+            });
+        }
+
+        const date =
+            cleanText(req.query.date);
+
+        const disease =
+            cleanText(req.query.disease);
+
+        const minimumConfidence =
+            cleanNumber(
+                req.query.confidence
+            );
+
+        let query =
+            supabaseAdmin
+                .from('predictions')
+                .select(
+                    `
+                    id,
+                    predicted_disease,
+                    confidence,
+                    image_url,
+                    latitude,
+                    longitude,
+                    municipality,
+                    province,
+                    status,
+                    created_at
+                    `
+                )
+                .eq(
+                    'user_id',
+                    userId
+                )
+                .order(
+                    'created_at',
+                    {
+                        ascending: false
+                    }
+                );
+
+        // Same flow as the old Django history:
+        // filter by one selected calendar date.
+        if (date) {
+            const start =
+                new Date(
+                    `${date}T00:00:00+08:00`
+                );
+
+            const end =
+                new Date(
+                    `${date}T00:00:00+08:00`
+                );
+
+            if (
+                !Number.isNaN(
+                    start.getTime()
+                )
+            ) {
+                end.setDate(
+                    end.getDate() + 1
+                );
+
+                query =
+                    query
+                        .gte(
+                            'created_at',
+                            start.toISOString()
+                        )
+                        .lt(
+                            'created_at',
+                            end.toISOString()
+                        );
+            }
+        }
+
+        // UI sends pretty disease names while DB stores normalized codes.
+        if (disease) {
+            query =
+                query.eq(
+                    'predicted_disease',
+                    normalizeClassName(
+                        disease
+                    )
+                );
+        }
+
+        if (
+            minimumConfidence !== null
+        ) {
+            query =
+                query.gte(
+                    'confidence',
+                    minimumConfidence
+                );
+        }
+
+        const {
+            data: rows,
+            error
+        } =
+            await query;
+
+        if (error) {
+            console.error(
+                'Prediction history query error:',
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message:
+                    'Unable to load prediction history.',
+                error:
+                    error.message
+            });
+        }
+
+        const history =
+            (rows || []).map(
+                row => ({
+                    id:
+                        row.id,
+
+                    date:
+                        row.created_at
+                            ? new Date(
+                                row.created_at
+                            )
+                                .toLocaleDateString(
+                                    'en-CA',
+                                    {
+                                        timeZone:
+                                            'Asia/Manila'
+                                    }
+                                )
+                            : '',
+
+                    display_date:
+                        row.created_at
+                            ? new Intl.DateTimeFormat(
+                                'en-PH',
+                                {
+                                    timeZone:
+                                        'Asia/Manila',
+                                    month:
+                                        'short',
+                                    day:
+                                        '2-digit',
+                                    year:
+                                        'numeric',
+                                    hour:
+                                        '2-digit',
+                                    minute:
+                                        '2-digit'
+                                }
+                            ).format(
+                                new Date(
+                                    row.created_at
+                                )
+                            )
+                            : '',
+
+                    disease:
+                        prettyClassName(
+                            row.predicted_disease
+                        ),
+
+                    confidence:
+                        Number(
+                            Number(
+                                row.confidence || 0
+                            ).toFixed(2)
+                        ),
+
+                    location:
+                        buildLocation(
+                            row
+                        ),
+
+                    image_url:
+                        row.image_url || '',
+
+                    latitude:
+                        row.latitude,
+
+                    longitude:
+                        row.longitude,
+
+                    municipality:
+                        row.municipality || '',
+
+                    province:
+                        row.province || '',
+
+                    status:
+                        row.status || ''
+                })
+            );
+
+        return res.json({
+            success: true,
+            history
+        });
+
+    } catch (error) {
+        console.error(
+            'Unexpected prediction history error:',
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                'Unable to load prediction history.',
+            error:
+                error.message
+        });
+    }
+}
+
+
+// =====================================================
+// GET /api/predictions/:id
+// Logged-in user's single prediction + top scores
+// =====================================================
+
+async function getPredictionById(req, res) {
+    try {
+        const userId =
+            getSessionUserId(req);
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: 'Not authenticated.'
+            });
+        }
+
+        const predictionId =
+            req.params.id;
+
+        const {
+            data: prediction,
+            error
+        } =
+            await supabaseAdmin
+                .from('predictions')
+                .select(
+                    `
+                    id,
+                    predicted_disease,
+                    confidence,
+                    image_url,
+                    latitude,
+                    longitude,
+                    municipality,
+                    province,
+                    status,
+                    created_at
+                    `
+                )
+                .eq(
+                    'id',
+                    predictionId
+                )
+                .eq(
+                    'user_id',
+                    userId
+                )
+                .maybeSingle();
+
+        if (error) {
+            return res.status(500).json({
+                success: false,
+                message:
+                    'Unable to load prediction.',
+                error:
+                    error.message
+            });
+        }
+
+        if (!prediction) {
+            return res.status(404).json({
+                success: false,
+                message:
+                    'Prediction not found.'
+            });
+        }
+
+        const {
+            data: scores,
+            error: scoresError
+        } =
+            await supabaseAdmin
+                .from('prediction_scores')
+                .select(
+                    `
+                    class_name,
+                    confidence,
+                    ranking
+                    `
+                )
+                .eq(
+                    'prediction_id',
+                    predictionId
+                )
+                .order(
+                    'ranking',
+                    {
+                        ascending: true
+                    }
+                );
+
+        if (scoresError) {
+            console.error(
+                'Prediction score query error:',
+                scoresError
+            );
+        }
+
+        return res.json({
+            success: true,
+            prediction: {
+                ...prediction,
+                disease:
+                    prettyClassName(
+                        prediction.predicted_disease
+                    ),
+                location:
+                    buildLocation(
+                        prediction
+                    ),
+                top3:
+                    (scores || []).map(
+                        score => ({
+                            class_name:
+                                score.class_name,
+                            disease:
+                                prettyClassName(
+                                    score.class_name
+                                ),
+                            confidence:
+                                score.confidence,
+                            ranking:
+                                score.ranking
+                        })
+                    )
+            }
+        });
+
+    } catch (error) {
+        console.error(
+            'Unexpected prediction detail error:',
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                'Unable to load prediction.',
+            error:
+                error.message
+        });
+    }
+}
+
 module.exports = {
-    createPrediction
+    createPrediction,
+    getPredictionHistory,
+    getPredictionById
 };

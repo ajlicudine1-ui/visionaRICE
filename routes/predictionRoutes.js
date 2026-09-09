@@ -4,7 +4,9 @@ const router =
     express.Router();
 
 const {
-    createPrediction
+    createPrediction,
+    getPredictionHistory,
+    getPredictionById
 } =
     require(
         '../controllers/predictionController'
@@ -14,6 +16,18 @@ const {
 router.post(
     '/',
     createPrediction
+);
+
+// GET /api/predictions/history
+router.get(
+    '/history',
+    getPredictionHistory
+);
+
+// GET /api/predictions/:id
+router.get(
+    '/:id',
+    getPredictionById
 );
 
 module.exports =
