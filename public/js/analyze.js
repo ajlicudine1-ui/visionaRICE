@@ -1080,7 +1080,8 @@ refreshSavedLocationButton();
 
 // =====================================================
 // REVERSE GEOCODING
-// Converts GPS coordinates into a readable address.
+// Converts GPS coordinates into a readable address
+// and extracts barangay, municipality/city, and province.
 // =====================================================
 
 async function reverseGeocodeLocation(
@@ -1114,14 +1115,53 @@ async function reverseGeocodeLocation(
         const data =
             await response.json();
 
-        if (
-            data &&
-            data.display_name
-        ) {
-            return data.display_name;
+        if (!data) {
+            return null;
         }
 
-        return null;
+        const address =
+            data.address || {};
+
+        /*
+         * Nominatim can use different address keys depending
+         * on the exact GPS point. Normalize the useful fields.
+         */
+        const municipality =
+            address.city ||
+            address.municipality ||
+            address.town ||
+            address.city_district ||
+            address.village ||
+            address.county ||
+            null;
+
+        const province =
+            address.state ||
+            address.province ||
+            address.region ||
+            null;
+
+        const barangay =
+            address.suburb ||
+            address.neighbourhood ||
+            address.quarter ||
+            address.hamlet ||
+            null;
+
+        return {
+            display_name:
+                data.display_name ||
+                null,
+
+            municipality,
+
+            province,
+
+            barangay,
+
+            raw_address:
+                address
+        };
 
     } catch (error) {
         console.warn(
@@ -1157,46 +1197,104 @@ document
                 return;
             }
 
+            showMessage(
+                'Getting Current Location',
+                'Getting your GPS coordinates and identifying your municipality and province...'
+            );
+
             navigator.geolocation
                 .getCurrentPosition(
                     async position => {
-                        const latitude =
-                            position.coords.latitude;
+                        try {
+                            const latitude =
+                                position.coords.latitude;
 
-                        const longitude =
-                            position.coords.longitude;
+                            const longitude =
+                                position.coords.longitude;
 
-                        const accuracy =
-                            position.coords.accuracy;
+                            const accuracy =
+                                position.coords.accuracy;
 
-                        showMessage(
-                            'Getting Address',
-                            'Converting your GPS coordinates into a readable address...'
-                        );
+                            const locationData =
+                                await reverseGeocodeLocation(
+                                    latitude,
+                                    longitude
+                                );
 
-                        const address =
-                            await reverseGeocodeLocation(
+                            const displayAddress =
+                                locationData?.display_name ||
+                                null;
+
+                            const municipality =
+                                locationData?.municipality ||
+                                null;
+
+                            const province =
+                                locationData?.province ||
+                                null;
+
+                            const barangay =
+                                locationData?.barangay ||
+                                null;
+
+                            /*
+                             * IMPORTANT:
+                             * municipality and province must live directly
+                             * inside selectedLocation because the prediction
+                             * POST payload reads:
+                             *
+                             * selectedLocation?.municipality
+                             * selectedLocation?.province
+                             */
+                            selectedLocation = {
+                                type:
+                                    'current',
+
                                 latitude,
-                                longitude
+                                longitude,
+                                accuracy,
+
+                                municipality,
+                                province,
+                                barangay,
+
+                                address:
+                                    displayAddress,
+
+                                label:
+                                    displayAddress ||
+                                    [
+                                        barangay,
+                                        municipality,
+                                        province
+                                    ]
+                                        .filter(Boolean)
+                                        .join(', ') ||
+                                    `Current location (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`
+                            };
+
+                            console.log(
+                                'Current location selected:',
+                                selectedLocation
                             );
 
-                        selectedLocation = {
-                            type:
-                                'current',
-                            latitude,
-                            longitude,
-                            accuracy,
-                            address:
-                                address ||
-                                null,
-                            label:
-                                address ||
-                                `Current location (${latitude.toFixed(5)}, ${longitude.toFixed(5)})`
-                        };
+                            hideMessage();
 
-                        hideMessage();
+                            applyLocationAndContinue();
 
-                        applyLocationAndContinue();
+                        } catch (error) {
+                            console.error(
+                                'Current location processing error:',
+                                error
+                            );
+
+                            closeLocationModal();
+
+                            showMessage(
+                                'Unable to Get Address',
+                                'Your GPS coordinates were detected, but the municipality and province could not be identified. Please try again or use Manual Location.'
+                            );
+                        }
                     },
 
                     error => {
@@ -1206,10 +1304,23 @@ document
                             'Unable to determine your current location.';
 
                         if (
-                            error.code === 1
+                            error.code ===
+                            error.PERMISSION_DENIED
                         ) {
                             message =
                                 'Please allow location access in your browser settings.';
+                        } else if (
+                            error.code ===
+                            error.POSITION_UNAVAILABLE
+                        ) {
+                            message =
+                                'Your current location is unavailable. Please try again.';
+                        } else if (
+                            error.code ===
+                            error.TIMEOUT
+                        ) {
+                            message =
+                                'Getting your current location took too long. Please try again.';
                         }
 
                         showMessage(
@@ -1221,10 +1332,12 @@ document
                     {
                         enableHighAccuracy:
                             true,
+
                         timeout:
-                            12000,
+                            15000,
+
                         maximumAge:
-                            30000
+                            0
                     }
                 );
         }
@@ -2758,6 +2871,10 @@ async function savePredictionToServer(
 
         province:
             selectedLocation?.province ??
+            null,
+
+        barangay:
+            selectedLocation?.barangay ??
             null,
 
         top3:
