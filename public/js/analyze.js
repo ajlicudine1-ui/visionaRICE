@@ -15,6 +15,9 @@ const CLASS_URL =
 
 const IMAGE_SIZE = 224;
 
+const MODEL_SESSION_KEY =
+    'visionarice_model_loaded';
+
 // =====================================================
 // MODEL VARIABLES
 // =====================================================
@@ -401,11 +404,22 @@ function hideSelectedImagePreview() {
 // =====================================================
 
 async function loadVisionariceModel() {
+    const modelWasLoadedBefore =
+        sessionStorage.getItem(
+            MODEL_SESSION_KEY
+        ) === 'true';
+
     try {
-        showMessage(
-            'Loading AI Model',
-            'Preparing the VISIONARICE disease detection model...'
-        );
+        // Only show the large loading notice on the first
+        // Analyze visit in the current browser session.
+        if (!modelWasLoadedBefore) {
+            showMessage(
+                'Loading AI Model',
+                'Preparing the VISIONARICE disease detection model...'
+            );
+        } else {
+            hideMessage();
+        }
 
         if (typeof window.tf === 'undefined') {
             throw new Error(
@@ -447,6 +461,11 @@ async function loadVisionariceModel() {
 
         modelReady = true;
 
+        sessionStorage.setItem(
+            MODEL_SESSION_KEY,
+            'true'
+        );
+
         hideMessage();
 
         console.log(
@@ -465,6 +484,10 @@ async function loadVisionariceModel() {
         );
 
         modelReady = false;
+
+        sessionStorage.removeItem(
+            MODEL_SESSION_KEY
+        );
 
         showMessage(
             'Model Loading Failed',
