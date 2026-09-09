@@ -1101,3 +1101,48 @@ body.modal-open {
         width: 100%;
     }
 }
+
+
+/* =====================================================
+   ACCOUNT SECURITY LINKS INSIDE PROFILE CARD
+===================================================== */
+
+.account-links.inside-account-card {
+    margin-top: 18px;
+    padding-top: 14px;
+
+    border-top:
+        1px solid
+        var(--border);
+
+    justify-content:
+        flex-start;
+
+    flex-wrap: wrap;
+}
+
+.account-links.inside-account-card::before {
+    content: "Account Security";
+
+    width: 100%;
+
+    margin-bottom: 3px;
+
+    color:
+        var(--muted);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing:
+        0.05em;
+
+    text-transform:
+        uppercase;
+}
+
+@media screen and (max-width: 520px) {
+    .account-links.inside-account-card {
+        gap: 8px;
+    }
+}
