@@ -1358,3 +1358,149 @@
         color: var(--green-700) !important;
     }
 }
+
+
+/* =====================================================
+   FINAL MOBILE NAVIGATION OVERRIDE
+===================================================== */
+
+@media screen and (max-width: 760px) {
+
+    body {
+        padding-bottom:
+            calc(
+                82px +
+                env(safe-area-inset-bottom)
+            ) !important;
+    }
+
+    .sidebar {
+        position: relative !important;
+        top: auto !important;
+
+        width: 100% !important;
+
+        z-index: 1000 !important;
+    }
+
+    .sidebar-inner {
+        min-height: 82px !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+
+        justify-content: center !important;
+
+        padding: 12px 16px !important;
+    }
+
+    .sidebar-nav {
+        position: fixed !important;
+
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        top: auto !important;
+
+        width: 100% !important;
+
+        min-height: 72px !important;
+
+        margin: 0 !important;
+
+        padding:
+            7px 5px
+            max(
+                7px,
+                env(safe-area-inset-bottom)
+            ) !important;
+
+        display: grid !important;
+
+        grid-template-columns:
+            repeat(
+                6,
+                minmax(0, 1fr)
+            ) !important;
+
+        align-items: center !important;
+
+        gap: 0 !important;
+
+        background:
+            #ffffff !important;
+
+        border-top:
+            1px solid
+            #dde5dc !important;
+
+        border-bottom:
+            0 !important;
+
+        box-shadow:
+            0 -5px 20px
+            rgba(
+                17,
+                62,
+                38,
+                0.10
+            ) !important;
+
+        overflow: visible !important;
+
+        z-index: 99999 !important;
+    }
+
+    .sidebar-nav a {
+        width: 100% !important;
+
+        min-width: 0 !important;
+
+        min-height: 58px !important;
+
+        padding: 4px 1px !important;
+
+        display: flex !important;
+
+        flex-direction: column !important;
+
+        align-items: center !important;
+
+        justify-content: center !important;
+
+        gap: 3px !important;
+
+        background:
+            transparent !important;
+
+        font-size: 9px !important;
+
+        line-height: 1.1 !important;
+
+        text-align: center !important;
+
+        white-space: nowrap !important;
+    }
+
+    .sidebar-nav a span {
+        display: grid !important;
+
+        place-items: center !important;
+
+        width: 29px !important;
+        height: 29px !important;
+
+        font-size: 18px !important;
+    }
+
+    .sidebar-nav a.active {
+        color:
+            var(--green-700) !important;
+
+        background:
+            transparent !important;
+
+        font-weight: 600 !important;
+    }
+}
