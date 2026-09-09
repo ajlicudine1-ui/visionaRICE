@@ -8,6 +8,7 @@
     /* -------------------------------------------------
        Keep page usable above the fixed bottom nav
     ------------------------------------------------- */
+
     body {
         padding-bottom:
             calc(
@@ -16,11 +17,11 @@
             ) !important;
     }
 
+
     /* -------------------------------------------------
-       When any modal is open, temporarily hide the
-       bottom navigation so it cannot cover modal buttons.
-       Chrome/Android supports :has().
+       Hide bottom nav while a modal is open
     ------------------------------------------------- */
+
     body:has(.modal:not(.hidden)) .sidebar-nav {
         opacity: 0 !important;
         visibility: hidden !important;
@@ -28,9 +29,187 @@
         transform: translateY(100%) !important;
     }
 
+
+    /* =================================================
+       IMAGE PREVIEW
+    ================================================= */
+
+    #previewBox,
+    .preview {
+        position: relative !important;
+
+        width: 100% !important;
+
+        min-height: 0 !important;
+        height: auto !important;
+
+        padding: 0 !important;
+        margin: 0 !important;
+
+        display: block !important;
+
+        overflow: hidden !important;
+
+        border-radius: 18px !important;
+
+        background: #eef5ec !important;
+    }
+
+
+    #previewBox.hidden,
+    .preview.hidden {
+        display: none !important;
+    }
+
+
+    #imagePreview,
+    .preview img {
+        display: block !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: 520px !important;
+
+        margin: 0 !important;
+
+        object-fit: contain !important;
+
+        border-radius: 18px !important;
+    }
+
+
     /* -------------------------------------------------
-       Modal shell
+       Crop preview button
     ------------------------------------------------- */
+
+    #editCropButton,
+    .preview .crop-chip,
+    .crop-chip {
+        position: absolute !important;
+
+        left: 12px !important;
+        bottom: 12px !important;
+
+        top: auto !important;
+        right: auto !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        min-width: 0 !important;
+        min-height: 0 !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        margin: 0 !important;
+
+        padding: 9px 13px !important;
+
+        display: inline-flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        gap: 6px !important;
+
+        border:
+            1px solid
+            rgba(28, 94, 58, 0.12) !important;
+
+        border-radius: 12px !important;
+
+        background:
+            rgba(255, 255, 255, 0.95) !important;
+
+        box-shadow:
+            0 6px 18px
+            rgba(20, 60, 38, 0.12) !important;
+
+        color: #1c5e3a !important;
+
+        font-size: 12px !important;
+        font-weight: 600 !important;
+
+        line-height: 1 !important;
+
+        white-space: nowrap !important;
+
+        writing-mode: horizontal-tb !important;
+
+        transform: none !important;
+
+        z-index: 12 !important;
+    }
+
+
+    /* -------------------------------------------------
+       Remove image button
+    ------------------------------------------------- */
+
+    #removeImageButton,
+    .preview .remove {
+        position: absolute !important;
+
+        top: 12px !important;
+        right: 12px !important;
+
+        left: auto !important;
+        bottom: auto !important;
+
+        width: 42px !important;
+        height: 42px !important;
+
+        min-width: 42px !important;
+        min-height: 42px !important;
+
+        max-width: 42px !important;
+        max-height: 42px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: grid !important;
+
+        place-items: center !important;
+
+        border: 0 !important;
+
+        border-radius: 12px !important;
+
+        background:
+            rgba(255, 255, 255, 0.95) !important;
+
+        box-shadow:
+            0 6px 18px
+            rgba(20, 60, 38, 0.12) !important;
+
+        font-size: 25px !important;
+
+        line-height: 1 !important;
+
+        z-index: 13 !important;
+    }
+
+
+    #uploadZone,
+    .upload {
+        align-items: stretch !important;
+    }
+
+
+    #uploadZone button,
+    .upload button {
+        flex: none !important;
+    }
+
+
+    /* =================================================
+       MODAL SHELL
+    ================================================= */
+
     .modal {
         position: fixed !important;
 
@@ -39,8 +218,7 @@
         width: 100% !important;
         height: 100dvh !important;
 
-        padding:
-            12px !important;
+        padding: 12px !important;
 
         display: flex !important;
 
@@ -52,17 +230,19 @@
         background:
             rgba(13, 37, 26, 0.48) !important;
 
-        z-index:
-            2147483647 !important;
+        z-index: 2147483647 !important;
     }
+
 
     .modal.hidden {
         display: none !important;
     }
 
-    /* -------------------------------------------------
-       Generic dialog
-    ------------------------------------------------- */
+
+    /* =================================================
+       GENERIC DIALOG
+    ================================================= */
+
     .dialog {
         position: relative !important;
 
@@ -100,6 +280,7 @@
             touch;
     }
 
+
     .dialog .x {
         position: absolute !important;
 
@@ -108,6 +289,7 @@
 
         z-index: 10 !important;
     }
+
 
     .dialog h2 {
         padding-right:
@@ -120,6 +302,7 @@
             1.25 !important;
     }
 
+
     .dialog > p {
         margin-top:
             7px !important;
@@ -130,6 +313,7 @@
         line-height:
             1.5 !important;
     }
+
 
     /* =================================================
        CROP MODAL
@@ -150,6 +334,7 @@
             18px 14px 16px !important;
     }
 
+
     .crop-dialog .modal-icon {
         width: 40px !important;
         height: 40px !important;
@@ -161,9 +346,11 @@
             18px !important;
     }
 
+
     /* -------------------------------------------------
-       Crop area: much shorter on phones
+       Crop area
     ------------------------------------------------- */
+
     .crop-workspace {
         position: relative !important;
 
@@ -194,6 +381,7 @@
             #101010 !important;
     }
 
+
     .crop-workspace img,
     .crop-workspace .cropper-container,
     .crop-workspace .cropper-wrap-box,
@@ -201,6 +389,7 @@
         max-width:
             100% !important;
     }
+
 
     .crop-workspace .cropper-container {
         width:
@@ -210,9 +399,11 @@
             100% !important;
     }
 
+
     /* -------------------------------------------------
-       Four crop tools in a compact 2 x 2 grid
+       Crop tools 2x2
     ------------------------------------------------- */
+
     .crop-tools {
         width:
             100% !important;
@@ -232,6 +423,7 @@
         margin:
             0 0 12px !important;
     }
+
 
     .crop-tools button {
         width:
@@ -259,9 +451,11 @@
             nowrap !important;
     }
 
+
     /* -------------------------------------------------
-       Cancel + Apply Crop side by side
+       Cancel + Apply Crop
     ------------------------------------------------- */
+
     .crop-dialog .actions {
         position:
             sticky !important;
@@ -294,6 +488,7 @@
             20 !important;
     }
 
+
     .crop-dialog .actions button {
         width:
             100% !important;
@@ -317,6 +512,7 @@
             600 !important;
     }
 
+
     #applyCropButton {
         background:
             #1c6b43 !important;
@@ -324,6 +520,7 @@
         color:
             #ffffff !important;
     }
+
 
     /* =================================================
        LOCATION MODALS
@@ -334,6 +531,7 @@
             9px !important;
     }
 
+
     .location-options button {
         min-height:
             62px !important;
@@ -342,6 +540,7 @@
             11px 12px !important;
     }
 
+
     .form-grid {
         grid-template-columns:
             1fr !important;
@@ -349,6 +548,7 @@
         gap:
             10px !important;
     }
+
 
     .dialog:not(.crop-dialog) .actions {
         display:
@@ -377,6 +577,7 @@
             8px !important;
     }
 
+
     .dialog {
         max-height:
             calc(
@@ -387,10 +588,12 @@
             20px !important;
     }
 
+
     .crop-dialog {
         padding:
             15px 12px 14px !important;
     }
+
 
     .crop-workspace {
         height:
@@ -400,6 +603,7 @@
             225px !important;
     }
 
+
     .crop-tools button {
         min-height:
             42px !important;
@@ -408,8 +612,41 @@
             11px !important;
     }
 
+
     .crop-dialog .actions button {
         min-height:
             46px !important;
+    }
+
+
+    #editCropButton,
+    .preview .crop-chip,
+    .crop-chip {
+        left: 10px !important;
+        bottom: 10px !important;
+
+        padding:
+            8px 11px !important;
+
+        font-size:
+            11px !important;
+    }
+
+
+    #removeImageButton,
+    .preview .remove {
+        top: 10px !important;
+        right: 10px !important;
+
+        width: 38px !important;
+        height: 38px !important;
+
+        min-width: 38px !important;
+        min-height: 38px !important;
+
+        max-width: 38px !important;
+        max-height: 38px !important;
+
+        font-size: 22px !important;
     }
 }
