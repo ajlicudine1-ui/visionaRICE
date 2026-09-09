@@ -72,14 +72,6 @@
                     </a>
 
                     <a
-                        href="/notifications.html"
-                        data-page="notifications"
-                    >
-                        <span>🔔</span>
-                        Notifications
-                    </a>
-
-                    <a
                         href="/help.html"
                         data-page="help"
                     >
@@ -88,6 +80,17 @@
                     </a>
 
                 </nav>
+
+                <a
+                    href="/notifications.html"
+                    class="notification-bell"
+                    id="globalNotificationBell"
+                    aria-label="Open notifications"
+                    title="Notifications"
+                >
+                    <span aria-hidden="true">🔔</span>
+                </a>
+
             </div>
         </header>
     `;
@@ -146,6 +149,18 @@
                 );
 
             });
+
+        const notificationBell =
+            container.querySelector(
+                '.notification-bell'
+            );
+
+        if (notificationBell) {
+            notificationBell.classList.toggle(
+                'active',
+                page === 'notifications'
+            );
+        }
     }
 
 
@@ -339,7 +354,7 @@
             nav.style
                 .setProperty(
                     'grid-template-columns',
-                    'repeat(6, minmax(0, 1fr))',
+                    'repeat(5, minmax(0, 1fr))',
                     'important'
                 );
 
