@@ -1,0 +1,1832 @@
+<section id="analyze" class="content-section" style="display:none;">
+<style>
+/* ===== VisionaRice Analyze Page ===== */
+#analyze{
+  --forest:#173F32;
+  --forest-2:#245844;
+  --sage:#6E9275;
+  --moss-tint:#EEF4EA;
+  --cream:#F7F4EA;
+  --paper:#FFFFFF;
+  --text:#203126;
+  --muted:#6F7D73;
+  --line:#E2E8DF;
+  --clay:#B66E3D;
+  --clay-dark:#98552C;
+  --rust:#B4483C;
+  --rust-dark:#92352B;
+  --radius-lg:24px;
+  --radius-md:16px;
+
+  box-sizing:border-box;
+  min-height:calc(100vh - 90px);
+  font-family:'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(110,146,117,.10), transparent 28%),
+    radial-gradient(circle at 90% 25%, rgba(218,174,73,.08), transparent 24%),
+    var(--cream);
+  padding:42px 24px 64px;
+}
+
+#analyze *, #analyze *::before, #analyze *::after{ box-sizing:border-box; }
+
+#analyze .analyze-header{
+  max-width:1180px;
+  margin:0 auto 26px;
+  text-align:center;
+}
+
+#analyze h1, #analyze h2, #analyze h3{
+  color:var(--forest);
+  margin-top:0;
+}
+
+#analyze h1{
+  font-family:'Fraunces','Georgia',serif;
+  font-size:clamp(28px,3vw,38px);
+  font-weight:600;
+  letter-spacing:-.02em;
+  margin-bottom:8px;
+}
+
+#analyze .analyze-subtitle{
+  max-width:680px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.7;
+}
+
+#analyze .analyze-layout{
+  width:min(1180px, 100%);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(320px,.85fr) minmax(0,1.15fr);
+  gap:24px;
+  align-items:stretch;
+}
+
+#analyze .card{
+  width:100%;
+  max-width:none;
+  margin:0;
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(23,63,50,.08);
+  border-radius:var(--radius-lg);
+  padding:28px;
+  box-shadow:0 18px 55px rgba(31,58,46,.10);
+}
+
+#analyze .upload-card{
+  min-height:430px;
+  display:flex;
+  flex-direction:column;
+}
+
+#analyze #uploadForm{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  min-height:0;
+}
+
+#analyze .vision-info-card{
+  min-height:430px;
+}
+
+#analyze .card-heading{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-bottom:18px;
+}
+
+#analyze .heading-icon{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:var(--moss-tint);
+  font-size:20px;
+  flex:0 0 auto;
+}
+
+#analyze h3{
+  font-family:'Manrope',sans-serif;
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:0;
+}
+
+#analyze .section-kicker{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* Upload / viewfinder area */
+#analyze .file-label{
+  width:100%;
+  flex:1;
+  min-height:350px !important;
+  height:100%;
+  max-height:none;
+  padding:24px !important;
+  border:1.5px dashed rgba(92,135,104,.55);
+  border-radius:18px;
+  background:linear-gradient(145deg,#F2F7EF,#E8F0E4) !important;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+
+#analyze .file-label:hover{
+  transform:translateY(-2px);
+  border-color:var(--sage);
+  background:#EDF5E9 !important;
+  box-shadow:0 12px 28px rgba(31,58,46,.08);
+}
+
+#analyze .file-label::before,
+#analyze .file-label::after{
+  content:"";
+  position:absolute;
+  width:24px;
+  height:24px;
+  border-color:var(--sage);
+  border-style:solid;
+  border-width:0;
+}
+#analyze .file-label::before{ top:13px; left:13px; border-top-width:3px; border-left-width:3px; border-radius:6px 0 0 0; }
+#analyze .file-label::after{ top:13px; right:13px; border-top-width:3px; border-right-width:3px; border-radius:0 6px 0 0; }
+
+#fileLabelText{
+  color:#607060 !important;
+  font-size:15px;
+  font-weight:700;
+}
+
+#preview, #image-preview{ border:2px solid var(--line) !important; }
+#error-msg{ color:var(--rust-dark) !important; font-weight:700; font-size:14px; text-align:center; }
+
+
+#analyze #uploadArea img,
+#analyze #uploadArea video{
+  max-width:100%;
+  max-height:250px;
+  object-fit:contain;
+}
+
+#analyze #uploadArea #camera-container{
+  max-height:290px;
+  overflow:auto;
+}
+
+/* Buttons */
+#analyze .btn{
+  font-family:'Manrope',sans-serif;
+  font-size:14px;
+  font-weight:800;
+  padding:11px 20px;
+  border-radius:11px;
+  border:none;
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+#analyze .btn:hover{ transform:translateY(-1px); }
+#analyze .btn:active{ transform:translateY(1px); }
+#analyze .btn-primary{ background:var(--forest); color:white; box-shadow:0 9px 20px rgba(23,63,50,.18); }
+#analyze .btn-primary:hover{ background:var(--forest-2); box-shadow:0 12px 24px rgba(23,63,50,.24); }
+#analyze .btn-secondary{ background:var(--paper); color:var(--forest); border:1.5px solid var(--line); }
+#analyze .btn-secondary:hover{ border-color:var(--sage); background:var(--moss-tint); }
+#analyze .btn-muted{ background:var(--moss-tint); color:var(--forest); }
+#analyze .btn-warn{ background:var(--clay); color:white; }
+#analyze .btn-warn:hover{ background:var(--clay-dark); }
+#analyze .btn-danger{ background:var(--rust); color:white; }
+#analyze .btn-danger:hover{ background:var(--rust-dark); }
+#analyze .upload-actions{ text-align:center; margin-top:18px !important; }
+
+/* About VisionaRice card */
+#analyze .vision-info-card{
+  width:100%;
+  margin:0;
+  padding:28px;
+  border:1px solid rgba(23,63,50,.08);
+  border-radius:var(--radius-lg);
+  box-shadow:0 18px 55px rgba(31,58,46,.10);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:linear-gradient(155deg,#FFFFFF 0%,#FBFCF8 65%,#F0F5EC 100%);
+}
+
+#analyze .vision-info-card::after{
+  content:"";
+  position:absolute;
+  width:170px;
+  height:170px;
+  right:-70px;
+  bottom:-70px;
+  border-radius:50%;
+  background:rgba(110,146,117,.09);
+}
+
+#analyze .info-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  width:max-content;
+  padding:7px 11px;
+  border-radius:999px;
+  background:var(--moss-tint);
+  color:var(--forest);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+
+#analyze .vision-info-card h2{
+  font-family:'Fraunces','Georgia',serif;
+  font-size:clamp(26px,2.5vw,34px);
+  line-height:1.15;
+  margin-bottom:14px;
+}
+
+#analyze .vision-info-card > p{
+  color:var(--muted);
+  font-size:14.5px;
+  line-height:1.75;
+  margin:0 0 20px;
+  position:relative;
+  z-index:1;
+}
+
+#analyze .info-list{
+  display:grid;
+  gap:12px;
+  margin-top:4px;
+  position:relative;
+  z-index:1;
+}
+
+#analyze .info-item{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:13px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.72);
+  border:1px solid var(--line);
+}
+
+#analyze .info-item-icon{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  background:var(--moss-tint);
+}
+
+#analyze .info-item strong{ display:block; color:var(--forest); font-size:13.5px; margin-bottom:2px; }
+#analyze .info-item span{ display:block; color:var(--muted); font-size:12.5px; line-height:1.45; }
+
+/* Camera */
+#camera-container{ display:flex; flex-direction:column; align-items:center; justify-content:center; margin-top:20px; width:100%; }
+#camera, #captured-output{ width:100%; max-width:400px; border-radius:12px; background:#000; display:none; margin:0 auto; }
+#cropper-image{ width:100%; max-width:400px; border-radius:12px; background:#000; display:none; }
+#camera-controls{ display:flex; flex-direction:row; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:15px; }
+#preview, #image-preview{
+  width:auto;
+  max-width:100%;
+  max-height:230px;
+  height:auto;
+  object-fit:contain;
+  border-radius:12px;
+  margin-top:10px;
+}
+
+/* Modal */
+#analyze .modal{ backdrop-filter:blur(3px); }
+#analyze .modal-content{ border-radius:20px !important; animation:analyzeRise .25s ease; padding:28px 24px !important; box-shadow:0 24px 60px rgba(0,0,0,.18); }
+@keyframes analyzeRise{ from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:translateY(0)} }
+#analyze .choice-btn{ display:block; width:100%; padding:14px; border-radius:12px; border:1.5px solid var(--line); background:var(--paper); color:var(--forest); font-weight:800; font-size:15px; cursor:pointer; transition:border-color .2s ease, background .2s ease; }
+#analyze .choice-btn:hover{ border-color:var(--sage); background:var(--moss-tint); }
+#analyze .close-btn{ display:inline-block; background:none; border:none; color:var(--muted); font-weight:700; font-size:14px; cursor:pointer; text-decoration:underline; }
+
+/* Results */
+#analyze #results-container{
+  width:min(1180px,100%);
+  max-width:1180px;
+  margin:24px auto 0;
+}
+#analyze .language-dropdown{ padding:9px 14px; border-radius:10px; border:1.5px solid var(--line); font-size:14px; font-family:'Manrope',sans-serif; background:var(--paper); color:var(--text); cursor:pointer; }
+#analyze .language-dropdown:focus{ outline:none; border-color:var(--sage); box-shadow:0 0 0 3px rgba(110,146,117,.12); }
+#analyze .lang > p{ margin:10px 0; font-size:14.5px; line-height:1.65; }
+#analyze .lang > p strong{ color:var(--forest); font-weight:800; }
+#analyze .lang > h3{ text-align:center; }
+#analyze .location{ margin-top:15px; padding:12px 14px; background:var(--moss-tint); border-radius:10px; }
+#analyze .map{ width:100%; height:300px; border-radius:var(--radius-md); margin-top:15px; border:1px solid var(--line); overflow:hidden; }
+
+@media (max-width:900px){
+  #analyze{ padding:32px 18px 52px; }
+  #analyze .analyze-layout{ grid-template-columns:1fr; }
+  #analyze .upload-card, #analyze .vision-info-card{ min-height:auto; }
+  #analyze .vision-info-card{ order:initial; }
+}
+
+@media (max-width:600px){
+  #analyze{ padding:24px 12px 40px; }
+  #analyze .card{ padding:20px; border-radius:18px; }
+  #analyze .file-label{ min-height:260px !important; padding:18px !important; }
+        #camera, #cropper-image, #captured-output{ max-width:100%; width:100%; height:auto; }
+  #camera-container{ width:100%; max-width:100%; }
+  #preview, #image-preview{ max-width:100%; width:100%; height:auto; }
+}
+
+/* =========================================================
+   LARGE CROPPING POPUP
+   ========================================================= */
+
+body.vision-crop-open{
+  overflow:hidden !important;
+}
+
+#analyze #uploadArea.media-locked{
+  cursor:default !important;
+}
+
+/* Do not animate/hover the selector while an image is already active. */
+#analyze #uploadArea.media-locked:hover{
+  transform:none !important;
+  box-shadow:none !important;
+}
+
+/* Full-screen dimmed overlay */
+#analyze .crop-modal{
+  position:fixed;
+  inset:0;
+  z-index:20000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+  background:rgba(10,18,13,.68);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+
+#analyze .crop-modal.is-open{
+  display:flex;
+}
+
+/* Actual popup */
+#analyze .crop-dialog{
+  width:min(1180px, 94vw);
+  height:min(820px, 90dvh);
+  min-height:560px;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:26px;
+  background:#101713;
+  box-shadow:
+    0 36px 110px rgba(0,0,0,.50),
+    0 0 0 1px rgba(255,255,255,.025) inset;
+  animation:visionCropIn .20s ease-out;
+}
+
+@keyframes visionCropIn{
+  from{ opacity:0; transform:translateY(12px) scale(.985); }
+  to{ opacity:1; transform:translateY(0) scale(1); }
+}
+
+#analyze .crop-modal-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:24px;
+  padding:22px 26px 18px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+#analyze .crop-modal-title{
+  margin:0 0 4px !important;
+  color:#fff !important;
+  font-family:'Manrope',sans-serif !important;
+  font-size:22px !important;
+  line-height:1.2;
+  font-weight:800 !important;
+}
+
+#analyze .crop-modal-subtitle{
+  margin:0;
+  color:rgba(242,247,243,.68);
+  font-size:13.5px;
+  line-height:1.5;
+}
+
+#analyze .crop-close{
+  width:40px;
+  height:40px;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  padding:0;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+  transition:background .16s ease, transform .16s ease;
+}
+
+#analyze .crop-close:hover{
+  background:rgba(255,255,255,.12);
+  transform:translateY(-1px);
+}
+
+/* This is where #camera-container gets moved during cropping. */
+#analyze .crop-modal-body{
+  min-height:0;
+  padding:18px 22px 22px;
+}
+
+/* Cropper container becomes a real modal workspace. */
+#analyze .crop-modal-body #camera-container{
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:grid !important;
+  grid-template-rows:minmax(0,1fr) auto !important;
+  align-items:stretch !important;
+  justify-content:stretch !important;
+  gap:16px !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  border-radius:0 !important;
+}
+
+/* Cropper.js inserts .cropper-container beside #cropper-image */
+#analyze .crop-modal-body .cropper-container{
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  border-radius:18px !important;
+  overflow:hidden !important;
+  background:#050806 !important;
+  box-shadow:0 12px 34px rgba(0,0,0,.30) !important;
+}
+
+/* Hide the raw image element; Cropper.js renders it into its canvas. */
+#analyze .crop-modal-body #cropper-image{
+  max-width:100% !important;
+  max-height:100% !important;
+}
+
+/* Darken only the area outside the selected crop rectangle */
+#analyze .crop-modal-body .cropper-modal{
+  background:#000 !important;
+  opacity:.58 !important;
+}
+
+/* Crisp crop boundary */
+#analyze .crop-modal-body .cropper-view-box{
+  outline:2px solid rgba(255,255,255,.98) !important;
+  outline-color:rgba(255,255,255,.98) !important;
+  border-radius:8px !important;
+}
+
+#analyze .crop-modal-body .cropper-line{
+  background-color:#fff !important;
+  opacity:.90 !important;
+}
+
+#analyze .crop-modal-body .cropper-point{
+  width:12px !important;
+  height:12px !important;
+  background:#fff !important;
+  opacity:1 !important;
+  border:2px solid var(--forest) !important;
+  border-radius:50% !important;
+  box-shadow:0 2px 9px rgba(0,0,0,.35) !important;
+}
+
+#analyze .crop-modal-body .cropper-center::before,
+#analyze .crop-modal-body .cropper-center::after{
+  background:#fff !important;
+  opacity:.70 !important;
+}
+
+/* Footer / action buttons */
+#analyze .crop-modal-body #crop-action-buttons{
+  position:static !important;
+  width:100% !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:12px !important;
+  background:transparent !important;
+  border:0 !important;
+}
+
+#analyze .crop-modal-body #crop-action-buttons button{
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  min-width:145px !important;
+  min-height:46px;
+  margin:0 !important;
+  padding:12px 20px !important;
+  border-radius:12px !important;
+}
+
+/* Do not show unrelated camera controls over the crop popup */
+#analyze .crop-modal-body #camera-controls{
+  display:none !important;
+}
+
+/* Keep cropped preview neat once the popup closes */
+#analyze #captured-output,
+#analyze #preview{
+  width:auto !important;
+  max-width:100% !important;
+  max-height:240px !important;
+  object-fit:contain !important;
+  border-radius:14px !important;
+}
+
+/* Smaller screens */
+@media (max-width:700px){
+  #analyze .crop-modal{
+    padding:10px;
+  }
+
+  #analyze .crop-dialog{
+    width:100%;
+    height:calc(100dvh - 20px);
+    min-height:0;
+    border-radius:18px;
+  }
+
+  #analyze .crop-modal-header{
+    padding:16px 16px 13px;
+  }
+
+  #analyze .crop-modal-title{
+    font-size:19px !important;
+  }
+
+  #analyze .crop-modal-subtitle{
+    font-size:12px;
+  }
+
+  #analyze .crop-modal-body{
+    padding:12px;
+  }
+
+  #analyze .crop-modal-body #camera-container{
+    gap:12px !important;
+  }
+
+  #analyze .crop-modal-body .cropper-container{
+    border-radius:13px !important;
+  }
+
+  #analyze .crop-modal-body #crop-action-buttons{
+    gap:8px !important;
+  }
+
+  #analyze .crop-modal-body #crop-action-buttons button{
+    flex:1;
+    min-width:0 !important;
+  }
+}
+
+/* ===== FREE CROP BOX ENHANCEMENTS ===== */
+#analyze .crop-modal-body .cropper-crop-box{
+  cursor:move !important;
+}
+
+#analyze .crop-modal-body .cropper-view-box{
+  outline:2px solid #fff !important;
+  outline-color:#fff !important;
+}
+
+/* Larger edge hit-areas make resizing easier */
+#analyze .crop-modal-body .cropper-line.line-e,
+#analyze .crop-modal-body .cropper-line.line-w{
+  width:8px !important;
+}
+
+#analyze .crop-modal-body .cropper-line.line-n,
+#analyze .crop-modal-body .cropper-line.line-s{
+  height:8px !important;
+}
+
+#analyze .crop-modal-body .cropper-point{
+  width:14px !important;
+  height:14px !important;
+}
+
+/* Corner handles are even easier to grab */
+#analyze .crop-modal-body .cropper-point.point-ne,
+#analyze .crop-modal-body .cropper-point.point-nw,
+#analyze .crop-modal-body .cropper-point.point-se,
+#analyze .crop-modal-body .cropper-point.point-sw{
+  width:16px !important;
+  height:16px !important;
+}
+
+
+/* ===== CANCEL SELECTED IMAGE BUTTON ===== */
+#analyze .selection-actions{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:22px !important;
+}
+
+#analyze #cancel-selection-btn{
+  display:none;
+  background:#fff;
+  color:var(--rust-dark);
+  border:1.5px solid rgba(180,72,60,.28);
+  box-shadow:none;
+}
+
+#analyze #cancel-selection-btn:hover{
+  background:#FFF4F2;
+  border-color:rgba(180,72,60,.48);
+  color:var(--rust-dark);
+}
+
+@media (max-width:600px){
+  #analyze .selection-actions{
+    width:100%;
+  }
+
+  #analyze .selection-actions .btn{
+    flex:1;
+    min-width:130px;
+  }
+}
+
+
+/* =========================================================
+   SELECT LOCATION MODAL — SAFE, LOCAL STYLING
+   This class is added ONLY to the smallest popup that actually
+   contains the location buttons. It will not be added to page
+   wrappers, sections, or the mobile app layout.
+   ========================================================= */
+
+.vision-location-popup {
+  box-sizing: border-box !important;
+  padding: 30px 28px !important;
+  border-radius: 18px !important;
+}
+
+.vision-location-popup h2,
+.vision-location-popup h3 {
+  margin-top: 0 !important;
+  margin-bottom: 18px !important;
+}
+
+.vision-location-popup .vision-location-description {
+  margin: 0 0 20px !important;
+}
+
+.vision-location-popup button {
+  box-sizing: border-box !important;
+  min-height: 50px !important;
+  padding: 12px 22px !important;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+}
+
+/* Main location choices */
+.vision-location-popup .vision-location-current {
+  margin-bottom: 12px !important;
+}
+
+.vision-location-popup .vision-location-manual {
+  margin-bottom: 24px !important;
+}
+
+/* Selected address */
+.vision-location-popup .vision-location-selected {
+  display: block !important;
+  margin: 0 auto 22px !important;
+  padding: 0 6px !important;
+  line-height: 1.45 !important;
+  text-align: center !important;
+}
+
+/* Final row: saved location + cancel */
+.vision-location-popup .vision-location-actions {
+  width: 100% !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  justify-content: center !important;
+
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+
+.vision-location-popup .vision-location-saved,
+.vision-location-popup .vision-location-cancel {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 220px !important;
+  min-height: 52px !important;
+  margin: 0 !important;
+}
+
+/* Mobile popup only — DOES NOT affect #analyze or other pages */
+@media (max-width: 600px) {
+  .vision-location-popup {
+    width: min(92vw, 440px) !important;
+    max-width: 92vw !important;
+    padding: 24px 18px !important;
+  }
+
+  .vision-location-popup button {
+    min-height: 48px !important;
+    padding: 11px 14px !important;
+  }
+
+  .vision-location-popup .vision-location-actions {
+    gap: 10px !important;
+  }
+
+  .vision-location-popup .vision-location-saved,
+  .vision-location-popup .vision-location-cancel {
+    max-width: none !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE LAYOUT SAFETY
+   The Analyze section itself must always keep normal page width.
+   ========================================================= */
+@media (max-width: 600px) {
+  #analyze.content-section {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #analyze .analyze-layout,
+  #analyze .analyze-header,
+  #analyze #results-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+</style>
+
+<div class="analyze-header">
+    <h1>Predict Rice Disease</h1>
+  </div>
+
+  <div class="analyze-layout">
+    <aside class="vision-info-card" aria-label="Before You Scan">
+      <div class="info-badge">🌾 Visionarice Guide</div>
+      <h2>Before You Scan</h2>
+      <p>Before capturing or uploading a rice leaf image, follow these best practices to improve detection accuracy. Proper image quality allows VisionaRice to analyze the leaf more effectively and provide more reliable results.</p>
+
+      <div class="info-list">
+        <div class="info-item">
+          <div class="info-item-icon">🔍</div>
+          <div>
+            <strong>Ensure Good Lighting</strong>
+            <span>Take the photo in bright natural light for clearer disease detection.</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-item-icon">📋</div>
+          <div>
+            <strong>Focus on the Affected Area</strong>
+            <span>Keep the damaged area clear and in focus.</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-item-icon">🌐</div>
+          <div>
+            <strong>Avoid Blurry Images</strong>
+            <span>Hold your phone steady to capture a sharp image.</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">🌐</div>
+          <div>
+            <strong>Take the Photo at the Right Distance</strong>
+            <span>Keep enough distance to fit the entire leaf while showing disease details.</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="card upload-card">
+      <div class="card-heading">
+        <div class="heading-icon">📷</div>
+        <div>
+          <h3>Select Camera or Gallery</h3>
+          <p class="section-kicker">Choose a clear image of the affected rice leaf.</p>
+        </div>
+      </div>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label
+        class="file-label"
+        id="uploadArea"
+        style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; cursor:pointer; padding:15px; position:relative;"
+      >
+        <span id="fileLabelText">
+          Click to select Camera or Gallery
+        </span>
+
+        <!-- Gallery Preview -->
+        <img
+          id="preview"
+          alt="Image preview"
+          style="max-width:250px; border-radius:10px; display:none; margin-top:10px;"
+        >
+
+        <!-- Camera + Cropper Section -->
+        <span id="camera-container-home" style="display:none;"></span>
+        <div
+          id="camera-container"
+          style="display:none; flex-direction:column; align-items:center; width:100%; margin-top:10px;"
+        >
+          <video
+            id="camera"
+            autoplay
+            playsinline
+            muted
+            style="width:100%; max-width:350px; border-radius:10px; border:2px solid #ccc;"
+          >
+          </video>
+
+          <img id="cropper-image" alt="Crop preview" style="display:none; max-width:350px; margin-top:10px;">
+          <img id="captured-output" alt="Final to upload" style="display:none; max-width:350px; margin-top:10px;">
+
+          <div id="crop-action-buttons" style="display:none; margin-top:10px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+            <button type="button" class="btn btn-muted" id="retake-btn" style="display:none;">Cancel</button>
+            <button type="button" class="btn btn-primary" id="apply-crop-btn" style="display:none;">Apply Crop</button>
+          </div>
+        </div>
+      </label>
+
+      <input type="file" id="file-upload" name="file" accept="image/*" hidden>
+
+      <p id="error-msg" style="display:none; margin-top:10px;">
+        ❌ Please upload a valid rice leaf image.
+      </p>
+
+      <div id="camera-controls" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
+        <button type="button" class="btn btn-muted" id="switch-camera-btn" style="display:none;">Baliktaden</button>
+        <select id="camera-select" class="btn btn-muted" style="display:none;"></select>
+
+        <button type="button" class="btn btn-warn" id="capture-btn" style="display:none;">Litratwan</button>
+
+        <button type="button" class="btn btn-danger" id="close-camera-btn" style="display:none;">Isardeng</button>
+      </div>
+
+      <div class="upload-actions selection-actions">
+        <button type="button" class="btn btn-primary" id="upload-btn">Analyze</button>
+
+        <button
+          type="button"
+          class="btn"
+          id="cancel-selection-btn"
+          aria-label="Cancel selected image"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          id="refresh-btn"
+          class="btn btn-secondary"
+          style="display:none;"
+        >
+          Analyze Again
+        </button>
+      </div>
+    </form>
+    </div>
+  </div>
+
+  <!-- Modal for Upload Choice -->
+  <div
+    id="uploadChoiceModal"
+    class="modal"
+    style="display:none; position:fixed; inset:0; background-color:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:1000;"
+  >
+    <div
+      class="modal-content"
+      style="background:white; padding:20px; border-radius:12px; text-align:center; width:80%; max-width:300px;"
+    >
+      <h3>Select Camera or Gallery</h3>
+      <button id="chooseGalleryBtn" class="choice-btn" style="margin:10px 0;">📁 Select gallery</button>
+      <button id="chooseCameraBtn" class="choice-btn" style="margin:10px 0;">📷 Select camera</button>
+      <button id="closeModalBtn" class="close-btn" style="margin-top:10px;">Cancel</button>
+    </div>
+  </div>
+
+
+  <!-- Large Crop Image Modal -->
+  <div id="cropModal" class="crop-modal" aria-hidden="true">
+    <div class="crop-dialog" role="dialog" aria-modal="true" aria-labelledby="cropModalTitle">
+      <div class="crop-modal-header">
+        <div>
+          <h3 id="cropModalTitle" class="crop-modal-title">Crop Image</h3>
+          <p class="crop-modal-subtitle">
+            Drag to reposition the image and resize the crop frame using the corner handles.
+          </p>
+        </div>
+
+        <button type="button" id="cropModalClose" class="crop-close" aria-label="Close cropper">×</button>
+      </div>
+
+      <div id="cropModalBody" class="crop-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Prediction Results -->
+  <div id="results-container" class="card" style="display:none;">
+    <!-- Language Dropdown -->
+    <div style="margin-bottom:12px; text-align:center;">
+      <label for="language-dropdown" style="font-weight:700; margin-right:8px; color: var(--forest);">Language:</label>
+      <select id="language-dropdown" class="language-dropdown" onchange="setLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="ilo">Ilokano</option>
+        <option value="tl">Tagalog</option>
+      </select>
+    </div>
+
+    <!-- English -->
+    <div id="lang-en" class="lang">
+      <h3>Prediction Results</h3>
+
+      <p><strong>Disease:</strong> <span id="disease-en"></span></p>
+      <p><strong>Confidence:</strong> <span id="confidence-en"></span>%</p>
+      <div id="top3-en"></div>
+
+      <p><strong>Recommendations:</strong> <span id="advice-en"></span></p>
+
+      <p><strong>Cultural Control:</strong> <span id="cultural-control-en"></span></p>
+      <p><strong>Biological Control:</strong> <span id="biological-control-en"></span></p>
+      <p><strong>Chemical Control:</strong> <span id="chemical-control-en"></span></p>
+
+      <p class="location"><strong>Location: </strong> <span id="location-en"></span></p>
+      <p><strong>GPS Accuracy:</strong> <span id="gps-en"></span></p>
+      <div id="map-en" class="map"></div>
+    </div>
+
+    <!-- Ilokano -->
+    <div id="lang-ilo" class="lang" style="display:none;">
+      <h3>Dagiti Resulta ti Panagpatingga</h3>
+
+      <p><strong>Sakit:</strong> <span id="disease-ilo"></span></p>
+      <p><strong>Pagtalged:</strong> <span id="confidence-ilo"></span>%</p>
+      <div id="top3-ilo"></div>
+
+      <p><strong>Patarus:</strong> <span id="advice-ilo"></span></p>
+      <p><strong>Kultural a Panangkontrol:</strong> <span id="cultural-control-ilo"></span></p>
+      <p><strong>Biolohikal a Panangkontrol:</strong> <span id="biological-control-ilo"></span></p>
+      <p><strong>Kimikal a Panangkontrol:</strong> <span id="chemical-control-ilo"></span></p>
+
+      <p class="location"><strong>Lugar:</strong> <span id="location-ilo"></span></p>
+      <p><strong>Kinaagpayso ti GPS:</strong> <span id="gps-ilo"></span></p>
+      <div id="map-ilo" class="map"></div>
+    </div>
+
+    <!-- Tagalog -->
+    <div id="lang-tl" class="lang" style="display:none;">
+      <h3>Mga Resulta ng Prediksyon</h3>
+
+      <p><strong>Sakit:</strong> <span id="disease-tl"></span></p>
+      <p><strong>Kumpiyansa:</strong> <span id="confidence-tl"></span>%</p>
+      <div id="top3-tl"></div>
+
+      <p><strong>Payo:</strong> <span id="advice-tl"></span></p>
+      <p><strong>Kultural na Kontrol:</strong> <span id="cultural-control-tl"></span></p>
+      <p><strong>Biyolohikal na Kontrol:</strong> <span id="biological-control-tl"></span></p>
+      <p><strong>Kemikal na Kontrol:</strong> <span id="chemical-control-tl"></span></p>
+
+      <p class="location"><strong>Lokasyon:</strong> <span id="location-tl"></span></p>
+      <p><strong>Katumpakan ng GPS:</strong> <span id="gps-tl"></span></p>
+      <div id="map-tl" class="map"></div>
+    </div>
+  </div>
+
+
+
+<script>
+/* =========================================================
+   VISIONARICE — FREE CROP MODE
+   Forces Cropper.js to use a freely resizable crop box.
+   No fixed square / aspect-ratio restriction.
+   ========================================================= */
+(function () {
+  function installFreeCropper() {
+    if (typeof window.Cropper !== "function") {
+      return false;
+    }
+
+    /* Avoid wrapping Cropper more than once. */
+    if (window.Cropper.__visionariceFreeCrop) {
+      return true;
+    }
+
+    const OriginalCropper = window.Cropper;
+
+    const FreeCropper = new Proxy(OriginalCropper, {
+      construct(Target, args, NewTarget) {
+        const image = args[0];
+        const oldOptions = args[1] || {};
+
+        const userReady = oldOptions.ready;
+
+        const freeOptions = {
+          ...oldOptions,
+
+          /* IMPORTANT: unrestricted crop shape */
+          aspectRatio: NaN,
+
+          /* Crop box starts almost as large as possible */
+          autoCrop: true,
+          autoCropArea: 0.95,
+
+          /*
+           * viewMode 0 gives the most freedom.
+           * The crop box can use the full cropper workspace.
+           */
+          viewMode: 0,
+
+          /* Move the picture behind the crop box */
+          dragMode: "move",
+
+          /* Allow both image and crop-box manipulation */
+          movable: true,
+          zoomable: true,
+          zoomOnTouch: true,
+          zoomOnWheel: true,
+          wheelZoomRatio: 0.08,
+          scalable: true,
+
+          /* Keep rotation disabled unless you add rotate buttons later */
+          rotatable: false,
+
+          /* The WHITE crop box is fully movable/resizable */
+          cropBoxMovable: true,
+          cropBoxResizable: true,
+
+          /* Allow very small crops if the user wants them */
+          minCropBoxWidth: 20,
+          minCropBoxHeight: 20,
+          minCanvasWidth: 0,
+          minCanvasHeight: 0,
+          minContainerWidth: 0,
+          minContainerHeight: 0,
+
+          guides: true,
+          center: true,
+          highlight: false,
+          background: false,
+          responsive: true,
+          restore: false,
+          modal: true,
+
+          ready: function () {
+            /*
+             * Let the original app's ready handler run first, if it had one.
+             */
+            if (typeof userReady === "function") {
+              userReady.call(this);
+            }
+
+            /*
+             * Make sure no old fixed aspect ratio survives.
+             * Cropper.js accepts NaN for completely free cropping.
+             */
+            try {
+              this.cropper.setAspectRatio(NaN);
+            } catch (e) {}
+
+            /*
+             * Expand the initial white crop box to nearly the entire
+             * available cropper container, while remaining freely resizable.
+             */
+            try {
+              const cropper = this.cropper;
+              const container = cropper.getContainerData();
+
+              const padding = Math.max(
+                12,
+                Math.min(container.width, container.height) * 0.025
+              );
+
+              cropper.setCropBoxData({
+                left: padding,
+                top: padding,
+                width: Math.max(40, container.width - padding * 2),
+                height: Math.max(40, container.height - padding * 2)
+              });
+            } catch (e) {}
+          }
+        };
+
+        args[1] = freeOptions;
+
+        return Reflect.construct(Target, args, NewTarget);
+      }
+    });
+
+    /*
+     * Preserve access to static properties and mark the wrapper.
+     */
+    Object.defineProperty(FreeCropper, "__visionariceFreeCrop", {
+      value: true,
+      configurable: false,
+      enumerable: false
+    });
+
+    window.Cropper = FreeCropper;
+    return true;
+  }
+
+  /*
+   * Cropper.js may already be loaded. If not, wait briefly for the
+   * application's existing Cropper library to become available.
+   */
+  if (!installFreeCropper()) {
+    let attempts = 0;
+
+    const timer = setInterval(function () {
+      attempts += 1;
+
+      if (installFreeCropper() || attempts >= 100) {
+        clearInterval(timer);
+      }
+    }, 50);
+  }
+})();
+</script>
+
+
+<script>
+/* =========================================================
+   VISIONARICE — STABLE UPLOAD / CROP CONTROLLER
+   No MutationObserver, no polling loop, no double-click state conflict.
+   ========================================================= */
+(function () {
+  const analyze = document.getElementById("analyze");
+  if (!analyze) return;
+
+  const uploadArea = analyze.querySelector("#uploadArea");
+  const uploadChoiceModal = analyze.querySelector("#uploadChoiceModal");
+  const fileInput = analyze.querySelector("#file-upload");
+
+  const preview = analyze.querySelector("#preview");
+  const cropperImage = analyze.querySelector("#cropper-image");
+  const capturedOutput = analyze.querySelector("#captured-output");
+
+  const cameraContainer = analyze.querySelector("#camera-container");
+  const cameraHome = analyze.querySelector("#camera-container-home");
+
+  const cropModal = analyze.querySelector("#cropModal");
+  const cropModalBody = analyze.querySelector("#cropModalBody");
+  const cropModalClose = analyze.querySelector("#cropModalClose");
+
+  const retakeBtn = analyze.querySelector("#retake-btn");
+  const applyCropBtn = analyze.querySelector("#apply-crop-btn");
+
+  const cancelSelectionBtn = analyze.querySelector("#cancel-selection-btn");
+  const uploadBtn = analyze.querySelector("#upload-btn");
+  const refreshBtn = analyze.querySelector("#refresh-btn");
+
+  const fileLabelText = analyze.querySelector("#fileLabelText");
+  const errorMsg = analyze.querySelector("#error-msg");
+  const resultsContainer = analyze.querySelector("#results-container");
+
+  if (!uploadArea || !uploadChoiceModal || !cameraContainer || !cropModal || !cropModalBody) {
+    return;
+  }
+
+  let cropModalOpen = false;
+
+  function isVisible(el) {
+    if (!el) return false;
+    const style = window.getComputedStyle(el);
+    return (
+      style.display !== "none" &&
+      style.visibility !== "hidden" &&
+      (el.offsetWidth > 0 || el.offsetHeight > 0)
+    );
+  }
+
+  function hasSrc(el) {
+    if (!el) return false;
+    const src = el.getAttribute("src");
+    return !!src && src.trim() !== "";
+  }
+
+  function hasSelectedImage() {
+    return !!(
+      (fileInput && fileInput.files && fileInput.files.length) ||
+      hasSrc(preview) ||
+      hasSrc(cropperImage) ||
+      hasSrc(capturedOutput)
+    );
+  }
+
+  function cropIsActive() {
+    return !!cameraContainer.querySelector(".cropper-container") ||
+           isVisible(cropperImage);
+  }
+
+  function openChooser() {
+    uploadChoiceModal.style.display = "flex";
+  }
+
+  function closeChooser() {
+    uploadChoiceModal.style.display = "none";
+  }
+
+  function moveCameraBackHome() {
+    if (
+      cameraHome &&
+      cameraHome.parentNode &&
+      cameraContainer.parentNode !== cameraHome.parentNode
+    ) {
+      cameraHome.parentNode.insertBefore(
+        cameraContainer,
+        cameraHome.nextSibling
+      );
+    }
+  }
+
+  function openCropModal() {
+    if (cropModalOpen) return;
+
+    cropModalBody.appendChild(cameraContainer);
+    cropModal.classList.add("is-open");
+    cropModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("vision-crop-open");
+    cameraContainer.classList.remove("fullscreen");
+
+    cropModalOpen = true;
+  }
+
+  function closeCropModal() {
+    moveCameraBackHome();
+
+    cropModal.classList.remove("is-open");
+    cropModal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("vision-crop-open");
+
+    cropModalOpen = false;
+  }
+
+  function showCancelSelection() {
+    if (!cancelSelectionBtn) return;
+
+    cancelSelectionBtn.style.display =
+      hasSelectedImage() && !cropIsActive()
+        ? "inline-flex"
+        : "none";
+  }
+
+  function unlockUploadArea() {
+    uploadArea.classList.remove("media-locked", "crop-lock");
+    uploadArea.setAttribute("aria-disabled", "false");
+    uploadArea.style.pointerEvents = "";
+    uploadArea.style.cursor = "pointer";
+  }
+
+  function lockUploadArea() {
+    uploadArea.classList.add("media-locked");
+    uploadArea.setAttribute("aria-disabled", "true");
+    uploadArea.style.cursor = "default";
+  }
+
+  function clearImage(el) {
+    if (!el) return;
+
+    el.removeAttribute("src");
+    el.style.display = "none";
+  }
+
+  function restorePrompt() {
+    if (!fileLabelText) return;
+
+    fileLabelText.style.display = "";
+    fileLabelText.textContent = "Click to select Camera or Gallery";
+  }
+
+  function clearAnalysisResults() {
+    /* Hide the entire previous result / error output area. */
+    if (resultsContainer) {
+      resultsContainer.style.display = "none";
+    }
+
+    if (errorMsg) {
+      errorMsg.style.display = "none";
+      errorMsg.textContent = "";
+      errorMsg.innerHTML = "";
+    }
+
+    /* Clear prediction values so old data never flashes on the next run. */
+    [
+      "disease-en", "confidence-en", "advice-en",
+      "disease-ilo", "confidence-ilo", "advice-ilo",
+      "disease-tl", "confidence-tl", "advice-tl",
+
+      "top3-en", "top3-ilo", "top3-tl",
+
+      "cultural-control-en",
+      "biological-control-en",
+      "chemical-control-en",
+
+      "cultural-control-ilo",
+      "biological-control-ilo",
+      "chemical-control-ilo",
+
+      "cultural-control-tl",
+      "biological-control-tl",
+      "chemical-control-tl",
+
+      "location-en", "location-ilo", "location-tl",
+      "gps-en", "gps-ilo", "gps-tl"
+    ].forEach(function (id) {
+      const el = analyze.querySelector("#" + id);
+      if (el) {
+        el.innerHTML = "";
+        el.textContent = "";
+      }
+    });
+
+    /* Clear map containers too, so the previous map is not left behind. */
+    ["map-en", "map-ilo", "map-tl"].forEach(function (id) {
+      const el = analyze.querySelector("#" + id);
+      if (el) {
+        el.innerHTML = "";
+      }
+    });
+  }
+
+  function resetSelection(openChooserAfter = false) {
+    clearAnalysisResults();
+
+    if (fileInput) {
+      fileInput.value = "";
+    }
+
+    clearImage(preview);
+    clearImage(cropperImage);
+    clearImage(capturedOutput);
+
+    const generatedCropper =
+      cameraContainer.querySelector(".cropper-container");
+
+    if (generatedCropper) {
+      generatedCropper.remove();
+    }
+
+    cameraContainer.classList.remove(
+      "fullscreen",
+      "crop-active"
+    );
+
+    moveCameraBackHome();
+    cameraContainer.style.display = "none";
+
+    closeCropModal();
+
+    if (errorMsg) {
+      errorMsg.style.display = "none";
+    }
+
+    restorePrompt();
+    unlockUploadArea();
+
+    if (cancelSelectionBtn) {
+      cancelSelectionBtn.style.display = "none";
+    }
+
+    if (uploadBtn) {
+      uploadBtn.disabled = false;
+    }
+
+    if (openChooserAfter) {
+      openChooser();
+    }
+  }
+
+  function syncAfterImageSelection() {
+    closeChooser();
+
+    /*
+     * Cropper.js may initialize a little after the file input changes.
+     * We check a few times only — no MutationObserver and no infinite loop.
+     */
+    [0, 80, 180, 320].forEach(function (delay) {
+      setTimeout(function () {
+        if (cropIsActive()) {
+          lockUploadArea();
+          openCropModal();
+        } else {
+          closeCropModal();
+          unlockUploadArea();
+        }
+
+        showCancelSelection();
+      }, delay);
+    });
+  }
+
+  /*
+   * ONE CLICK on the upload area opens the custom chooser.
+   * Only block it while the cropper itself is active.
+   */
+  uploadArea.addEventListener(
+    "click",
+    function (event) {
+      if (cropIsActive()) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      clearAnalysisResults();
+      openChooser();
+    },
+    true
+  );
+
+  /*
+   * File chosen from Gallery.
+   */
+  if (fileInput) {
+    fileInput.addEventListener("change", function () {
+      clearAnalysisResults();
+      syncAfterImageSelection();
+    });
+  }
+
+  /*
+   * Apply crop:
+   * close popup, keep cropped preview, make upload area clickable again.
+   */
+  if (applyCropBtn) {
+    applyCropBtn.addEventListener("click", function () {
+      setTimeout(function () {
+        closeCropModal();
+        unlockUploadArea();
+        showCancelSelection();
+      }, 100);
+
+      setTimeout(function () {
+        closeCropModal();
+        unlockUploadArea();
+        showCancelSelection();
+      }, 250);
+    });
+  }
+
+  /*
+   * Crop Cancel:
+   * discard selection and return to clean upload state.
+   */
+  if (retakeBtn) {
+    retakeBtn.addEventListener("click", function () {
+      setTimeout(function () {
+        resetSelection(false);
+      }, 0);
+    });
+  }
+
+  /*
+   * X on crop modal behaves like Crop Cancel.
+   */
+  if (cropModalClose) {
+    cropModalClose.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (retakeBtn && isVisible(retakeBtn)) {
+        retakeBtn.click();
+      } else {
+        resetSelection(false);
+      }
+    });
+  }
+
+  /*
+   * Cancel selected image BEFORE Analyze:
+   * clear it and immediately show Camera/Gallery.
+   */
+  if (cancelSelectionBtn) {
+    cancelSelectionBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      resetSelection(true);
+    });
+  }
+
+  /*
+   * Analyze Again:
+   * clear previous selection/results and show Camera/Gallery.
+   */
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      if (resultsContainer) {
+        resultsContainer.style.display = "none";
+      }
+
+      resetSelection(true);
+    });
+  }
+
+  /*
+   * If the cropper image itself finishes loading after camera/gallery
+   * selection, open the crop modal immediately.
+   */
+  if (cropperImage) {
+    cropperImage.addEventListener("load", function () {
+      setTimeout(function () {
+        if (cropIsActive()) {
+          lockUploadArea();
+          openCropModal();
+        }
+      }, 0);
+    });
+  }
+
+  unlockUploadArea();
+  showCancelSelection();
+})();
+</script>
+
+
+<script>
+/* =========================================================
+   SAFE LOCATION POPUP STYLING
+   ---------------------------------------------------------
+   IMPORTANT:
+   The previous version searched EVERY div on the page.
+   A large page wrapper could therefore be mistaken for the
+   location popup and receive mobile width/padding styles.
+
+   This version starts ONLY from the exact location buttons
+   and finds the SMALLEST parent that contains the popup.
+   ========================================================= */
+(function () {
+
+  function textOf(el) {
+    return (el && el.textContent ? el.textContent : "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function buttonsInside(el) {
+    return el ? Array.from(el.querySelectorAll("button")) : [];
+  }
+
+  function hasButton(el, wantedText) {
+    return buttonsInside(el).some(function (btn) {
+      return textOf(btn) === wantedText;
+    });
+  }
+
+  /*
+   * Starting from "Select Current Location", walk upward and
+   * return the FIRST (smallest) ancestor containing the full
+   * location chooser. Never allow BODY, HTML, #analyze, or a
+   * .content-section to become the popup.
+   */
+  function findLocationPopup(currentButton) {
+    let node = currentButton ? currentButton.parentElement : null;
+    let levels = 0;
+
+    while (
+      node &&
+      node !== document.body &&
+      node !== document.documentElement &&
+      levels < 7
+    ) {
+      const isPageContainer =
+        node.id === "analyze" ||
+        node.classList.contains("content-section");
+
+      if (isPageContainer) {
+        return null;
+      }
+
+      const nodeText = textOf(node);
+
+      if (
+        nodeText.includes("Select Location") &&
+        hasButton(node, "Select Current Location") &&
+        hasButton(node, "Select Manually")
+      ) {
+        return node;
+      }
+
+      node = node.parentElement;
+      levels += 1;
+    }
+
+    return null;
+  }
+
+  function styleLocationPopup() {
+    const allButtons = Array.from(document.querySelectorAll("button"));
+
+    const currentButton = allButtons.find(function (button) {
+      return textOf(button) === "Select Current Location";
+    });
+
+    if (!currentButton) return;
+
+    const popup = findLocationPopup(currentButton);
+
+    if (!popup) return;
+
+    /* Safety guard: popup must be a reasonably small UI container. */
+    const rect = popup.getBoundingClientRect();
+
+    if (
+      rect.width > window.innerWidth * 0.97 &&
+      rect.height > window.innerHeight * 0.85
+    ) {
+      return;
+    }
+
+    popup.classList.add("vision-location-popup");
+
+    /* Description + selected address */
+    popup.querySelectorAll("p, div, span").forEach(function (el) {
+      const value = textOf(el);
+
+      if (
+        value === "Choose how to provide location:" ||
+        value === "Choose how to provide location."
+      ) {
+        el.classList.add("vision-location-description");
+      }
+
+      if (
+        value.startsWith("Selected:") &&
+        el.children.length <= 2
+      ) {
+        el.classList.add("vision-location-selected");
+      }
+    });
+
+    let savedButton = null;
+    let cancelButton = null;
+
+    buttonsInside(popup).forEach(function (button) {
+      const label = textOf(button);
+
+      if (label === "Select Current Location") {
+        button.classList.add("vision-location-current");
+      }
+
+      if (label === "Select Manually") {
+        button.classList.add("vision-location-manual");
+      }
+
+      if (label === "Use saved location") {
+        button.classList.add("vision-location-saved");
+        savedButton = button;
+      }
+
+      if (label === "Cancel") {
+        button.classList.add("vision-location-cancel");
+        cancelButton = button;
+      }
+    });
+
+    /*
+     * Keep the two bottom buttons side by side.
+     * Only restructure inside the confirmed popup.
+     */
+    if (savedButton && cancelButton) {
+      let row = popup.querySelector(
+        ":scope > .vision-location-actions"
+      );
+
+      if (!row) {
+        row = document.createElement("div");
+        row.className = "vision-location-actions";
+
+        const insertionParent =
+          savedButton.parentElement &&
+          savedButton.parentElement === cancelButton.parentElement
+            ? savedButton.parentElement
+            : popup;
+
+        if (insertionParent === popup) {
+          popup.appendChild(row);
+        } else {
+          insertionParent.insertBefore(row, savedButton);
+        }
+      }
+
+      if (savedButton.parentElement !== row) {
+        row.appendChild(savedButton);
+      }
+
+      if (cancelButton.parentElement !== row) {
+        row.appendChild(cancelButton);
+      }
+    }
+  }
+
+  /* Initial attempt */
+  styleLocationPopup();
+
+  /*
+   * Watch only for newly added nodes. We do NOT scan every div
+   * and we never add layout classes to generic page containers.
+   */
+  const observer = new MutationObserver(function (mutations) {
+    let shouldCheck = false;
+
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach(function (node) {
+        if (node.nodeType !== 1) return;
+
+        const element = node;
+
+        if (
+          element.matches?.("button") ||
+          element.querySelector?.("button")
+        ) {
+          shouldCheck = true;
+        }
+      });
+    });
+
+    if (shouldCheck) {
+      requestAnimationFrame(styleLocationPopup);
+    }
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+})();
+</script>
+
+</section>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Analyzer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 25px;
+      text-align: center;
+      font-size: 28px;
+    }
+
+    .upload-area {
+      border: 3px dashed #667eea;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      background: #f8f9ff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .upload-area:hover {
+      background: #f0f2ff;
+      border-color: #764ba2;
+    }
+
+    .upload-area.has-image {
+      padding: 20px;
+    }
+
+    #preview {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+      display: none;
+      margin: 0 auto;
+    }
+
+    .upload-text {
+      color: #667eea;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .upload-hint {
+      color: #999;
+      font-size: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    .location-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      background: white;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    select:disabled {
+      background: #f5f5f5;
+      cursor: not-allowed;
+    }
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .loading {
+      text-align: center;
+      color: #667eea;
+      padding: 10px;
+      font-style: italic;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>🌱 Analyze Plant</h1>
+      
+      <form id="uploadForm">
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="fileInput" accept="image/*" style="display:none;">
+          <div id="uploadPrompt">
+            <div class="upload-text">📷 Choose an image</div>
+            <div class="upload-hint">Click to select or drag and drop</div>
+          </div>
+          <img id="preview" alt="Preview">
+        </div>
+        
+        <button type="button" class="btn btn-primary" id="analyzeBtn" disabled>
+          Upload & Analyze
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Location Selection Modal -->
+  <div class="location-modal" id="locationModal">
+    <div class="modal-content">
+      <div class="modal-header">📍 Select Location</div>
+      
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary" id="currentLocationBtn">
+          Use Current Location
+        </button>
+        <button type="button" class="btn btn-secondary" id="inputLocationBtn">
+          Input Location
+        </button>
+      </div>
+
+      <div id="locationForm" class="hidden">
+        <div class="form-group">
+          <label for="provinceSelect">Province</label>
+          <select id="provinceSelect">
+            <option value="">Select Province</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="municipalitySelect">Municipality</label>
+          <select id="municipalitySelect" disabled>
+            <option value="">Select Municipality</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="barangaySelect">Barangay</label>
+          <select id="barangaySelect" disabled>
+            <option value="">Select Barangay</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="submitLocationBtn" disabled>
+          Confirm Location
+        </button>
+      </div>
+
+      <div id="loadingMessage" class="loading hidden">
+        Getting your location...
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedFile = null;
+    let selectedLocation = null;
+
+    // Upload area interactions
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const uploadPrompt = document.getElementById('uploadPrompt');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        selectedFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+          uploadPrompt.style.display = 'none';
+          uploadArea.classList.add('has-image');
+          analyzeBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Drag and drop
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = '#764ba2';
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.style.borderColor = '#667eea';
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = '#667eea';
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        fileInput.files = e.dataTransfer.files;
+        fileInput.dispatchEvent(new Event('change'));
+      }
+    });
+
+    // Show location modal
+    analyzeBtn.addEventListener('click', () => {
+      document.getElementById('locationModal').style.display = 'flex';
+    });
+
+    // Current location button
+    document.getElementById('currentLocationBtn').addEventListener('click', () => {
+      const loadingMsg = document.getElementById('loadingMessage');
+      loadingMsg.classList.remove('hidden');
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            selectedLocation = {
+              type: 'coordinates',
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              accuracy: position.coords.accuracy
+            };
+            loadingMsg.classList.add('hidden');
+            submitAnalysis();
+          },
+          (error) => {
+            loadingMsg.classList.add('hidden');
+            alert('Unable to get location: ' + error.message);
+          }
+        );
+      } else {
+        loadingMsg.classList.add('hidden');
+        alert('Geolocation is not supported by your browser');
+      }
+    });
+
+    // Input location button
+    document.getElementById('inputLocationBtn').addEventListener('click', () => {
+      document.getElementById('locationForm').classList.remove('hidden');
+      loadProvinces();
+    });
+
+    // Load provinces
+    async function loadProvinces() {
+      try {
+        const response = await fetch('/api/provinces/'); // Adjust to your Django endpoint
+        const data = await response.json();
+        const select = document.getElementById('provinceSelect');
+        select.innerHTML = '<option value="">Select Province</option>';
+        data.forEach(province => {
+          const option = document.createElement('option');
+          option.value = province.id;
+          option.textContent = province.name;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error loading provinces:', error);
+      }
+    }
+
+    // Province change
+    document.getElementById('provinceSelect').addEventListener('change', async (e) => {
+      const provinceId = e.target.value;
+      const municipalitySelect = document.getElementById('municipalitySelect');
+      const barangaySelect = document.getElementById('barangaySelect');
+      
+      municipalitySelect.disabled = true;
+      barangaySelect.disabled = true;
+      document.getElementById('submitLocationBtn').disabled = true;
+      
+      if (provinceId) {
+        try {
+          const response = await fetch(`/api/municipalities/${provinceId}/`);
+          const data = await response.json();
+          municipalitySelect.innerHTML = '<option value="">Select Municipality</option>';
+          data.forEach(municipality => {
+            const option = document.createElement('option');
+            option.value = municipality.id;
+            option.textContent = municipality.name;
+            municipalitySelect.appendChild(option);
+          });
+          municipalitySelect.disabled = false;
+        } catch (error) {
+          console.error('Error loading municipalities:', error);
+        }
+      }
+    });
+
+    // Municipality change
+    document.getElementById('municipalitySelect').addEventListener('change', async (e) => {
+      const municipalityId = e.target.value;
+      const barangaySelect = document.getElementById('barangaySelect');
+      
+      barangaySelect.disabled = true;
+      document.getElementById('submitLocationBtn').disabled = true;
+      
+      if (municipalityId) {
+        try {
+          const response = await fetch(`/api/barangays/${municipalityId}/`);
+          const data = await response.json();
+          barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
+          data.forEach(barangay => {
+            const option = document.createElement('option');
+            option.value = barangay.id;
+            option.textContent = barangay.name;
+            barangaySelect.appendChild(option);
+          });
+          barangaySelect.disabled = false;
+        } catch (error) {
+          console.error('Error loading barangays:', error);
+        }
+      }
+    });
+
+    // Barangay change
+    document.getElementById('barangaySelect').addEventListener('change', (e) => {
+      document.getElementById('submitLocationBtn').disabled = !e.target.value;
+    });
+
+    // Submit location
+    document.getElementById('submitLocationBtn').addEventListener('click', () => {
+      const province = document.getElementById('provinceSelect');
+      const municipality = document.getElementById('municipalitySelect');
+      const barangay = document.getElementById('barangaySelect');
+      
+      selectedLocation = {
+        type: 'manual',
+        province: { id: province.value, name: province.options[province.selectedIndex].text },
+        municipality: { id: municipality.value, name: municipality.options[municipality.selectedIndex].text },
+        barangay: { id: barangay.value, name: barangay.options[barangay.selectedIndex].text }
+      };
+      
+      submitAnalysis();
+    });
+
+    // Submit analysis to Django
+    async function submitAnalysis() {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('location', JSON.stringify(selectedLocation));
+      
+      try {
+        // Get CSRF token
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                         getCookie('csrftoken');
+        
+        const response = await fetch('/analyze/', { // Adjust to your Django endpoint
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrftoken
+          },
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        // Close modal
+        document.getElementById('locationModal').style.display = 'none';
+        
+        // Handle the response (show results)
+        console.log('Analysis result:', result);
+        // You can display results here or redirect to results page
+        
+      } catch (error) {
+        console.error('Error submitting analysis:', error);
+        alert('Error submitting analysis. Please try again.');
+      }
+    }
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  </script>
+</body>
+</html>

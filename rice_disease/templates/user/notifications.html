@@ -1,0 +1,269 @@
+<section id="profile" class="content-section" style="display:none;">
+<style>
+/* The top nav uses position:fixed, so it's out of normal flow and doesn't
+   push page content down. Without this, this section sits underneath it
+   on load/tab-switch, and any #anchor jump lands under it too. Adjust 90px
+   to match your actual fixed-header height if it still looks off. */
+html { scroll-padding-top: 90px; }
+
+#profile {
+  scroll-margin-top: 90px;
+  padding-top: 90px;
+}
+
+/* Profile Card */
+.profile-card {
+  max-width: 100%;
+  margin: 0;
+  padding: 32px 28px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+.profile-title {
+  text-align: center !important;
+  width: 100%;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.profile-subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 0.97rem;
+}
+
+.profile-row {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-row:last-child {
+  border-bottom: none;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 5px;
+  min-width: 160px;
+}
+
+.profile-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.16);
+}
+
+.profile-btn--primary {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+}
+
+.profile-btn--secondary {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+/* Password container */
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.password-container .toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .profile-card {
+    padding: 20px;
+  }
+
+  .profile-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .profile-row span {
+    margin: 0;
+  }
+
+  .profile-actions .profile-btn {
+    width: 48%;
+    min-width: unset;
+    margin: 0;
+  }
+}
+</style>
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-xl border border-gray-200 profile-card">
+    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">👤 Profile Information</h2>
+
+    <div class="flex flex-col md:flex-row items-center gap-6">
+      <!-- Avatar -->
+      <div class="flex-shrink-0">
+        <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+        </div>
+      </div>
+
+      <!-- User Info -->
+      <div class="flex-1 space-y-3 text-gray-700">
+        <div class="profile-row flex items-center gap-2">
+          <i class="fas fa-user text-green-600"></i>
+          <span><strong>Username:</strong> {{ user.username }}</span>
+        </div>
+        <div class="profile-row flex items-center gap-2">
+          <i class="fas fa-envelope text-green-600"></i>
+          <span><strong>Email:</strong> {{ user.email }}</span>
+        </div>
+        <div class="profile-row flex items-center gap-2">
+          <i class="fas fa-phone text-green-600"></i>
+          <span><strong>Phone Number:</strong> {{ user.phone_number }}</span>
+        </div>
+        <div class="profile-row flex items-center gap-2">
+          <i class="fas fa-user-shield text-green-600"></i>
+          <span><strong>Role:</strong>
+            {% if user.is_superuser %} Superuser / Admin
+            {% elif user.is_staff %} Staff
+            {% else %} Regular User
+            {% endif %}
+          </span>
+        </div>
+        <div class="profile-row flex items-center gap-2">
+          <i class="fas fa-calendar-alt text-green-600"></i>
+          <span><strong>Date Joined:</strong> {{ user.date_joined|date:"M. d, Y, g:i a" }}</span>
+        </div>
+        <div class="profile-row flex items-center gap-2">
+          <i class="fas fa-clock text-green-600"></i>
+          <span><strong>Last Login:</strong> {{ user.last_login|date:"M. d, Y, g:i a" }}</span>
+        </div>
+        <div class="profile-row flex items-center gap-2">
+          <i class="fas fa-circle text-green-600"></i>
+          <span><strong>Status:</strong> {% if user.is_active %} ✅ Active {% else %} ❌ Inactive {% endif %}</span>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-6 flex flex-wrap gap-4 justify-center">
+          <button onclick="openModal('profileModal')" class="profile-btn profile-btn--primary">
+            <i class="fas fa-edit"></i>
+            Update Profile
+          </button>
+          <button onclick="openModal('passwordModal')" class="profile-btn profile-btn--secondary">
+            <i class="fas fa-key"></i>
+            Change Password
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Update Modal -->
+  <div id="profileModal" class="modal">
+    <div class="modal-content">
+      <h2 class="text-xl font-bold mb-4">Update Profile</h2>
+      <form method="POST" class="space-y-4">
+        {% csrf_token %}
+
+        <div>
+          <label class="block font-semibold mb-1">Username</label>
+          {{ profile_form.username }}
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Email</label>
+          {{ profile_form.email }}
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Phone Number</label>
+          {{ profile_form.phone_number }}
+        </div>
+
+        <div class="flex justify-between mt-4">
+          <button type="button" onclick="closeModal('profileModal')" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500">
+            Cancel
+          </button>
+          <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Alert container (for global AJAX alerts) -->
+  <div id="alert-container" class="fixed top-4 right-4 z-50"></div>
+
+  <!-- Change Password Modal -->
+  <div id="passwordModal" class="modal hidden">
+    <div class="modal-content">
+      <h2 class="text-xl font-bold mb-4">Change Password</h2>
+      <div id="password-errors" class="text-red-600 mb-2"></div>
+
+      <form id="password-form" method="POST" class="space-y-4">
+        {% csrf_token %}
+
+        <!-- Current Password -->
+        <div>
+          <label class="block font-semibold">Current Password</label>
+          <div class="password-container">
+            <input type="password" id="old_password" name="old_password" required class="w-full border rounded-lg p-2">
+            <i class="fa-solid fa-eye toggle-password" data-target="old_password"></i>
+          </div>
+        </div>
+
+        <!-- New Password -->
+        <div>
+          <label class="block font-semibold">New Password</label>
+          <div class="password-container">
+            <input type="password" id="new_password1" name="new_password1" required class="w-full border rounded-lg p-2">
+            <i class="fa-solid fa-eye toggle-password" data-target="new_password1"></i>
+          </div>
+        </div>
+
+        <!-- Confirm New Password -->
+        <div>
+          <label class="block font-semibold">Confirm New Password</label>
+          <div class="password-container">
+            <input type="password" id="new_password2" name="new_password2" required class="w-full border rounded-lg p-2">
+            <i class="fa-solid fa-eye toggle-password" data-target="new_password2"></i>
+          </div>
+        </div>
+
+        <div class="flex justify-between mt-4">
+          <button type="button" onclick="closeModal('passwordModal')" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500">
+            Cancel
+          </button>
+          <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
+            Change Password
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

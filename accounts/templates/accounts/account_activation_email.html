@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activate Your Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #27ae60;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a.button:hover {
+            background: #219150;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, {{ user.username }}!</h2>
+        <p>Click below to activate your account:</p>
+        <p>
+            <a class="button" href="http://172.16.142.70:8080{% url 'activate' uidb64=uid token=token %}">
+    Activate Your Account
+</a>
+                Activate Your Account
+            </a>
+        </p>
+        <p>If you didn’t request this, ignore this email.</p>
+    </div>
+</body>
+</html>

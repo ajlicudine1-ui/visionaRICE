@@ -1,4 +1,31 @@
+# Node.js
 node_modules/
-.env
 npm-debug.log*
+
+# Environment / secrets
+.env
+.env.*
+
+# Vercel
+.vercel/
+
+# OS files
 .DS_Store
+
+# Local database and uploads
+db.sqlite3
+media/
+
+# Generated static files
+staticfiles/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Large training models
+*.h5
+
+# Database exports
+*.sql

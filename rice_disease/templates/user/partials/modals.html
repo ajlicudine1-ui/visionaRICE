@@ -1,0 +1,62 @@
+<!-- Location Modal -->
+<div class="modal" id="locationModal" 
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.5); justify-content:center; align-items:center; 
+            z-index:9999;">
+  <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px; text-align:center;">
+    <h4>Select Location</h4>
+    <p>Choose how to provide location: </p>
+
+    <button type="button" class="btn btn-primary" id="useGpsBtn">Select Current Location</button>
+    <button type="button" class="btn btn-secondary" id="enterManualBtn">Select Manually</button>
+
+    <div id="locationError" style="color:red; margin-top:10px; display:none;"></div>
+
+    <!-- Show selected location here -->
+    <div id="selectedLocationDisplay" 
+         style="margin-top:15px; font-weight:bold; color:#2c3e50; display:none;">
+    </div>
+
+    <div id="locationActionButtons" style="margin-top:15px; display:none;">
+      <button type="button" class="btn btn-success" id="confirmLocationBtn">Use saved location</button>
+      <button type="button" class="btn btn-danger" id="cancelLocationBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manual Location Modal -->
+<div id="manualLocationModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h4>Manually Select Location</h4>
+
+    <!-- Country (fixed to Philippines) -->
+    <label for="countrySelect">Country:</label>
+    <select id="countrySelect" class="form-control" disabled>
+      <option value="Philippines" selected>Philippines</option>
+    </select>
+
+    <!-- Province selector -->
+    <label for="provinceSelect">Province:</label>
+    <select id="provinceSelect" class="form-control">
+      <option value="">Select Province</option>
+      <option value="013300000">La Union</option>
+      <option value="012800000">Ilocos Norte</option>
+      <option value="012900000">Ilocos Sur</option>
+      <option value="015500000">Pangasinan</option>
+    </select>
+
+    <label for="municipalitySelect">Municipality:</label>
+    <select id="municipalitySelect" class="form-control">
+      <option value="">Loading...</option>
+    </select>
+
+    <label for="barangaySelect">Barangay:</label>
+    <select id="barangaySelect" class="form-control" disabled>
+      <option value="">Select Municipality</option>
+    </select>
+
+    <br>
+    <button id="confirmManualBtn" class="btn btn-primary">Confirm</button>
+    <button id="cancelManualBtn" class="btn btn-secondary">Cancel</button>
+  </div>
+</div>

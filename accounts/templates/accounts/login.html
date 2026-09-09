@@ -1,0 +1,499 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Login</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for eye icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body, .login-container, .login-container * {
+            font-family: 'Poppins', Arial, sans-serif !important;
+        }
+
+        .toggle-password {
+            font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+            font-weight: 900 !important;
+        }
+
+        body {
+            background: #e8f5e8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            width: 500px;
+            max-width: 95%;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 28px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"],
+        .login-container input[type="email"] {
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .login-container button {
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .login-container button:hover {
+            background: #27ae60;
+        }
+
+        .login-container p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-container a {
+            color: #27ae60;
+            text-decoration: none;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        .captcha-container {
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .captcha-container p {
+            margin: 0 0 10px;
+        }
+
+        .g-recaptcha {
+            display: inline-block;
+        }
+
+        .messages {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .messages p {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        /* Password Eye */
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            width: 100%;
+            padding: 12px;
+            padding-right: 40px; /* space for eye */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .password-container .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+            user-select: none;
+            z-index: 10;
+        }
+
+        .password-container .toggle-password:hover {
+            color: #27ae60;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .close {
+            float: right;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .modal-content button {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background: #27ae60;
+        }
+
+
+        /* ===== Modal Background ===== */
+/* ===== Modal Background ===== */
+#forgotPasswordModal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ===== Modal Content ===== */
+#forgotPasswordModal .modal-content {
+  position: relative; /* ✅ Fix: anchor close button inside modal */
+  background: #fff;
+  margin: 10% auto;
+  padding: 30px 40px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: slideIn 0.3s ease-out;
+}
+
+/* ===== Header & Text ===== */
+#forgotPasswordModal h3 {
+  margin-bottom: 10px;
+  color: #27ae60;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+#forgotPasswordModal p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+/* ===== Input & Button ===== */
+#forgotPasswordModal input[type="email"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box; /* prevent overflow */
+}
+
+#forgotPasswordModal input[type="email"]:focus {
+  border-color: #27ae60;
+  box-shadow: 0 0 5px rgba(43, 122, 120, 0.3);
+  outline: none;
+}
+
+#forgotPasswordModal button {
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#forgotPasswordModal button:hover {
+  background-color: #27ae60;
+  transform: translateY(-2px);
+}
+
+/* ===== Close Button (X) ===== */
+#forgotPasswordModal .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #27ae60;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#forgotPasswordModal .close:hover {
+  color:#27ae60;
+  transform: rotate(90deg);
+}
+
+/* ===== Error Message ===== */
+#forgotPasswordModal p[style*="color:red"] {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #d9534f !important;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    /* remove zoom to avoid scaled-down form */
+    html { zoom: .9; }
+    .login-container {
+        padding: 40px;
+        width: 80%;
+        max-width: none;
+        margin: 5vh 10%;
+    }
+
+    .login-container h2 {
+        font-size: 24px;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"],
+    .login-container input[type="email"] {
+        font-size: 16px;
+    }
+
+    .login-container button {
+        font-size: 18px;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 20% auto;
+        padding: 20px;
+    }
+
+    #forgotPasswordModal .modal-content {
+        width: 80%; /* narrower to ensure spacing */
+        padding: 20px;
+    }
+}
+
+/* ===== PWA Install Button ===== */
+#installBtn {
+  display: block;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  background: linear-gradient(135deg, #34E411, #2e7d32);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+#installBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+#installBtn.visible {
+  display: block;
+  animation: slideDown 0.3s ease-out;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.login-logo {
+    width: 325px;       /* adjust size as needed */
+    height: 100pxx;       /* keep aspect ratio */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 40px;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <!-- Logo Image -->
+        <img src="{% static 'images/HEADER.png' %}" alt="Logo" class="login-logo">
+        <h3>Login</h3>
+
+        <!-- Messages -->
+        <div class="messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <!-- Login Form -->
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Enter Name" required>
+
+            <!-- Password with Eye -->
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+
+            <div class="captcha-container">
+                <p>Complete the CAPTCHA to log in:</p>
+                <div class="g-recaptcha" data-sitekey="6LcuCmEtAAAAACkZEx-vW5tJC80KuyU_dn0cKiqb"></div>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p><a id="forgotPasswordLink">Forgot Password?</a></p>
+        <p>You don’t have an account yet?? <a href="{% url 'signup' %}">Sign Up here</a></p>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h3>Reset Password</h3>
+            <p>Enter Password to Get Code:</p>
+            <form method="POST" action="{% url 'forgot_password' %}">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="enter email" required>
+                <button type="submit">Send Code</button>
+            </form>
+
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        // Modal Logic
+        const modal = document.getElementById("forgotPasswordModal");
+        const openBtn = document.getElementById("forgotPasswordLink");
+        const closeBtn = document.getElementById("closeModal");
+
+        openBtn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Display Django messages as JS alerts
+        {% if messages %}
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        {% endif %}
+
+        // Toggle Password Visibility
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+
+        togglePassword.addEventListener("click", function () {
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
+
+            // Toggle eye / eye-slash
+            this.classList.toggle("fa-eye");
+            this.classList.toggle("fa-eye-slash");
+        });
+    </script>
+    <script>
+      // Register service worker for PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/service-worker.js');
+        });
+      }
+    </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <!-- FontAwesome for eye icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e8f5e8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .signup-container {
+            background: #fff;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            width: 500px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .signup-container h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 28px;
+        }
+
+        .signup-container input[type="text"],
+        .signup-container input[type="email"],
+        .signup-container input[type="password"],
+        .signup-container input[type="tel"] {
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            width: 100%;
+            padding: 15px;
+            padding-right: 40px; /* space for eye */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+            z-index: 10;
+            user-select: none;
+        }
+
+        .toggle-password:hover {
+            color: #27ae60;
+        }
+
+        .signup-container button {
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .signup-container button:hover {
+            background:#27ae60;
+        }
+
+        .signup-container p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .signup-container a {
+            color: #27ae60;
+            text-decoration: none;
+        }
+
+        .signup-container a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 13px;
+            margin: -5px 0 10px;
+            text-align: left;
+        }
+
+        .password-info {
+            font-size: 13px;
+            text-align: left;
+            margin-top: -5px;
+        }
+
+        .password-match {
+            font-size: 13px;
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            /* match login spacing */
+            html { zoom: 1; }
+            .signup-container {
+                padding: 40px;
+                width: 80%;
+                max-width: none;
+                margin: 5vh 10%;
+            }
+
+            .signup-container h2 {
+                font-size: 24px;
+            }
+
+            .signup-container input[type="text"],
+            .signup-container input[type="email"],
+            .signup-container input[type="password"],
+            .signup-container input[type="tel"] {
+                font-size: 17px;
+            }
+
+            .signup-container button {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>Create Account</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color: green;">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Username -->
+            <input type="text" name="username" placeholder="Enter Name" 
+                   value="{{ form.username.value|default_if_none:'' }}" required>
+            {% for error in form.username.errors %}
+                <p class="error-message">{{ error }}</p>
+            {% endfor %}
+
+            <!-- Email -->
+            <input type="email" name="email" placeholder="Enter Email" 
+                   value="{{ form.email.value|default_if_none:'' }}" required>
+            {% for error in form.email.errors %}
+                <p class="error-message">{{ error }}</p>
+            {% endfor %}
+
+            <!-- Phone -->
+            <input type="tel" name="phone_number" placeholder="Enter Phone Number" 
+                   value="{{ form.phone_number.value|default_if_none:'' }}" required>
+            {% for error in form.phone_number.errors %}
+                <p class="error-message">{{ error }}</p>
+            {% endfor %}
+
+            <!-- Password -->
+            <div class="password-container">
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+                <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('password', this)"></i>
+            </div>
+            <p id="password-strength" class="password-info"></p>
+            {% for error in form.password.errors %}
+                <p class="error-message">{{ error }}</p>
+            {% endfor %}
+
+            <!-- Confirm Password -->
+            <div class="password-container">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                <i class="fa-solid fa-eye toggle-password" onclick="togglePassword('confirm_password', this)"></i>
+            </div>
+            <p id="password-match" class="password-match"></p>
+
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account?? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+
+    {% if user_email %}
+    <script>
+        // AJAX polling to detect account activation
+        function checkActivation() {
+            fetch("{% url 'check_activation' %}?email={{ user_email }}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_active) {
+                    alert("Your account is now verified! Redirecting to login...");
+                    window.location.href = "{% url 'login' %}";
+                }
+            })
+            .catch(console.error);
+        }
+
+        setInterval(checkActivation, 5000);
+    </script>
+    {% endif %}
+
+    <script>
+        // Toggle password visibility with Font Awesome icon
+        function togglePassword(id, el) {
+            const input = document.getElementById(id);
+
+            if (input.type === "password") {
+                input.type = "text";
+                el.classList.remove("fa-eye");
+                el.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                el.classList.remove("fa-eye-slash");
+                el.classList.add("fa-eye");
+            }
+        }
+
+        // Password strength check
+        const passwordField = document.getElementById("password");
+        const strengthText = document.getElementById("password-strength");
+
+        passwordField.addEventListener("input", function() {
+            const value = passwordField.value;
+            let message = "";
+            const hasUpper = /[A-Z]/.test(value);
+            const hasNumber = /[0-9]/.test(value);
+            const isLong = value.length >= 8;
+
+            if (value.length === 0) {
+                message = "";
+            } else if (isLong && hasUpper && hasNumber) {
+                message = "✅ Strong password";
+                strengthText.style.color = "green";
+            } else {
+                message = "❌ Must be 8+ chars, include number & uppercase letter";
+                strengthText.style.color = "red";
+            }
+            strengthText.textContent = message;
+        });
+
+        // Password match check
+        const confirmField = document.getElementById("confirm_password");
+        const matchText = document.getElementById("password-match");
+
+        function checkMatch() {
+            if (confirmField.value.length === 0) {
+                matchText.textContent = "";
+                return;
+            }
+            if (confirmField.value === passwordField.value) {
+                matchText.textContent = "✅ Passwords match";
+                matchText.style.color = "green";
+            } else {
+                matchText.textContent = "❌ Passwords do not match";
+                matchText.style.color = "red";
+            }
+        }
+
+        passwordField.addEventListener("input", checkMatch);
+        confirmField.addEventListener("input", checkMatch);
+    </script>
+</body>
+</html>

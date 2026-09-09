@@ -1,0 +1,607 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <link rel="manifest" href="/manifest.json">
+
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VISIONARICE</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+
+      body, input, select, textarea {
+
+        font-family: 'Poppins', sans-serif;
+
+      }
+
+      #installBtn {
+
+        display: none;
+
+      }
+
+    </style>
+
+</head>
+
+<body class="bg-white min-h-screen flex">
+
+  <!-- Sidebar Navigation -->
+
+<aside class="fixed top-0 left-0 w-64 h-screen bg-gradient-to-b from-[#1b5e20] to-[#2e7d32] shadow-md flex flex-col justify-between">
+
+  <div>
+
+    <div class="p-6 border-b border-white/20">
+
+      <h2 class="text-xl font-bold text-white mb-8 text-center">🌱 VISIONARICE Admin Panel</h2>
+
+    </div>
+
+    <nav class="mt-6 flex flex-col gap-2 px-4">
+
+      <a href="{% url 'admin_dashboard' %}" class="px-6 py-2 rounded-lg text-white hover:bg-white/20">Dashboard</a>
+
+      <a href="{% url 'predictions_page' %}" class="px-6 py-2 rounded-lg bg-white text-green-800 font-semibold">Predictions</a>
+
+      <a href="{% url 'users_page' %}" class="px-6 py-2 rounded-lg text-white hover:bg-white/20">Users</a>
+
+      <a href="{% url 'admins_profile' %}" class="px-6 py-2 rounded-lg text-white hover:bg-white/20">Profile</a> 
+
+      <a href="{% url 'notifications' %}" class="px-6 py-2 rounded-lg text-white hover:bg-white/20">Notifications</a>
+
+    </nav>
+
+  </div>
+
+  <div class="p-4 border-t border-white/20">
+
+    <form method="POST" action="{% url 'logout' %}">
+
+      {% csrf_token %}
+
+      <button 
+
+        type="submit" 
+
+        class="w-full bg-transparent text-white  hover:bg-red-500 hover:border-red-500 py-2 rounded-lg font-semibold transition duration-200">
+
+        Logout
+
+      </button>
+
+    </form>
+
+  </div>
+
+</aside>
+
+  <!-- Main Content -->
+
+  <main class="ml-64 flex-1 p-6 bg-white">
+
+    <!-- Header -->
+
+    <header class="shadow-md rounded-2xl bg-white flex items-center justify-center p-4">
+
+      <img src="{% static 'images/HEADER.png' %}" alt="VISIONARICE Logo" class="h-20 object-contain">
+
+    </header>
+
+    <!-- Disease Occurrences Chart -->
+
+      <section class="bg-white rounded-2xl shadow-lg p-6 mb-10">
+
+        <h2 class="text-xl font-semibold text-blue-700 mb-4">Disease Occurrences</h2>
+
+        <!-- Shared Legend -->
+
+        <div id="diseaseLegend" class="flex flex-wrap gap-3 mb-6"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Bar Chart -->
+
+          <div class="w-full h-64">
+
+            <canvas id="diseaseChart"></canvas>
+
+          </div>
+
+          <!-- Pie Chart -->
+
+          <div class="w-full h-64">
+
+            <canvas id="diseasePieChart"></canvas>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    <!-- Recent Predictions List -->
+
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+
+      <div class="flex flex-wrap gap-4 justify-between items-center mb-4">
+
+        <h2 class="text-xl font-semibold text-blue-700">Predictions</h2>
+
+        <div class="flex gap-3">
+
+          <!-- Disease Filter -->
+
+          <select id="diseaseFilter" class="px-4 py-2 border rounded-lg shadow-sm">
+
+            <option value="all">All Diseases</option>
+
+            <option value="Bacterial Leaf Blight">Bacterial Leaf Blight</option>
+
+            <option value="Leaf Blast">Leaf Blast</option>
+
+            <option value="Brown Spot">Brown Spot</option>
+
+            <option value="Healthy Rice Plant">Healthy Rice Plant</option>
+
+          </select>
+
+          <!-- Confidence Filter -->
+
+          <select id="confidenceFilter" class="px-4 py-2 border rounded-lg shadow-sm">
+
+            <option value="all">All Confidence</option>
+
+            <option value="90">Above 90%</option>
+
+            <option value="80">Above 80%</option>
+
+            <option value="70">Above 70%</option>
+
+          </select>
+
+          <!-- Date Filter -->
+
+          <select id="dateFilter" class="px-4 py-2 border rounded-lg shadow-sm">
+
+            <option value="all">All Dates</option>
+
+            <option value="today">Today</option>
+
+            <option value="week">This Week</option>
+
+            <option value="month">This Month</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div id="predictionsList">
+
+        {% for pred in recent_predictions %}
+
+        <a href="{% url 'prediction_detail' pred.pk %}" class="block">
+
+          <div class="p-4 border rounded-lg shadow-sm mb-4 prediction-item flex gap-4 items-start cursor-pointer hover:shadow-md transition"
+
+              data-disease="{{ pred.disease }}"
+
+              data-confidence="{{ pred.confidence }}"
+
+              data-date="{{ pred.created_at|date:'Y-m-d' }}">
+
+            <input type="hidden" name="prediction_id" value="{{ pred.pk }}" />
+
+            <!-- Disease Image -->
+
+            {% if pred.image %}
+
+              <img src="{{ pred.image.url }}" alt="{{ pred.disease }}" class="w-24 h-24 object-cover rounded-lg border">
+
+            {% else %}
+
+              <div class="w-24 h-24 rounded-lg border bg-gray-100 text-gray-500 flex items-center justify-center text-xs text-center p-2">
+                No image stored
+              </div>
+
+            {% endif %}
+
+            <!-- Prediction Details -->
+
+            <div class="flex-1">
+
+              <div class="flex justify-between items-center">
+
+                <h3 class="font-bold text-lg text-blue-700">{{ pred.disease }}</h3>
+
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+
+                  {{ pred.confidence|floatformat:2 }}%
+
+                </span>
+
+              </div>
+
+              <p class="text-gray-600 text-sm mt-2">
+
+                <strong>User:</strong> {{ pred.user.email|default:"Anonymous" }} <br>
+
+                <strong>Date:</strong> {{ pred.created_at|date:"Y-m-d H:i:s" }} <br>
+
+                <strong>Location:</strong> {{ pred.location|default:"Unknown" }}
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </a>
+
+        {% empty %}
+
+        <p class="text-gray-500">No predictions available.</p>
+
+        {% endfor %}
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Chart.js -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+
+    const rawDiseaseLabels = {{ disease_labels|safe }};
+
+    const rawDiseaseData = {{ disease_data|safe }};
+
+    // Normalize and dedupe labels (drop 'brown_spot' variant)
+
+    const dataMap = {};
+
+    rawDiseaseLabels.forEach((label, idx) => {
+
+      const normalizedLabel = label === 'brown_spot' ? 'Brown Spot' : label;
+
+      const value = Number(rawDiseaseData[idx]) || 0;
+
+      if (!dataMap[normalizedLabel]) {
+
+        dataMap[normalizedLabel] = 0;
+
+      }
+
+      dataMap[normalizedLabel] += value;
+
+    });
+
+    const diseaseLabels = Object.keys(dataMap);
+
+    const diseaseData = diseaseLabels.map((label) => dataMap[label]);
+
+    const diseaseColorMap = {
+
+      'Brown Spot': 'rgb(135, 99, 9)',
+
+      'Healthy Rice Plant': 'rgba(34, 197, 94, 0.7)',
+
+      'Leaf Blast': 'rgba(239, 68, 68, 0.7)',
+
+      'Bacterial Leaf Blight': 'rgba(37, 99, 235, 0.7)',
+
+      'Bacterial Leaf Streak': 'rgba(255, 201, 65, 0.7)'
+
+    };
+
+    const defaultColors = [
+
+      'rgba(148, 163, 184, 0.7)',
+
+      'rgba(99, 102, 241, 0.7)',
+
+      'rgba(249, 115, 22, 0.7)',
+
+      'rgba(16, 185, 129, 0.7)'
+
+    ];
+
+    const backgroundColors = diseaseLabels.map((label, idx) => {
+
+      return diseaseColorMap[label] || defaultColors[idx % defaultColors.length];
+
+    });
+
+    const borderColors = backgroundColors.map(c => c.replace('0.7', '1'));
+
+    // --- Shared Legend (HTML) ---
+
+    const legendContainer = document.getElementById('diseaseLegend');
+
+    function renderLegend(labels, colors, onClick) {
+
+      legendContainer.innerHTML = '';
+
+      labels.forEach((label, index) => {
+
+        const item = document.createElement('div');
+
+        item.className = 'legend-item flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg shadow-sm cursor-pointer transition-opacity';
+
+        item.addEventListener('click', () => onClick(index));
+
+        const swatch = document.createElement('span');
+
+        swatch.style.width = '16px';
+
+        swatch.style.height = '16px';
+
+        swatch.style.backgroundColor = colors[index];
+
+        swatch.style.borderRadius = '4px';
+
+        swatch.style.display = 'inline-block';
+
+        const text = document.createElement('span');
+
+        text.textContent = label;
+
+        text.className = 'text-sm font-medium text-gray-700';
+
+        item.appendChild(swatch);
+
+        item.appendChild(text);
+
+        legendContainer.appendChild(item);
+
+      });
+
+    }
+
+    // --- Bar Chart (no legend) ---
+
+    const barChart = new Chart(document.getElementById('diseaseChart').getContext('2d'), {
+
+      type: 'bar',
+
+      data: {
+
+        labels: diseaseLabels,
+
+        datasets: [{
+
+          data: diseaseData,
+
+          backgroundColor: backgroundColors,
+
+          borderColor: borderColors,
+
+          borderWidth: 1
+
+        }]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+          legend: { display: false }
+
+        },
+
+        scales: {
+
+          y: { beginAtZero: true, precision: 0 }
+
+        }
+
+      }
+
+    });
+
+    // --- Pie Chart ---
+
+    const pieChart = new Chart(document.getElementById('diseasePieChart').getContext('2d'), {
+
+      type: 'pie',
+
+      data: {
+
+        labels: diseaseLabels,
+
+        datasets: [{
+
+          data: diseaseData,
+
+          backgroundColor: backgroundColors,
+
+          borderColor: borderColors,
+
+          borderWidth: 1
+
+        }]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+          legend: { display: false }
+
+        }
+
+      }
+
+    });
+
+    // --- Clickable shared legend (show one disease at a time) ---
+
+    let selectedIndex = null;
+
+    function toggleDisease(index) {
+
+      // If clicked again, reset to show all
+
+      selectedIndex = selectedIndex === index ? null : index;
+
+      // Update both charts: only show selected disease (or all if none selected)
+
+      [barChart, pieChart].forEach(chart => {
+
+        const meta = chart.getDatasetMeta(0);
+
+        if (!meta || !meta.data) return;
+
+        meta.data.forEach((dataElem, i) => {
+
+          dataElem.hidden = selectedIndex !== null && i !== selectedIndex;
+
+        });
+
+      });
+
+      // Update legend UI: fade out non-selected when a disease is selected
+
+      const legendItems = legendContainer.querySelectorAll('.legend-item');
+
+      legendItems.forEach((item, i) => {
+
+        item.classList.toggle('opacity-40', selectedIndex !== null && i !== selectedIndex);
+
+      });
+
+      barChart.update();
+
+      pieChart.update();
+
+    }
+
+    renderLegend(diseaseLabels, backgroundColors, toggleDisease);
+
+    // --- Filter Predictions ---
+
+    const diseaseFilter = document.getElementById('diseaseFilter');
+
+    const confidenceFilter = document.getElementById('confidenceFilter');
+
+    const dateFilter = document.getElementById('dateFilter');
+
+    const predictionItems = document.querySelectorAll('.prediction-item');
+
+    function applyFilters() {
+
+      const selectedDisease = diseaseFilter.value;
+
+      const selectedConfidence = confidenceFilter.value;
+
+      const selectedDate = dateFilter.value;
+
+      const today = new Date();
+
+      predictionItems.forEach(item => {
+
+        const disease = item.dataset.disease;
+
+        const confidence = parseFloat(item.dataset.confidence);
+
+        const date = new Date(item.dataset.date);
+
+        let show = true;
+
+        // Disease filter
+
+        if (selectedDisease !== "all" && disease !== selectedDisease) {
+
+          show = false;
+
+        }
+
+        // Confidence filter
+
+        if (selectedConfidence !== "all" && confidence < parseInt(selectedConfidence)) {
+
+          show = false;
+
+        }
+
+        // Date filter
+
+        if (selectedDate !== "all") {
+
+          if (selectedDate === "today") {
+
+            const isToday = date.toDateString() === today.toDateString();
+
+            if (!isToday) show = false;
+
+          } else if (selectedDate === "week") {
+
+            const oneWeekAgo = new Date();
+
+            oneWeekAgo.setDate(today.getDate() - 7);
+
+            if (date < oneWeekAgo) show = false;
+
+          } else if (selectedDate === "month") {
+
+            const oneMonthAgo = new Date();
+
+            oneMonthAgo.setMonth(today.getMonth() - 1);
+
+            if (date < oneMonthAgo) show = false;
+
+          }
+
+        }
+
+        item.style.display = show ? "flex" : "none";
+
+      });
+
+    }
+
+    diseaseFilter.addEventListener('change', applyFilters);
+
+    confidenceFilter.addEventListener('change', applyFilters);
+
+    dateFilter.addEventListener('change', applyFilters);
+
+  </script>
+
+</body>
+
+</html>

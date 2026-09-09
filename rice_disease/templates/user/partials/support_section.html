@@ -1,0 +1,616 @@
+<section id="support" class="content-section" style="display:none;">
+
+<style>
+
+/* =========================================================
+   HELP & SUPPORT PAGE
+   ========================================================= */
+
+html {
+  scroll-padding-top: 90px;
+}
+
+#support.content-section {
+  width: 100%;
+  min-height: calc(100vh - 90px);
+
+  margin: 0 !important;
+  padding: 25px 24px 50px !important;
+
+  box-sizing: border-box;
+
+  background: #f7f4ea;
+
+  scroll-margin-top: 90px;
+}
+
+
+/* =========================================================
+   MAIN SUPPORT CARD
+   ========================================================= */
+
+#support .support-card {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 5px auto 0;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e9e2;
+  border-radius: 24px;
+
+  box-shadow:
+    0 8px 30px rgba(23, 63, 50, 0.08);
+}
+
+
+/* =========================================================
+   PAGE TITLE
+   ========================================================= */
+
+#support .support-title {
+  margin: 0 0 28px;
+
+  color: #173f32;
+
+  font-size: 1.5rem;
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================================
+   FAQ TITLE
+   ========================================================= */
+
+#support .faq-title {
+  margin: 0 0 18px;
+
+  color: #203126;
+
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   FAQ ITEM
+   ========================================================= */
+
+#support .faq-item {
+  width: 100%;
+
+  margin-bottom: 12px;
+
+  padding: 18px 20px;
+
+  box-sizing: border-box;
+
+  background: #f8faf7;
+
+  border: 1px solid #e5ebe2;
+  border-left: 4px solid #6e9275;
+
+  border-radius: 14px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+#support .faq-item:hover {
+  background: #f1f6ef;
+
+  border-color: #d6e0d2;
+  border-left-color: #245844;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 16px rgba(23, 63, 50, 0.07);
+}
+
+
+/* =========================================================
+   FAQ QUESTION
+   ========================================================= */
+
+#support .faq-question {
+  position: relative;
+
+  padding-right: 35px;
+
+  color: #203126;
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  line-height: 1.5;
+}
+
+
+#support .faq-question::after {
+  content: '▼';
+
+  position: absolute;
+
+  right: 2px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #6e9275;
+
+  font-size: 12px;
+
+  transition:
+    transform 0.3s ease;
+}
+
+
+/* =========================================================
+   FAQ ANSWER
+   ========================================================= */
+
+#support .faq-answer {
+  display: none;
+
+  margin-top: 14px;
+  padding-top: 14px;
+
+  color: #667068;
+
+  font-size: 0.95rem;
+
+  line-height: 1.7;
+
+  border-top: 1px solid #e4eae1;
+}
+
+
+#support .faq-item.active .faq-answer {
+  display: block;
+}
+
+
+#support .faq-item.active .faq-question::after {
+  transform:
+    translateY(-50%)
+    rotate(180deg);
+}
+
+
+/* =========================================================
+   CONTACT CARD
+   ========================================================= */
+
+#support .contact-card {
+  margin-top: 25px;
+
+  padding: 25px;
+
+  box-sizing: border-box;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #173f32 0%,
+      #245844 100%
+    );
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 20px rgba(23, 63, 50, 0.16);
+}
+
+
+#support .contact-card h3 {
+  margin: 0 0 8px;
+
+  color: #ffffff;
+
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+
+#support .contact-card > p {
+  margin: 0 0 18px;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  font-size: 0.95rem;
+}
+
+
+/* =========================================================
+   CONTACT INFORMATION
+   ========================================================= */
+
+#support .contact-info {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin: 11px 0;
+
+  font-size: 0.95rem;
+}
+
+
+#support .contact-info span:first-child {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: grid;
+
+  place-items: center;
+
+  background:
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  #support.content-section {
+    padding: 18px 14px 35px !important;
+  }
+
+
+  #support .support-card {
+    padding: 20px;
+
+    border-radius: 20px;
+  }
+
+
+  #support .support-title {
+    margin-bottom: 22px;
+
+    font-size: 1.4rem;
+  }
+
+
+  #support .faq-title {
+    font-size: 1.1rem;
+  }
+
+
+  #support .faq-item {
+    padding: 16px;
+  }
+
+
+  #support .contact-card {
+    padding: 20px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  #support.content-section {
+    padding: 12px 10px 28px !important;
+  }
+
+
+  #support .support-card {
+    padding: 16px;
+
+    border-radius: 16px;
+  }
+
+
+  #support .support-title {
+    margin-bottom: 20px;
+
+    font-size: 1.3rem;
+  }
+
+
+  #support .faq-title {
+    margin-bottom: 14px;
+
+    font-size: 1rem;
+  }
+
+
+  #support .faq-item {
+    margin-bottom: 10px;
+
+    padding: 14px;
+
+    border-radius: 12px;
+  }
+
+
+  #support .faq-question {
+    padding-right: 28px;
+
+    font-size: 0.95rem;
+  }
+
+
+  #support .faq-answer {
+    font-size: 0.9rem;
+
+    line-height: 1.65;
+  }
+
+
+  #support .contact-card {
+    margin-top: 18px;
+
+    padding: 18px;
+
+    border-radius: 14px;
+  }
+
+
+  #support .contact-info {
+    align-items: flex-start;
+
+    font-size: 0.9rem;
+  }
+
+}
+
+</style>
+
+
+<!-- ======================================================
+     MAIN SUPPORT CARD
+     ====================================================== -->
+
+<div class="support-card">
+
+
+  <!-- PAGE TITLE -->
+
+  <h1 class="support-title">
+    ❓ Help and Support
+  </h1>
+
+
+  <!-- FAQ TITLE -->
+
+  <h2 class="faq-title">
+    Frequently Asked Questions
+  </h2>
+
+
+
+  <!-- ====================================================
+       FAQ 1
+       ==================================================== -->
+
+  <div
+    class="faq-item"
+    onclick="toggleFAQ(this)"
+  >
+
+    <div class="faq-question">
+      How accurate is the disease detection?
+    </div>
+
+    <div class="faq-answer">
+      Our AI model has been trained on thousands of rice
+      disease images and achieves over 95% accuracy in
+      detecting common rice diseases. However, we always
+      recommend consulting with agricultural experts for
+      critical decisions.
+    </div>
+
+  </div>
+
+
+
+  <!-- ====================================================
+       FAQ 2
+       ==================================================== -->
+
+  <div
+    class="faq-item"
+    onclick="toggleFAQ(this)"
+  >
+
+    <div class="faq-question">
+      What diseases can the app detect?
+    </div>
+
+    <div class="faq-answer">
+      The app can detect major rice diseases including
+      Bacterial Leaf Blight, Brown Spot, Leaf Blast, and
+      can also identify healthy rice plants. We
+      continuously update our database with new diseases.
+    </div>
+
+  </div>
+
+
+
+  <!-- ====================================================
+       FAQ 3
+       ==================================================== -->
+
+  <div
+    class="faq-item"
+    onclick="toggleFAQ(this)"
+  >
+
+    <div class="faq-question">
+      How do I take a good image?
+    </div>
+
+    <div class="faq-answer">
+      For best results: 1) Take photos in good natural
+      lighting, 2) Get close to the affected leaf,
+      3) Ensure the image is clear and in focus,
+      4) Capture the diseased area clearly, and
+      5) Avoid shadows and reflections. The app will
+      guide you through the process.
+    </div>
+
+  </div>
+
+
+
+  <!-- ====================================================
+       FAQ 4
+       ==================================================== -->
+
+  <div
+    class="faq-item"
+    onclick="toggleFAQ(this)"
+  >
+
+    <div class="faq-question">
+      Can I use it without a signal?
+    </div>
+
+    <div class="faq-answer">
+      Currently, an internet connection is required for
+      disease detection as our AI model runs on cloud
+      servers. However, you can view your previous scan
+      history offline. We're working on an offline mode
+      for future releases.
+    </div>
+
+  </div>
+
+
+
+  <!-- ====================================================
+       FAQ 5
+       ==================================================== -->
+
+  <div
+    class="faq-item"
+    onclick="toggleFAQ(this)"
+  >
+
+    <div class="faq-question">
+      What does the prediction result mean?
+    </div>
+
+    <div class="faq-answer">
+      Each detection result shows the suspected disease
+      and confidence level, the top three possible
+      diseases, recommended actions to manage the disease,
+      and the location where it was detected.
+    </div>
+
+  </div>
+
+
+
+  <!-- ====================================================
+       FAQ 6
+       ==================================================== -->
+
+  <div
+    class="faq-item"
+    onclick="toggleFAQ(this)"
+  >
+
+    <div class="faq-question">
+      Is my data secure and private?
+    </div>
+
+    <div class="faq-answer">
+      Yes! We take data privacy seriously. Your images and
+      scan results are encrypted and stored securely. We
+      never share your personal data with third parties
+      without your explicit consent. You can delete your
+      data anytime from the settings.
+    </div>
+
+  </div>
+
+
+
+  <!-- ====================================================
+       CONTACT CARD
+       ==================================================== -->
+
+  <div class="contact-card">
+
+    <h3>
+      Need more help?
+    </h3>
+
+    <p>
+      Our support team is ready to assist you.
+    </p>
+
+
+    <div class="contact-info">
+
+      <span>📧</span>
+
+      <span>
+        visionarice@gmail.com
+      </span>
+
+    </div>
+
+
+    <div class="contact-info">
+
+      <span>💬</span>
+
+      <span>
+        Support Hours: 7 AM – 6 PM PHT
+      </span>
+
+    </div>
+
+
+    <div class="contact-info">
+
+      <span>📱</span>
+
+      <span>
+        Phone Number: +63 951 952 2882
+      </span>
+
+    </div>
+
+  </div>
+
+
+</div>
+<!-- END support-card -->
+
+
+</section>
