@@ -461,23 +461,35 @@
         min-height: 46px !important;
 
         margin: 0 !important;
-        padding: 10px 12px !important;
+
+        padding:
+            10px 12px !important;
 
         display: flex !important;
+
         align-items: center !important;
         justify-content: center !important;
 
-        border: 1px solid #dfe7df !important;
-        border-radius: 13px !important;
+        border:
+            1px solid #dfe7df !important;
+
+        border-radius:
+            13px !important;
 
         background: #ffffff !important;
 
         font-size: 12px !important;
         font-weight: 600 !important;
+
         line-height: 1.2 !important;
 
         text-align: center !important;
+
         white-space: nowrap !important;
+
+        box-shadow:
+            0 3px 10px
+            rgba(17, 62, 38, 0.05) !important;
     }
 
 
@@ -488,19 +500,29 @@
         min-height: 50px !important;
 
         margin: 0 !important;
-        padding: 12px 14px !important;
+
+        padding:
+            12px 14px !important;
 
         display: flex !important;
+
         align-items: center !important;
         justify-content: center !important;
 
-        border-radius: 14px !important;
+        border-radius:
+            14px !important;
 
-        font-size: 13px !important;
-        font-weight: 600 !important;
-        line-height: 1.2 !important;
+        font-size:
+            13px !important;
 
-        text-align: center !important;
+        font-weight:
+            600 !important;
+
+        line-height:
+            1.2 !important;
+
+        text-align:
+            center !important;
     }
 
 
@@ -537,24 +559,110 @@
 }
 
 
+
+/* =====================================================
+   FINAL MOBILE CROP BUTTON LAYOUT - UI ONLY
+   Does NOT touch Cropper.js internals.
+===================================================== */
+@media screen and (max-width: 760px) {
+
+    .crop-dialog .crop-tools {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+        margin: 0 0 12px 0 !important;
+        padding: 0 !important;
+    }
+
+    .crop-dialog .crop-tools > button {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        min-height: 48px !important;
+
+        margin: 0 !important;
+        padding: 10px 12px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        flex: none !important;
+
+        border-radius: 13px !important;
+
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    .crop-dialog > .actions {
+        width: 100% !important;
+
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) !important;
+
+        gap: 10px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        position: static !important;
+
+        background: transparent !important;
+    }
+
+    .crop-dialog > .actions > button {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        min-height: 50px !important;
+
+        margin: 0 !important;
+        padding: 12px 14px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        flex: none !important;
+
+        border-radius: 14px !important;
+
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+}
+
 @media screen and (max-width: 420px) {
-    .crop-tools {
+
+    .crop-dialog .crop-tools {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 8px !important;
     }
 
-    .crop-tools button {
+    .crop-dialog .crop-tools > button {
         min-height: 44px !important;
-        font-size: 11px !important;
+        padding: 9px 8px !important;
+        font-size: 12px !important;
     }
 
-    .crop-dialog .actions {
-        grid-template-columns: 1fr 1.15fr !important;
+    .crop-dialog > .actions {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) !important;
         gap: 8px !important;
     }
 
-    .crop-dialog .actions button {
+    .crop-dialog > .actions > button {
         min-height: 48px !important;
+        padding: 10px 8px !important;
         font-size: 12px !important;
     }
 }
