@@ -575,6 +575,12 @@ function prepareImage(file) {
 
     originalFile = file;
 
+    if (previewContainer) {
+        previewContainer.style.removeProperty(
+            '--crop-preview-width'
+        );
+    }
+
     const reader =
         new FileReader();
 
@@ -623,18 +629,49 @@ function openCropModal(src) {
             cropImage,
             {
                 viewMode: 1,
-                dragMode: 'move',
-                autoCropArea: 0.85,
+
+                // Free-form crop: no forced square/aspect ratio.
+                aspectRatio: NaN,
+
+                // Dragging outside the crop box creates a new crop area.
+                // The crop box itself remains movable/resizable.
+                dragMode: 'crop',
+
+                autoCrop: true,
+                autoCropArea: 0.75,
+
                 responsive: true,
+                restore: false,
+
                 background: false,
+                modal: true,
+                guides: true,
+                center: true,
+                highlight: true,
+
                 checkOrientation: true,
+
                 movable: true,
                 zoomable: true,
+                zoomOnTouch: true,
+                zoomOnWheel: false,
+
                 rotatable: true,
                 scalable: false,
+
                 cropBoxMovable: true,
                 cropBoxResizable: true,
-                toggleDragModeOnDblclick: false
+
+                toggleDragModeOnDblclick: false,
+
+                ready() {
+                    // Keep Cropper's own calculated dimensions intact.
+                    // Do not override .cropper-container/.cropper-canvas in CSS.
+                    console.log(
+                        'Cropper ready:',
+                        cropper?.getCropBoxData()
+                    );
+                }
             }
         );
 
@@ -681,11 +718,29 @@ async function applyCrop() {
             applyCropButton.textContent = 'Applying...';
         }
 
+        const cropData =
+            cropper.getData(true);
+
+        const imageData =
+            cropper.getImageData();
+
+        const cropWidthPercent =
+            imageData.naturalWidth > 0
+                ? Math.min(
+                    100,
+                    Math.max(
+                        1,
+                        (
+                            cropData.width /
+                            imageData.naturalWidth
+                        ) * 100
+                    )
+                )
+                : 100;
+
         const canvas =
             cropper.getCroppedCanvas(
                 {
-                    maxWidth: 1600,
-                    maxHeight: 1600,
                     imageSmoothingEnabled: true,
                     imageSmoothingQuality: 'high',
                     fillColor: '#ffffff'
@@ -730,6 +785,13 @@ async function applyCrop() {
                     lastModified: Date.now()
                 }
             );
+
+        if (previewContainer) {
+            previewContainer.style.setProperty(
+                '--crop-preview-width',
+                `${cropWidthPercent}%`
+            );
+        }
 
         showSelectedImagePreview(
             dataUrl
@@ -917,6 +979,12 @@ removeImageButton.addEventListener(
         cameraInput.value = '';
 
         hideSelectedImagePreview();
+
+        if (previewContainer) {
+            previewContainer.style.removeProperty(
+                '--crop-preview-width'
+            );
+        }
 
         if (emptyUpload) {
             emptyUpload.style.display =

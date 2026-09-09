@@ -40,10 +40,12 @@
         min-height: 0 !important;
         height: auto !important;
 
-        padding: 0 !important;
+        padding: 14px !important;
 
-        align-items: stretch !important;
-        justify-content: flex-start !important;
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
 
         overflow: hidden !important;
     }
@@ -53,12 +55,19 @@
     .preview {
         position: relative !important;
 
-        width: 100% !important;
+        width:
+            var(
+                --crop-preview-width,
+                100%
+            ) !important;
+
+        max-width: 100% !important;
+
         height: auto !important;
         min-height: 0 !important;
 
         padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
 
         display: block !important;
 
