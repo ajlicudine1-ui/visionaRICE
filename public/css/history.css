@@ -74,7 +74,7 @@ a {
         0 auto;
 
     padding:
-        116px 0 60px;
+        28px 0 60px;
 }
 
 .history-header {
@@ -163,15 +163,13 @@ a {
 ===================================================== */
 
 .history-shell {
-    display: grid;
+    display: flex;
 
-    grid-template-columns:
-        230px
-        minmax(0, 1fr);
+    flex-direction: column;
 
-    gap: 18px;
+    gap: 16px;
 
-    align-items: start;
+    align-items: stretch;
 }
 
 /* =====================================================
@@ -179,29 +177,37 @@ a {
 ===================================================== */
 
 .history-filters {
-    position: sticky;
+    position: static;
 
-    top: 96px;
+    width: 100%;
 
-    padding: 18px;
+    display: grid;
+
+    grid-template-columns:
+        minmax(180px, 0.9fr)
+        repeat(
+            3,
+            minmax(170px, 1fr)
+        )
+        minmax(130px, 0.65fr);
+
+    gap: 12px;
+
+    align-items: end;
+
+    padding: 16px 18px;
 
     border:
         1px solid
         var(--border);
 
-    border-radius: 20px;
+    border-radius: 18px;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            0.94
-        );
+    background: #ffffff;
 
     box-shadow:
-        0 10px 28px
-        rgba(28, 69, 43, 0.07);
+        0 8px 24px
+        rgba(28, 69, 43, 0.06);
 }
 
 .filter-heading {
@@ -211,7 +217,9 @@ a {
 
     gap: 10px;
 
-    margin-bottom: 18px;
+    margin: 0;
+
+    align-self: center;
 }
 
 .filter-heading-icon {
@@ -257,7 +265,9 @@ a {
 
     gap: 6px;
 
-    margin-bottom: 13px;
+    margin: 0;
+
+    min-width: 0;
 }
 
 .filter-group label {
@@ -304,19 +314,22 @@ a {
 
 .reset-button {
     width: 100%;
-    min-height: 42px;
+    min-height: 44px;
 
-    margin-top: 2px;
+    margin: 0;
+
+    padding:
+        0 14px;
 
     border:
         1px solid
-        #f0d5d2;
+        #cfe0d3;
 
     border-radius: 12px;
 
-    background: #fff7f6;
+    background: #f5faf6;
 
-    color: var(--danger);
+    color: var(--green-800);
 
     font-size: 11px;
     font-weight: 700;
@@ -687,16 +700,18 @@ a {
         padding-top: 28px;
     }
 
-    .history-shell {
+    .history-filters {
         grid-template-columns:
-            200px
-            minmax(0, 1fr);
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
 
-        gap: 14px;
+        gap: 10px;
     }
 
-    .history-filters {
-        padding: 15px;
+    .filter-heading {
+        grid-column: 1 / -1;
     }
 
     .history-results {
@@ -1014,11 +1029,68 @@ a {
 }
 
 
-/* =====================================================
-   HISTORY TOP SPACING FIX
-===================================================== */
-@media screen and (min-width: 761px) {
-    .history-page {
-        padding-top: 28px !important;
+
+@media screen and (max-width: 760px) {
+
+    .history-shell {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    .history-filters {
+        position: static !important;
+
+        width: 100% !important;
+
+        display: grid !important;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            ) !important;
+
+        gap: 9px !important;
+
+        margin: 0 !important;
+        padding: 12px !important;
+
+        border-radius: 16px !important;
+    }
+
+    .filter-heading {
+        grid-column: 1 / -1 !important;
+        margin-bottom: 2px !important;
+    }
+
+    .filter-group {
+        margin: 0 !important;
+        min-width: 0 !important;
+    }
+
+    .reset-button {
+        min-height: 43px !important;
+        margin: 0 !important;
+        align-self: end !important;
+    }
+
+    .filter-input {
+        height: 43px !important;
+        min-width: 0 !important;
+        font-size: 10px !important;
+    }
+}
+
+@media screen and (max-width: 520px) {
+
+    .history-filters {
+        grid-template-columns: 1fr !important;
+    }
+
+    .filter-heading,
+    .filter-group,
+    .reset-button {
+        grid-column: 1 !important;
     }
 }
