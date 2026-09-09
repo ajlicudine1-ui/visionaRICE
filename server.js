@@ -281,103 +281,108 @@ app.use(
 // Start Server
 // ===============================
 
-app.listen(
-    PORT,
-    () => {
+// ===============================
+// Start Server
+// ===============================
 
-        console.log('');
+if (require.main === module) {
 
-        console.log(
-            '===================================='
-        );
+    app.listen(
+        PORT,
+        () => {
 
-        console.log(
-            ' VISIONARICE'
-        );
+            console.log('');
 
-        console.log(
-            '===================================='
-        );
+            console.log(
+                '===================================='
+            );
+
+            console.log(
+                ' VISIONARICE'
+            );
+
+            console.log(
+                '===================================='
+            );
+
+            console.log(
+                ` Server:         http://localhost:${PORT}`
+            );
+
+            console.log(
+                ` Health:         http://localhost:${PORT}/api/health`
+            );
+
+            console.log(
+                ` Database Test:  http://localhost:${PORT}/api/test-db`
+            );
+
+            console.log('');
+
+            console.log(
+                ' AUTH ROUTES'
+            );
+
+            console.log(
+                ` Register:       POST http://localhost:${PORT}/api/auth/register`
+            );
+
+            console.log(
+                ` Login:          POST http://localhost:${PORT}/api/auth/login`
+            );
+
+            console.log(
+                ` Current User:   GET  http://localhost:${PORT}/api/auth/me`
+            );
+
+            console.log(
+                ` Logout:         POST http://localhost:${PORT}/api/auth/logout`
+            );
+
+            console.log('');
+
+            console.log(
+                ' PREDICTION ROUTES'
+            );
+
+            console.log(
+                ` Save Prediction: POST http://localhost:${PORT}/api/predictions`
+            );
+
+            console.log('');
+
+            console.log(
+                ' DASHBOARD ROUTES'
+            );
+
+            console.log(
+                ` Summary:         GET  http://localhost:${PORT}/api/dashboard/summary`
+            );
+
+            console.log('');
+
+            console.log(
+                ' ADMIN ROUTES'
+            );
+
+            console.log(
+                ` Admin Test:      GET  http://localhost:${PORT}/api/admin/test`
+            );
+
+            console.log(
+                '===================================='
+            );
+
+            console.log('');
+
+        }
+    );
+
+}
 
 
-        console.log(
-            ` Server:         http://localhost:${PORT}`
-        );
+// ===============================
+// Export Express App for Vercel
+// ===============================
 
-        console.log(
-            ` Health:         http://localhost:${PORT}/api/health`
-        );
-
-        console.log(
-            ` Database Test:  http://localhost:${PORT}/api/test-db`
-        );
-
-
-        console.log('');
-
-        console.log(
-            ' AUTH ROUTES'
-        );
-
-
-        console.log(
-            ` Register:       POST http://localhost:${PORT}/api/auth/register`
-        );
-
-        console.log(
-            ` Login:          POST http://localhost:${PORT}/api/auth/login`
-        );
-
-        console.log(
-            ` Current User:   GET  http://localhost:${PORT}/api/auth/me`
-        );
-
-        console.log(
-            ` Logout:         POST http://localhost:${PORT}/api/auth/logout`
-        );
-
-
-        console.log('');
-
-        console.log(
-            ' PREDICTION ROUTES'
-        );
-
-
-        console.log(
-            ` Save Prediction: POST http://localhost:${PORT}/api/predictions`
-        );
-
-
-        console.log('');
-
-        console.log(
-            ' DASHBOARD ROUTES'
-        );
-
-
-        console.log(
-            ` Summary:         GET  http://localhost:${PORT}/api/dashboard/summary`
-        );
-
-
-        console.log('');
-
-        console.log(
-            ' ADMIN ROUTES'
-        );
-
-
-        console.log(
-            ` Admin Test:      GET  http://localhost:${PORT}/api/admin/test`
-        );
-
-
-        console.log(
-            '===================================='
-        );
-
-        console.log('');
-
-    }
-);
+module.exports = app;
