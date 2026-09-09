@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Profile | VISIONARICE</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/sidebar.css?v=20260909-3"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/profile.css?v=20260909-1"
+    >
+</head>
+
+<body>
+
+    <div id="sidebar-container"></div>
+
+    <main class="profile-page">
+
+        <section class="profile-heading">
+            <div>
+                <span class="profile-kicker">
+                    MY ACCOUNT
+                </span>
+
+                <h1>
+                    Profile
+                </h1>
+
+                <p>
+                    View your account information and manage
+                    your login security.
+                </p>
+            </div>
+        </section>
+
+
+        <section
+            id="profileLoading"
+            class="profile-state"
+        >
+            <div class="profile-spinner"></div>
+
+            <strong>
+                Loading account information
+            </strong>
+        </section>
+
+
+        <section
+            id="profileContent"
+            class="profile-content hidden"
+        >
+
+            <article class="profile-card account-card">
+
+                <div class="card-header">
+                    <div class="card-icon">
+                        👤
+                    </div>
+
+                    <div>
+                        <span class="card-kicker">
+                            ACCOUNT
+                        </span>
+
+                        <h2>
+                            Account Information
+                        </h2>
+                    </div>
+                </div>
+
+
+                <div class="profile-overview">
+
+                    <div
+                        id="profileAvatar"
+                        class="profile-avatar"
+                    >
+                        U
+                    </div>
+
+                    <div class="profile-name-block">
+                        <h3 id="profileName">
+                            —
+                        </h3>
+
+                        <p id="profileEmail">
+                            —
+                        </p>
+
+                        <span
+                            id="profileRole"
+                            class="role-badge"
+                        >
+                            User
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <form id="profileForm">
+
+                    <div class="profile-form-grid">
+
+                        <div class="form-field">
+                            <label for="firstName">
+                                First Name
+                            </label>
+
+                            <input
+                                id="firstName"
+                                type="text"
+                                required
+                            >
+                        </div>
+
+
+                        <div class="form-field">
+                            <label for="middleName">
+                                Middle Name
+                            </label>
+
+                            <input
+                                id="middleName"
+                                type="text"
+                            >
+                        </div>
+
+
+                        <div class="form-field">
+                            <label for="lastName">
+                                Last Name
+                            </label>
+
+                            <input
+                                id="lastName"
+                                type="text"
+                                required
+                            >
+                        </div>
+
+
+                        <div class="form-field">
+                            <label for="suffix">
+                                Suffix
+                            </label>
+
+                            <select id="suffix">
+                                <option value="">
+                                    None
+                                </option>
+
+                                <option value="Jr.">
+                                    Jr.
+                                </option>
+
+                                <option value="Sr.">
+                                    Sr.
+                                </option>
+
+                                <option value="II">
+                                    II
+                                </option>
+
+                                <option value="III">
+                                    III
+                                </option>
+
+                                <option value="IV">
+                                    IV
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-field">
+                            <label for="phoneNumber">
+                                Phone Number
+                            </label>
+
+                            <input
+                                id="phoneNumber"
+                                type="tel"
+                                placeholder="09XXXXXXXXX"
+                            >
+                        </div>
+
+
+                        <div class="form-field">
+                            <label for="email">
+                                Email Address
+                            </label>
+
+                            <input
+                                id="email"
+                                type="email"
+                                disabled
+                            >
+
+                            <small>
+                                Email cannot be changed here.
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-meta">
+                        <div>
+                            <span>
+                                Account Created
+                            </span>
+
+                            <strong id="accountCreated">
+                                —
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>
+                                Account Status
+                            </span>
+
+                            <strong id="accountStatus">
+                                —
+                            </strong>
+                        </div>
+                    </div>
+
+
+                    <div class="form-actions">
+                        <button
+                            id="saveProfileButton"
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Save Changes
+                        </button>
+                    </div>
+
+                </form>
+
+            </article>
+
+
+            <div class="security-grid">
+
+                <article class="profile-card">
+
+                    <div class="card-header">
+                        <div class="card-icon">
+                            🔒
+                        </div>
+
+                        <div>
+                            <span class="card-kicker">
+                                SECURITY
+                            </span>
+
+                            <h2>
+                                Change Password
+                            </h2>
+                        </div>
+                    </div>
+
+
+                    <p class="card-description">
+                        Enter your current password before
+                        creating a new one.
+                    </p>
+
+
+                    <form id="changePasswordForm">
+
+                        <div class="form-field">
+                            <label for="currentPassword">
+                                Current Password
+                            </label>
+
+                            <div class="password-field">
+                                <input
+                                    id="currentPassword"
+                                    type="password"
+                                    autocomplete="current-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    data-password-target="currentPassword"
+                                >
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="form-field">
+                            <label for="newPassword">
+                                New Password
+                            </label>
+
+                            <div class="password-field">
+                                <input
+                                    id="newPassword"
+                                    type="password"
+                                    minlength="8"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    data-password-target="newPassword"
+                                >
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="form-field">
+                            <label for="confirmPassword">
+                                Confirm New Password
+                            </label>
+
+                            <div class="password-field">
+                                <input
+                                    id="confirmPassword"
+                                    type="password"
+                                    minlength="8"
+                                    autocomplete="new-password"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="password-toggle"
+                                    data-password-target="confirmPassword"
+                                >
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div class="password-rules">
+                            <span>
+                                Use at least 8 characters.
+                            </span>
+                        </div>
+
+
+                        <button
+                            id="changePasswordButton"
+                            type="submit"
+                            class="primary-button full-button"
+                        >
+                            Change Password
+                        </button>
+
+                    </form>
+
+                </article>
+
+
+                <article class="profile-card forgot-card">
+
+                    <div class="card-header">
+                        <div class="card-icon">
+                            🔑
+                        </div>
+
+                        <div>
+                            <span class="card-kicker">
+                                PASSWORD HELP
+                            </span>
+
+                            <h2>
+                                Forgot Password?
+                            </h2>
+                        </div>
+                    </div>
+
+
+                    <p class="card-description">
+                        If you cannot remember your current
+                        password, use password recovery from
+                        the login page.
+                    </p>
+
+
+                    <div class="forgot-email-box">
+                        <span>
+                            Account Email
+                        </span>
+
+                        <strong id="forgotEmail">
+                            —
+                        </strong>
+                    </div>
+
+
+                    <div class="forgot-note">
+                        <span>
+                            ℹ️
+                        </span>
+
+                        <p>
+                            Password recovery requires a verified
+                            reset link. Your current custom account
+                            system does not yet have an email reset
+                            service configured.
+                        </p>
+                    </div>
+
+
+                    <a
+                        href="/login.html"
+                        class="secondary-button full-button"
+                    >
+                        Go to Login
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <div
+            id="profileToast"
+            class="profile-toast hidden"
+            role="status"
+        ></div>
+
+    </main>
+
+
+    <script
+        src="/js/sidebar.js?v=20260909-3"
+    ></script>
+
+    <script
+        src="/js/profile.js?v=20260909-1"
+    ></script>
+
+</body>
+</html>

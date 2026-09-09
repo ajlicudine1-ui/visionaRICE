@@ -368,3 +368,287 @@ exports.me = async (req, res) => {
         });
     }
 };
+
+// ===============================
+// UPDATE PROFILE
+// ===============================
+
+exports.updateProfile = async (req, res) => {
+    try {
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required.'
+            });
+        }
+
+        const {
+            first_name,
+            middle_name,
+            last_name,
+            suffix,
+            phone_number
+        } = req.body;
+
+        if (!first_name || !last_name) {
+            return res.status(400).json({
+                success: false,
+                message: 'First name and last name are required.'
+            });
+        }
+
+        const updates = {
+            first_name:
+                String(first_name).trim(),
+
+            middle_name:
+                middle_name
+                    ? String(middle_name).trim()
+                    : null,
+
+            last_name:
+                String(last_name).trim(),
+
+            suffix:
+                suffix
+                    ? String(suffix).trim()
+                    : null,
+
+            phone_number:
+                phone_number
+                    ? String(phone_number).trim()
+                    : null,
+
+            updated_at:
+                new Date().toISOString()
+        };
+
+        const {
+            data: user,
+            error
+        } =
+            await supabaseAdmin
+                .from('users')
+                .update(updates)
+                .eq(
+                    'id',
+                    req.session.user.id
+                )
+                .select(`
+                    id,
+                    email,
+                    first_name,
+                    middle_name,
+                    last_name,
+                    suffix,
+                    phone_number,
+                    role,
+                    is_active,
+                    created_at,
+                    updated_at
+                `)
+                .single();
+
+        if (error) {
+            console.error(
+                'Profile update error:',
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: 'Unable to update profile.',
+                error: error.message
+            });
+        }
+
+        req.session.user = {
+            ...req.session.user,
+            first_name:
+                user.first_name,
+            last_name:
+                user.last_name
+        };
+
+        return res.json({
+            success: true,
+            message: 'Profile updated successfully.',
+            user
+        });
+
+    } catch (error) {
+        console.error(
+            'Unexpected profile update error:',
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: 'Unexpected server error.',
+            error: error.message
+        });
+    }
+};
+
+
+// ===============================
+// CHANGE PASSWORD
+// ===============================
+
+exports.changePassword = async (req, res) => {
+    try {
+        if (!req.session || !req.session.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required.'
+            });
+        }
+
+        const {
+            current_password,
+            new_password,
+            confirm_password
+        } = req.body;
+
+        if (
+            !current_password ||
+            !new_password ||
+            !confirm_password
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please complete all password fields.'
+            });
+        }
+
+        if (
+            String(new_password).length < 8
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: 'New password must be at least 8 characters long.'
+            });
+        }
+
+        if (
+            new_password !==
+            confirm_password
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: 'New password and confirmation do not match.'
+            });
+        }
+
+        if (
+            current_password ===
+            new_password
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: 'New password must be different from your current password.'
+            });
+        }
+
+        const {
+            data: user,
+            error: lookupError
+        } =
+            await supabaseAdmin
+                .from('users')
+                .select(`
+                    id,
+                    password_hash
+                `)
+                .eq(
+                    'id',
+                    req.session.user.id
+                )
+                .maybeSingle();
+
+        if (lookupError) {
+            console.error(
+                'Password lookup error:',
+                lookupError
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: 'Unable to verify current password.',
+                error: lookupError.message
+            });
+        }
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User account not found.'
+            });
+        }
+
+        const validPassword =
+            await bcrypt.compare(
+                String(current_password),
+                user.password_hash
+            );
+
+        if (!validPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'Current password is incorrect.'
+            });
+        }
+
+        const password_hash =
+            await bcrypt.hash(
+                String(new_password),
+                12
+            );
+
+        const {
+            error: updateError
+        } =
+            await supabaseAdmin
+                .from('users')
+                .update({
+                    password_hash,
+                    updated_at:
+                        new Date().toISOString()
+                })
+                .eq(
+                    'id',
+                    req.session.user.id
+                );
+
+        if (updateError) {
+            console.error(
+                'Password update error:',
+                updateError
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: 'Unable to change password.',
+                error: updateError.message
+            });
+        }
+
+        return res.json({
+            success: true,
+            message: 'Password changed successfully.'
+        });
+
+    } catch (error) {
+        console.error(
+            'Unexpected password change error:',
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: 'Unexpected server error.',
+            error: error.message
+        });
+    }
+};
+
