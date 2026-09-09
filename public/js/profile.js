@@ -466,6 +466,10 @@
 
                 elements.passwordForm.reset();
 
+                closeModal(
+                    "changePasswordModal"
+                );
+
                 showToast(
                     result.message ||
                     "Password changed successfully."
@@ -526,6 +530,129 @@
                 showing
                     ? "Show"
                     : "Hide";
+        }
+    );
+
+
+    function openModal(modalId) {
+        const modal =
+            document.getElementById(
+                modalId
+            );
+
+        if (!modal) {
+            return;
+        }
+
+        modal.classList.remove(
+            "hidden"
+        );
+
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        document.body.classList.add(
+            "modal-open"
+        );
+    }
+
+    function closeModal(modalId) {
+        const modal =
+            document.getElementById(
+                modalId
+            );
+
+        if (!modal) {
+            return;
+        }
+
+        modal.classList.add(
+            "hidden"
+        );
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        document.body.classList.remove(
+            "modal-open"
+        );
+    }
+
+    const openChangePasswordModal =
+        document.getElementById(
+            "openChangePasswordModal"
+        );
+
+    const openForgotPasswordModal =
+        document.getElementById(
+            "openForgotPasswordModal"
+        );
+
+    if (openChangePasswordModal) {
+        openChangePasswordModal.addEventListener(
+            "click",
+            () => {
+                openModal(
+                    "changePasswordModal"
+                );
+            }
+        );
+    }
+
+    if (openForgotPasswordModal) {
+        openForgotPasswordModal.addEventListener(
+            "click",
+            () => {
+                openModal(
+                    "forgotPasswordModal"
+                );
+            }
+        );
+    }
+
+    document.addEventListener(
+        "click",
+        event => {
+            const closer =
+                event.target.closest(
+                    "[data-close-modal]"
+                );
+
+            if (!closer) {
+                return;
+            }
+
+            closeModal(
+                closer.dataset.closeModal
+            );
+        }
+    );
+
+    document.addEventListener(
+        "keydown",
+        event => {
+            if (
+                event.key !==
+                "Escape"
+            ) {
+                return;
+            }
+
+            document
+                .querySelectorAll(
+                    ".profile-modal:not(.hidden)"
+                )
+                .forEach(
+                    modal => {
+                        closeModal(
+                            modal.id
+                        );
+                    }
+                );
         }
     );
 

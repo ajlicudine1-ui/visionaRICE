@@ -271,193 +271,287 @@
             </article>
 
 
-            <div class="security-grid">
+            
+            <div class="account-links">
+                <button
+                    type="button"
+                    class="account-text-link"
+                    id="openChangePasswordModal"
+                >
+                    Change Password
+                </button>
 
-                <article class="profile-card">
+                <span class="account-link-divider">
+                    •
+                </span>
 
-                    <div class="card-header">
-                        <div class="card-icon">
-                            🔒
-                        </div>
-
-                        <div>
-                            <span class="card-kicker">
-                                SECURITY
-                            </span>
-
-                            <h2>
-                                Change Password
-                            </h2>
-                        </div>
-                    </div>
-
-
-                    <p class="card-description">
-                        Enter your current password before
-                        creating a new one.
-                    </p>
-
-
-                    <form id="changePasswordForm">
-
-                        <div class="form-field">
-                            <label for="currentPassword">
-                                Current Password
-                            </label>
-
-                            <div class="password-field">
-                                <input
-                                    id="currentPassword"
-                                    type="password"
-                                    autocomplete="current-password"
-                                    required
-                                >
-
-                                <button
-                                    type="button"
-                                    class="password-toggle"
-                                    data-password-target="currentPassword"
-                                >
-                                    Show
-                                </button>
-                            </div>
-                        </div>
-
-
-                        <div class="form-field">
-                            <label for="newPassword">
-                                New Password
-                            </label>
-
-                            <div class="password-field">
-                                <input
-                                    id="newPassword"
-                                    type="password"
-                                    minlength="8"
-                                    autocomplete="new-password"
-                                    required
-                                >
-
-                                <button
-                                    type="button"
-                                    class="password-toggle"
-                                    data-password-target="newPassword"
-                                >
-                                    Show
-                                </button>
-                            </div>
-                        </div>
-
-
-                        <div class="form-field">
-                            <label for="confirmPassword">
-                                Confirm New Password
-                            </label>
-
-                            <div class="password-field">
-                                <input
-                                    id="confirmPassword"
-                                    type="password"
-                                    minlength="8"
-                                    autocomplete="new-password"
-                                    required
-                                >
-
-                                <button
-                                    type="button"
-                                    class="password-toggle"
-                                    data-password-target="confirmPassword"
-                                >
-                                    Show
-                                </button>
-                            </div>
-                        </div>
-
-
-                        <div class="password-rules">
-                            <span>
-                                Use at least 8 characters.
-                            </span>
-                        </div>
-
-
-                        <button
-                            id="changePasswordButton"
-                            type="submit"
-                            class="primary-button full-button"
-                        >
-                            Change Password
-                        </button>
-
-                    </form>
-
-                </article>
-
-
-                <article class="profile-card forgot-card">
-
-                    <div class="card-header">
-                        <div class="card-icon">
-                            🔑
-                        </div>
-
-                        <div>
-                            <span class="card-kicker">
-                                PASSWORD HELP
-                            </span>
-
-                            <h2>
-                                Forgot Password?
-                            </h2>
-                        </div>
-                    </div>
-
-
-                    <p class="card-description">
-                        If you cannot remember your current
-                        password, use password recovery from
-                        the login page.
-                    </p>
-
-
-                    <div class="forgot-email-box">
-                        <span>
-                            Account Email
-                        </span>
-
-                        <strong id="forgotEmail">
-                            —
-                        </strong>
-                    </div>
-
-
-                    <div class="forgot-note">
-                        <span>
-                            ℹ️
-                        </span>
-
-                        <p>
-                            Password recovery requires a verified
-                            reset link. Your current custom account
-                            system does not yet have an email reset
-                            service configured.
-                        </p>
-                    </div>
-
-
-                    <a
-                        href="/login.html"
-                        class="secondary-button full-button"
-                    >
-                        Go to Login
-                    </a>
-
-                </article>
-
+                <button
+                    type="button"
+                    class="account-text-link"
+                    id="openForgotPasswordModal"
+                >
+                    Forgot Password?
+                </button>
             </div>
 
         </section>
 
+
+        <!-- ===============================
+             CHANGE PASSWORD MODAL
+        ================================ -->
+
+        <div
+            id="changePasswordModal"
+            class="profile-modal hidden"
+            aria-hidden="true"
+        >
+            <div
+                class="profile-modal-backdrop"
+                data-close-modal="changePasswordModal"
+            ></div>
+
+            <section
+                class="profile-modal-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="changePasswordTitle"
+            >
+                <button
+                    type="button"
+                    class="profile-modal-close"
+                    data-close-modal="changePasswordModal"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+                <div class="modal-icon">
+                    🔒
+                </div>
+
+                <span class="card-kicker">
+                    SECURITY
+                </span>
+
+                <h2 id="changePasswordTitle">
+                    Change Password
+                </h2>
+
+                <p class="modal-description">
+                    Enter your current password, then create
+                    a new password for your account.
+                </p>
+
+                <form id="changePasswordForm">
+
+                    <div class="form-field">
+                        <label for="currentPassword">
+                            Current Password
+                        </label>
+
+                        <div class="password-field">
+                            <input
+                                id="currentPassword"
+                                type="password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="currentPassword"
+                            >
+                                Show
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-field">
+                        <label for="newPassword">
+                            New Password
+                        </label>
+
+                        <div class="password-field">
+                            <input
+                                id="newPassword"
+                                type="password"
+                                minlength="8"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="newPassword"
+                            >
+                                Show
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-field">
+                        <label for="confirmPassword">
+                            Confirm New Password
+                        </label>
+
+                        <div class="password-field">
+                            <input
+                                id="confirmPassword"
+                                type="password"
+                                minlength="8"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="confirmPassword"
+                            >
+                                Show
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="password-rules">
+                        New password must contain at least
+                        8 characters.
+                    </div>
+
+                    <div class="modal-actions">
+                        <button
+                            type="button"
+                            class="secondary-button"
+                            data-close-modal="changePasswordModal"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            id="changePasswordButton"
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Change Password
+                        </button>
+                    </div>
+
+                </form>
+            </section>
+        </div>
+
+
+        <!-- ===============================
+             FORGOT PASSWORD MODAL
+        ================================ -->
+
+        <div
+            id="forgotPasswordModal"
+            class="profile-modal hidden"
+            aria-hidden="true"
+        >
+            <div
+                class="profile-modal-backdrop"
+                data-close-modal="forgotPasswordModal"
+            ></div>
+
+            <section
+                class="profile-modal-dialog forgot-password-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="forgotPasswordTitle"
+            >
+                <button
+                    type="button"
+                    class="profile-modal-close"
+                    data-close-modal="forgotPasswordModal"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+                <div class="modal-icon">
+                    🔑
+                </div>
+
+                <span class="card-kicker">
+                    PASSWORD HELP
+                </span>
+
+                <h2 id="forgotPasswordTitle">
+                    Forgot Password?
+                </h2>
+
+                <p class="modal-description">
+                    If you cannot remember your password,
+                    use the steps below to recover access
+                    to your account.
+                </p>
+
+                <div class="forgot-email-box">
+                    <span>
+                        Your Account Email
+                    </span>
+
+                    <strong id="forgotEmail">
+                        —
+                    </strong>
+                </div>
+
+                <ol class="forgot-steps">
+                    <li>
+                        Confirm that the email above is your
+                        registered VISIONARICE account.
+                    </li>
+
+                    <li>
+                        Return to the login page and use the
+                        password recovery option once email
+                        reset is enabled.
+                    </li>
+
+                    <li>
+                        If you cannot access your account,
+                        contact the system administrator for
+                        account assistance.
+                    </li>
+                </ol>
+
+                <div class="forgot-note">
+                    <span>
+                        ℹ️
+                    </span>
+
+                    <p>
+                        Automatic password reset email is not yet
+                        configured in the current VISIONARICE
+                        account system.
+                    </p>
+                </div>
+
+                <div class="modal-actions">
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal="forgotPasswordModal"
+                    >
+                        Close
+                    </button>
+
+                    <a
+                        href="/login.html"
+                        class="primary-button"
+                    >
+                        Go to Login
+                    </a>
+                </div>
+            </section>
+        </div>
 
         <div
             id="profileToast"
