@@ -1,6 +1,8 @@
 (() => {
     const container =
-        document.getElementById('sidebar-container');
+        document.getElementById(
+            'sidebar-container'
+        );
 
     if (!container) {
         console.error(
@@ -9,8 +11,95 @@
         return;
     }
 
-    const COMPONENT_URL =
-        '/components/sidebar.html?v=20260909-936';
+    /*
+     * IMPORTANT
+     * The navigation is embedded directly here instead of
+     * being fetched from /components/sidebar.html.
+     *
+     * This removes the visible delay where the bottom nav
+     * disappears during a normal HTML-page navigation and
+     * only returns after fetch() finishes.
+     */
+    const SIDEBAR_HTML = `
+        <header class="sidebar">
+            <div class="sidebar-inner">
+
+                <a
+                    href="/analyze.html"
+                    class="sidebar-brand"
+                >
+                    <span class="sidebar-logo">
+                        🌾
+                    </span>
+
+                    <span class="sidebar-brand-text">
+                        <strong>VISION</strong><em>aRice</em>
+                    </span>
+                </a>
+
+                <nav class="sidebar-nav">
+
+                    <a
+                        href="/analyze.html"
+                        data-page="analyze"
+                    >
+                        <span>📷</span>
+                        Analyze
+                    </a>
+
+                    <a
+                        href="/dashboard.html"
+                        data-page="dashboard"
+                    >
+                        <span>◉</span>
+                        Dashboard
+                    </a>
+
+                    <a
+                        href="/history.html"
+                        data-page="history"
+                    >
+                        <span>↶</span>
+                        History
+                    </a>
+
+                    <a
+                        href="/profile.html"
+                        data-page="profile"
+                    >
+                        <span>👤</span>
+                        Profile
+                    </a>
+
+                    <a
+                        href="/notifications.html"
+                        data-page="notifications"
+                    >
+                        <span>🔔</span>
+                        Notifications
+                    </a>
+
+                    <a
+                        href="/help.html"
+                        data-page="help"
+                    >
+                        <span>?</span>
+                        Help
+                    </a>
+
+                </nav>
+            </div>
+        </header>
+    `;
+
+    // Render immediately. No fetch, no await, no network delay.
+    container.innerHTML =
+        SIDEBAR_HTML;
+
+
+    // =====================================================
+    // CURRENT PAGE
+    // =====================================================
 
     function currentPageName() {
         const file =
@@ -30,6 +119,11 @@
             .replace('.html', '');
     }
 
+
+    // =====================================================
+    // ACTIVE NAV
+    // =====================================================
+
     function setActiveNavigation() {
         const page =
             currentPageName();
@@ -39,6 +133,7 @@
                 '.sidebar-nav a'
             )
             .forEach(link => {
+
                 const target =
                     String(
                         link.dataset.page ||
@@ -49,8 +144,14 @@
                     'active',
                     target === page
                 );
+
             });
     }
+
+
+    // =====================================================
+    // MOBILE BOTTOM NAV
+    // =====================================================
 
     function applyMobileBottomNavigation() {
         const sidebar =
@@ -73,9 +174,6 @@
             !inner ||
             !nav
         ) {
-            console.error(
-                'VISIONARICE: reusable sidebar markup is missing .sidebar, .sidebar-inner, or .sidebar-nav.'
-            );
             return;
         }
 
@@ -93,10 +191,64 @@
                     'important'
                 );
 
+            /*
+             * Keep the parent from becoming a containing
+             * block for position:fixed on mobile.
+             */
+            [
+                container,
+                sidebar,
+                inner
+            ].forEach(element => {
+
+                element.style
+                    .setProperty(
+                        'transform',
+                        'none',
+                        'important'
+                    );
+
+                element.style
+                    .setProperty(
+                        'filter',
+                        'none',
+                        'important'
+                    );
+
+                element.style
+                    .setProperty(
+                        'backdrop-filter',
+                        'none',
+                        'important'
+                    );
+
+                element.style
+                    .setProperty(
+                        '-webkit-backdrop-filter',
+                        'none',
+                        'important'
+                    );
+
+                element.style
+                    .setProperty(
+                        'perspective',
+                        'none',
+                        'important'
+                    );
+
+                element.style
+                    .setProperty(
+                        'contain',
+                        'none',
+                        'important'
+                    );
+
+            });
+
             sidebar.style
                 .setProperty(
                     'position',
-                    'relative',
+                    'static',
                     'important'
                 );
 
@@ -111,6 +263,13 @@
                 .setProperty(
                     'bottom',
                     'auto',
+                    'important'
+                );
+
+            sidebar.style
+                .setProperty(
+                    'box-shadow',
+                    'none',
                     'important'
                 );
 
@@ -159,7 +318,14 @@
             nav.style
                 .setProperty(
                     'width',
-                    '100%',
+                    '100vw',
+                    'important'
+                );
+
+            nav.style
+                .setProperty(
+                    'max-width',
+                    '100vw',
                     'important'
                 );
 
@@ -216,6 +382,13 @@
                 .setProperty(
                     'border-top',
                     '1px solid #dde5dc',
+                    'important'
+                );
+
+            nav.style
+                .setProperty(
+                    'border-bottom',
+                    '0',
                     'important'
                 );
 
@@ -294,6 +467,13 @@
 
                     link.style
                         .setProperty(
+                            'line-height',
+                            '1.1',
+                            'important'
+                        );
+
+                    link.style
+                        .setProperty(
                             'text-align',
                             'center',
                             'important'
@@ -305,6 +485,7 @@
                             'transparent',
                             'important'
                         );
+
                 });
 
         } else {
@@ -315,6 +496,7 @@
                 );
 
             [
+                container,
                 sidebar,
                 inner,
                 nav,
@@ -328,89 +510,63 @@
         }
     }
 
-    async function removeOldPwaCaches() {
-        try {
 
-            if (
-                'serviceWorker' in navigator
-            ) {
-                const registrations =
-                    await navigator
-                        .serviceWorker
-                        .getRegistrations();
+    // =====================================================
+    // FAST NAV CLICK
+    // =====================================================
 
-                for (
-                    const registration
-                    of registrations
-                ) {
-                    await registration.unregister();
-                }
-            }
+    /*
+     * Update the active state immediately before the browser
+     * loads the next HTML page. The new page will also render
+     * the nav immediately because no component fetch is used.
+     */
+    container.addEventListener(
+        'click',
+        event => {
 
-            if ('caches' in window) {
-                const keys =
-                    await caches.keys();
-
-                await Promise.all(
-                    keys.map(
-                        key =>
-                            caches.delete(key)
-                    )
-                );
-            }
-
-        } catch (error) {
-            console.warn(
-                'VISIONARICE cache cleanup skipped:',
-                error
-            );
-        }
-    }
-
-    async function loadSidebar() {
-        try {
-
-            await removeOldPwaCaches();
-
-            const response =
-                await fetch(
-                    COMPONENT_URL,
-                    {
-                        cache: 'no-store'
-                    }
+            const link =
+                event.target.closest(
+                    '.sidebar-nav a'
                 );
 
-            if (!response.ok) {
-                throw new Error(
-                    `Sidebar request failed (${response.status})`
-                );
+            if (!link) {
+                return;
             }
 
-            container.innerHTML =
-                await response.text();
+            container
+                .querySelectorAll(
+                    '.sidebar-nav a'
+                )
+                .forEach(item => {
+                    item.classList.remove(
+                        'active'
+                    );
+                });
 
-            setActiveNavigation();
-
-            applyMobileBottomNavigation();
-
-            requestAnimationFrame(
-                applyMobileBottomNavigation
-            );
-
-            setTimeout(
-                applyMobileBottomNavigation,
-                200
-            );
-
-        } catch (error) {
-
-            console.error(
-                'VISIONARICE sidebar error:',
-                error
+            link.classList.add(
+                'active'
             );
 
         }
-    }
+    );
+
+
+    // =====================================================
+    // INITIALIZE
+    // =====================================================
+
+    setActiveNavigation();
+
+    applyMobileBottomNavigation();
+
+    requestAnimationFrame(
+        applyMobileBottomNavigation
+    );
+
+
+    // =====================================================
+    // RESIZE / ROTATION
+    // =====================================================
 
     window.addEventListener(
         'resize',
@@ -427,5 +583,4 @@
         }
     );
 
-    loadSidebar();
 })();
