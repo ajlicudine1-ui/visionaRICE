@@ -631,7 +631,10 @@ function openCropModal(src) {
                 movable: true,
                 zoomable: true,
                 rotatable: true,
-                scalable: true
+                scalable: false,
+                cropBoxMovable: true,
+                cropBoxResizable: true,
+                toggleDragModeOnDblclick: false
             }
         );
 
@@ -681,8 +684,8 @@ async function applyCrop() {
         const canvas =
             cropper.getCroppedCanvas(
                 {
-                    width: 224,
-                    height: 224,
+                    maxWidth: 1600,
+                    maxHeight: 1600,
                     imageSmoothingEnabled: true,
                     imageSmoothingQuality: 'high',
                     fillColor: '#ffffff'
