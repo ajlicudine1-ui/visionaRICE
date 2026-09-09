@@ -650,3 +650,63 @@
         font-size: 22px !important;
     }
 }
+
+
+/* =================================================
+   CROPPED IMAGE PREVIEW
+   Show the cropped image exactly as produced
+================================================= */
+
+#previewBox,
+.preview {
+    position: relative !important;
+
+    width: 100% !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+
+    border-radius: 18px !important;
+
+    background: #eef5ec !important;
+}
+
+
+#previewBox.hidden,
+.preview.hidden {
+    display: none !important;
+}
+
+
+#imagePreview,
+.preview #imagePreview,
+.preview img {
+    display: block !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+    max-height: 520px !important;
+
+    margin: 0 auto !important;
+
+    object-fit: contain !important;
+
+    object-position: center center !important;
+
+    aspect-ratio: auto !important;
+
+    transform: none !important;
+
+    border-radius: 16px !important;
+}
