@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VISIONARICE | Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+
+<div id="sidebar-container"></div>
+
+
+
+
+<main class="dashboard-page">
+
+    <!-- ==================================================
+         PAGE HEADING
+    =================================================== -->
+
+    <section class="dashboard-heading">
+
+        <div>
+            <span class="dashboard-eyebrow">
+                🌾 RICE HEALTH MONITORING
+            </span>
+
+            <h1>
+                Rice Disease Detection Dashboard
+            </h1>
+
+            <p>
+                Monitor scan activity, disease trends, confidence levels,
+                and locations from VISIONARICE predictions.
+            </p>
+        </div>
+
+        <div class="dashboard-heading-actions">
+
+            <div class="last-updated">
+                <span class="pulse-dot"></span>
+
+                <div>
+                    <small>Last updated</small>
+                    <strong id="lastUpdated">Loading...</strong>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="refresh-button"
+                id="refreshDashboardButton"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         KPI CARDS
+    =================================================== -->
+
+    <section class="kpi-grid">
+
+        <article class="kpi-card">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">📊</div>
+                <span class="kpi-label">Total Scans</span>
+            </div>
+
+            <strong
+                class="kpi-value"
+                id="totalScans"
+            >
+                0
+            </strong>
+
+            <p>
+                All valid VISIONARICE analyses
+            </p>
+
+        </article>
+
+
+        <article class="kpi-card">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">🎯</div>
+                <span class="kpi-label">Average Confidence</span>
+            </div>
+
+            <strong
+                class="kpi-value"
+                id="averageConfidence"
+            >
+                0%
+            </strong>
+
+            <p>
+                Mean prediction confidence
+            </p>
+
+        </article>
+
+
+        <article class="kpi-card">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">📷</div>
+                <span class="kpi-label">Scans Today</span>
+            </div>
+
+            <strong
+                class="kpi-value"
+                id="scansToday"
+            >
+                0
+            </strong>
+
+            <p>
+                Analyses completed today
+            </p>
+
+        </article>
+
+
+        <article class="kpi-card">
+
+            <div class="kpi-top">
+                <div class="kpi-icon">🩺</div>
+                <span class="kpi-label">Most Detected</span>
+            </div>
+
+            <strong
+                class="kpi-value kpi-value-text"
+                id="mostDetected"
+            >
+                No data
+            </strong>
+
+            <p>
+                Most frequently detected class
+            </p>
+
+        </article>
+
+    </section>
+
+
+    <!-- ==================================================
+         TOP VISUALS
+    =================================================== -->
+
+    <section class="dashboard-grid dashboard-grid-two">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <span class="card-kicker">DISEASE PROFILE</span>
+
+                    <h2>
+                        Disease Detection Results
+                    </h2>
+
+                    <p>
+                        Number of detections for each supported rice class.
+                    </p>
+                </div>
+
+                <div class="card-icon">
+                    🌾
+                </div>
+
+            </div>
+
+            <div class="chart-wrap chart-wrap-large">
+                <canvas id="diseaseChart"></canvas>
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <span class="card-kicker">CROP CONDITION</span>
+
+                    <h2>
+                        Plant Health Status
+                    </h2>
+
+                    <p>
+                        Healthy scans compared with detected disease cases.
+                    </p>
+                </div>
+
+                <div class="card-icon">
+                    🌱
+                </div>
+
+            </div>
+
+            <div class="health-content">
+
+                <div class="chart-wrap health-chart-wrap">
+                    <canvas id="healthChart"></canvas>
+                </div>
+
+                <div class="health-summary">
+
+                    <div class="health-stat">
+                        <span class="health-dot healthy"></span>
+
+                        <div>
+                            <small>Healthy</small>
+                            <strong id="healthyCount">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="health-stat">
+                        <span class="health-dot diseased"></span>
+
+                        <div>
+                            <small>Diseased</small>
+                            <strong id="diseasedCount">0</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ==================================================
+         SECOND ROW
+    =================================================== -->
+
+    <section class="dashboard-grid dashboard-grid-two">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <span class="card-kicker">ACTIVITY</span>
+
+                    <h2>
+                        Scans Over Time
+                    </h2>
+
+                    <p>
+                        VISIONARICE scan activity during the latest 14 days.
+                    </p>
+                </div>
+
+                <div class="card-icon">
+                    📈
+                </div>
+
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="trendChart"></canvas>
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <span class="card-kicker">MODEL QUALITY</span>
+
+                    <h2>
+                        Confidence Score Ranges
+                    </h2>
+
+                    <p>
+                        Distribution of predictions across confidence bands.
+                    </p>
+                </div>
+
+                <div class="card-icon">
+                    🎯
+                </div>
+
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="confidenceChart"></canvas>
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ==================================================
+         LOCATION + RECENT
+    =================================================== -->
+
+    <section class="dashboard-grid dashboard-grid-location">
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <span class="card-kicker">FIELD ACTIVITY</span>
+
+                    <h2>
+                        Top Locations Scanned
+                    </h2>
+
+                    <p>
+                        Areas with the highest number of recorded scans.
+                    </p>
+                </div>
+
+                <div class="card-icon">
+                    📍
+                </div>
+
+            </div>
+
+            <div
+                class="location-list"
+                id="locationList"
+            >
+                <div class="empty-state">
+                    No location data yet.
+                </div>
+            </div>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <div class="card-heading">
+
+                <div>
+                    <span class="card-kicker">RECENT ACTIVITY</span>
+
+                    <h2>
+                        Latest Predictions
+                    </h2>
+
+                    <p>
+                        Most recent VISIONARICE analyses.
+                    </p>
+                </div>
+
+                <a
+                    href="/history.html"
+                    class="view-all-link"
+                >
+                    View History →
+                </a>
+
+            </div>
+
+            <div
+                class="recent-list"
+                id="recentPredictions"
+            >
+                <div class="empty-state">
+                    No predictions yet.
+                </div>
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ==================================================
+         FOOTNOTE
+    =================================================== -->
+
+    <section class="dashboard-note">
+        <span>ℹ️</span>
+
+        <p>
+            Dashboard metrics summarize recorded VISIONARICE scans.
+            Invalid images classified as random objects or unsupported leaves
+            should not be counted as disease detections.
+        </p>
+    </section>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="/js/sidebar.js"></script>
+<script src="/js/dashboard.js"></script>
+
+</body>
+</html>

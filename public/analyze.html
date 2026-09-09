@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        VISIONARICE | Analyze
+    </title>
+
+
+    <!-- =================================
+         FONT
+    ================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =================================
+         CROPPER
+    ================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css"
+    >
+
+
+    <!-- =================================
+         CSS
+    ================================== -->
+
+    <link
+        rel="stylesheet"
+        href="/css/sidebar.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/analyze.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/result-ui.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     REUSABLE TOP NAVIGATION
+========================================= -->
+
+<div id="sidebar-container"></div>
+
+
+<!-- =========================================
+     PAGE
+========================================= -->
+
+<main class="page-content">
+
+    <main class="page">
+
+
+        <!-- =================================
+             HERO
+        ================================== -->
+
+        <section class="hero">
+
+            <span>
+                AI RICE HEALTH ANALYSIS
+            </span>
+
+
+            <h1>
+                Predict Rice Disease
+            </h1>
+
+
+            <p>
+                Capture or upload a clear rice leaf image,
+                crop the affected area,
+                choose the location,
+                then analyze.
+            </p>
+
+        </section>
+
+
+        <!-- =================================
+             MAIN GRID
+        ================================== -->
+
+        <section class="grid">
+
+
+            <!-- =============================
+                 GUIDE
+            ============================== -->
+
+            <aside class="card guide">
+
+
+                <span class="pill">
+                    🌾 VISIONARICE GUIDE
+                </span>
+
+
+                <h2>
+                    Before You Scan
+                </h2>
+
+
+                <p class="muted">
+                    Better images help produce more reliable results.
+                </p>
+
+
+                <div class="tips">
+
+
+                    <div>
+
+                        <i>
+                            ☀️
+                        </i>
+
+
+                        <section>
+
+                            <b>
+                                Good Lighting
+                            </b>
+
+
+                            <p>
+                                Use bright natural light
+                                and avoid dark shadows.
+                            </p>
+
+                        </section>
+
+                    </div>
+
+
+                    <div>
+
+                        <i>
+                            🎯
+                        </i>
+
+
+                        <section>
+
+                            <b>
+                                Focus on the Affected Area
+                            </b>
+
+
+                            <p>
+                                Keep spots,
+                                lesions,
+                                and discoloration visible.
+                            </p>
+
+                        </section>
+
+                    </div>
+
+
+                    <div>
+
+                        <i>
+                            📸
+                        </i>
+
+
+                        <section>
+
+                            <b>
+                                Avoid Blur
+                            </b>
+
+
+                            <p>
+                                Hold the phone steadily
+                                before capturing.
+                            </p>
+
+                        </section>
+
+                    </div>
+
+
+                    <div>
+
+                        <i>
+                            ↔️
+                        </i>
+
+
+                        <section>
+
+                            <b>
+                                Right Distance
+                            </b>
+
+
+                            <p>
+                                Show enough of the leaf
+                                while keeping details clear.
+                            </p>
+
+                        </section>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="quick-tip">
+
+                    💡
+
+
+                    <span>
+
+                        <b>
+                            Best result
+                        </b>
+
+                        <br>
+
+                        Use one rice leaf
+                        against a simple background.
+
+                    </span>
+
+                </div>
+
+
+            </aside>
+
+
+            <!-- =============================
+                 SCAN
+            ============================== -->
+
+            <section class="card scan">
+
+
+                <div class="scan-head">
+
+
+                    <div>
+
+                        <h2>
+                            📷 Camera or Gallery
+                        </h2>
+
+
+                        <p>
+                            Capture a new image
+                            or choose one from your device.
+                        </p>
+
+                    </div>
+
+
+                    <span class="ready">
+                        ● Ready
+                    </span>
+
+
+                </div>
+
+
+                <!-- =========================
+                     UPLOAD
+                ========================== -->
+
+                <div
+                    class="upload"
+                    id="uploadZone"
+                >
+
+
+                    <input
+                        id="galleryInput"
+                        type="file"
+                        accept="image/*"
+                        hidden
+                    >
+
+
+                    <input
+                        id="cameraInput"
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        hidden
+                    >
+
+
+                    <!-- EMPTY STATE -->
+
+                    <div
+                        id="emptyUpload"
+                        class="empty-upload"
+                    >
+
+
+                        <div class="leaf">
+                            🌿
+                        </div>
+
+
+                        <h3>
+                            Add a Rice Leaf Image
+                        </h3>
+
+
+                        <p>
+                            Use your phone camera
+                            or select an image
+                            from your gallery.
+                        </p>
+
+
+                        <div class="buttons">
+
+
+                            <button
+                                id="cameraButton"
+                                class="primary"
+                                type="button"
+                            >
+                                📷 Open Camera
+                            </button>
+
+
+                            <button
+                                id="galleryButton"
+                                type="button"
+                            >
+                                🖼️ Choose Image
+                            </button>
+
+
+                        </div>
+
+
+                        <small>
+                            JPG, JPEG, PNG • Maximum 10 MB
+                        </small>
+
+
+                    </div>
+
+
+                    <!-- PREVIEW -->
+
+                    <div
+                        id="previewBox"
+                        class="preview hidden"
+                    >
+
+
+                        <img
+                            id="imagePreview"
+                            alt="Preview"
+                        >
+
+
+                        <button
+                            id="editCropButton"
+                            class="crop-chip"
+                            type="button"
+                        >
+                            ✂ Crop
+                        </button>
+
+
+                        <button
+                            id="removeImageButton"
+                            class="remove"
+                            type="button"
+                        >
+                            ×
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =========================
+                     FOOTER
+                ========================== -->
+
+                <div class="scan-footer">
+
+
+                    <div class="filename">
+
+                        🌿
+
+
+                        <span>
+
+                            <small>
+                                Selected Image
+                            </small>
+
+
+                            <b id="selectedFileName">
+                                No image selected
+                            </b>
+
+                        </span>
+
+
+                    </div>
+
+
+                    <button
+                        id="analyzeButton"
+                        class="analyze"
+                        type="button"
+                        disabled
+                    >
+                        ✦ Analyze Image
+                    </button>
+
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+
+        <!-- =================================
+             LOCATION SUMMARY
+        ================================== -->
+
+        <section
+            id="locationSummary"
+            class="location-summary hidden"
+        >
+
+
+            <span>
+                📍
+            </span>
+
+
+            <div>
+
+                <small>
+                    Analysis Location
+                </small>
+
+
+                <b id="locationSummaryText">
+                    No location selected
+                </b>
+
+            </div>
+
+
+            <button
+                id="changeLocationButton"
+                type="button"
+            >
+                Change
+            </button>
+
+
+        </section>
+
+
+        <!-- =================================
+             MESSAGE
+        ================================== -->
+
+        <section
+            id="messageCard"
+            class="message hidden"
+        >
+
+            <b id="messageTitle"></b>
+
+            <p id="messageText"></p>
+
+        </section>
+
+
+        <!-- =================================
+             LOADING
+        ================================== -->
+
+        <section
+            id="analysisLoading"
+            class="loading hidden"
+        >
+
+
+            <span></span>
+
+
+            <div>
+
+                <b>
+                    Analyzing Rice Leaf
+                </b>
+
+
+                <p>
+                    Preparing image and location...
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+</main>
+
+
+<!-- =========================================
+     LOCATION MODAL
+========================================= -->
+
+<div
+    id="locationModal"
+    class="modal hidden"
+>
+
+    <div class="dialog">
+
+
+        <button
+            id="locationCloseButton"
+            class="x"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-icon">
+            📍
+        </div>
+
+
+        <h2>
+            Choose Analysis Location
+        </h2>
+
+
+        <p>
+            Location helps VISIONARICE
+            map disease occurrences
+            and monitoring data.
+        </p>
+
+
+        <div class="location-options">
+
+
+            <button
+                id="currentLocationButton"
+                type="button"
+            >
+
+
+                <i>
+                    ◎
+                </i>
+
+
+                <span>
+
+                    <b>
+                        Use Current Location
+                    </b>
+
+
+                    <small>
+                        Use your phone or browser GPS
+                    </small>
+
+                </span>
+
+
+                <strong>
+                    ›
+                </strong>
+
+
+            </button>
+
+
+            <button
+                id="manualLocationButton"
+                type="button"
+            >
+
+
+                <i>
+                    ✎
+                </i>
+
+
+                <span>
+
+                    <b>
+                        Enter Location Manually
+                    </b>
+
+
+                    <small>
+                        Province, municipality/city and barangay
+                    </small>
+
+                </span>
+
+
+                <strong>
+                    ›
+                </strong>
+
+
+            </button>
+
+
+            <button
+                id="savedLocationButton"
+                type="button"
+            >
+
+
+                <i>
+                    ★
+                </i>
+
+
+                <span>
+
+                    <b>
+                        Use Saved Location
+                    </b>
+
+
+                    <small id="savedLocationHint">
+                        No saved location yet
+                    </small>
+
+                </span>
+
+
+                <strong>
+                    ›
+                </strong>
+
+
+            </button>
+
+
+        </div>
+
+
+        <button
+            id="cancelLocationButton"
+            class="cancel full"
+            type="button"
+        >
+            Cancel
+        </button>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     MANUAL LOCATION MODAL
+========================================= -->
+
+<div
+    id="manualLocationModal"
+    class="modal hidden"
+>
+
+    <div class="dialog">
+
+
+        <button
+            id="manualLocationCloseButton"
+            class="x"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-icon">
+            ✎
+        </div>
+
+
+        <h2>
+            Enter Location
+        </h2>
+
+
+        <p>
+            Enter where the rice leaf was collected
+            or photographed.
+        </p>
+
+
+        <div class="form-grid">
+
+
+            <label>
+
+                Province
+
+
+                <select id="provinceInput">
+
+                    <option value="">
+                        Select Province
+                    </option>
+
+                </select>
+
+
+            </label>
+
+
+            <label>
+
+                Municipality / City
+
+
+                <select
+                    id="municipalityInput"
+                    disabled
+                >
+
+                    <option value="">
+                        Select Municipality / City
+                    </option>
+
+                </select>
+
+
+            </label>
+
+
+            <label class="wide">
+
+                Barangay
+
+
+                <select
+                    id="barangayInput"
+                    disabled
+                >
+
+                    <option value="">
+                        Select Barangay
+                    </option>
+
+                </select>
+
+
+            </label>
+
+
+        </div>
+
+
+        <label class="save-check">
+
+
+            <input
+                id="saveLocationCheckbox"
+                type="checkbox"
+                checked
+            >
+
+
+            Save this location for next time
+
+
+        </label>
+
+
+        <div class="actions">
+
+
+            <button
+                id="manualCancelButton"
+                class="cancel"
+                type="button"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                id="manualUseButton"
+                class="primary"
+                type="button"
+            >
+                Use This Location
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     CROP MODAL
+========================================= -->
+
+<div
+    id="cropModal"
+    class="modal hidden"
+>
+
+    <div class="dialog crop-dialog">
+
+
+        <button
+            id="cropCloseButton"
+            class="x"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-icon">
+            ✂
+        </div>
+
+
+        <h2>
+            Crop Rice Leaf Image
+        </h2>
+
+
+        <p>
+            Adjust the crop so the leaf
+            and affected area are clearly visible.
+        </p>
+
+
+        <div class="crop-workspace">
+
+
+            <img
+                id="cropImage"
+                alt="Crop image"
+            >
+
+
+        </div>
+
+
+        <div class="crop-tools">
+
+
+            <button
+                id="rotateLeftButton"
+                type="button"
+            >
+                ↶ Rotate
+            </button>
+
+
+            <button
+                id="zoomOutButton"
+                type="button"
+            >
+                − Zoom
+            </button>
+
+
+            <button
+                id="zoomInButton"
+                type="button"
+            >
+                + Zoom
+            </button>
+
+
+            <button
+                id="resetCropButton"
+                type="button"
+            >
+                Reset
+            </button>
+
+
+        </div>
+
+
+        <div class="actions">
+
+
+            <button
+                id="cropCancelButton"
+                class="cancel"
+                type="button"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                id="applyCropButton"
+                class="primary"
+                type="button"
+            >
+                Apply Crop
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     SCRIPTS
+========================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"
+></script>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core/dist/tf-core.min.js"
+></script>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-cpu/dist/tf-backend-cpu.min.js"
+></script>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js"
+></script>
+
+
+<script src="/js/sidebar.js"></script>
+
+<script src="/js/analyze.js"></script>
+
+
+</body>
+
+</html>
