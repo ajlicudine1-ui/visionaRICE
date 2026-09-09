@@ -1,0 +1,415 @@
+/* =====================================================
+   VISIONARICE - MOBILE MODAL / CROP FIX
+   Load this AFTER sidebar.css and analyze.css
+===================================================== */
+
+@media screen and (max-width: 760px) {
+
+    /* -------------------------------------------------
+       Keep page usable above the fixed bottom nav
+    ------------------------------------------------- */
+    body {
+        padding-bottom:
+            calc(
+                82px +
+                env(safe-area-inset-bottom)
+            ) !important;
+    }
+
+    /* -------------------------------------------------
+       When any modal is open, temporarily hide the
+       bottom navigation so it cannot cover modal buttons.
+       Chrome/Android supports :has().
+    ------------------------------------------------- */
+    body:has(.modal:not(.hidden)) .sidebar-nav {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateY(100%) !important;
+    }
+
+    /* -------------------------------------------------
+       Modal shell
+    ------------------------------------------------- */
+    .modal {
+        position: fixed !important;
+
+        inset: 0 !important;
+
+        width: 100% !important;
+        height: 100dvh !important;
+
+        padding:
+            12px !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+
+        background:
+            rgba(13, 37, 26, 0.48) !important;
+
+        z-index:
+            2147483647 !important;
+    }
+
+    .modal.hidden {
+        display: none !important;
+    }
+
+    /* -------------------------------------------------
+       Generic dialog
+    ------------------------------------------------- */
+    .dialog {
+        position: relative !important;
+
+        width:
+            min(
+                100%,
+                520px
+            ) !important;
+
+        max-width: none !important;
+
+        max-height:
+            calc(
+                100dvh - 24px
+            ) !important;
+
+        margin: 0 !important;
+
+        padding:
+            22px 16px 18px !important;
+
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+
+        overscroll-behavior:
+            contain !important;
+
+        border-radius:
+            24px !important;
+
+        background:
+            #ffffff !important;
+
+        -webkit-overflow-scrolling:
+            touch;
+    }
+
+    .dialog .x {
+        position: absolute !important;
+
+        top: 12px !important;
+        right: 12px !important;
+
+        z-index: 10 !important;
+    }
+
+    .dialog h2 {
+        padding-right:
+            38px !important;
+
+        font-size:
+            21px !important;
+
+        line-height:
+            1.25 !important;
+    }
+
+    .dialog > p {
+        margin-top:
+            7px !important;
+
+        font-size:
+            12px !important;
+
+        line-height:
+            1.5 !important;
+    }
+
+    /* =================================================
+       CROP MODAL
+    ================================================= */
+
+    .crop-dialog {
+        width: 100% !important;
+
+        max-width:
+            520px !important;
+
+        max-height:
+            calc(
+                100dvh - 20px
+            ) !important;
+
+        padding:
+            18px 14px 16px !important;
+    }
+
+    .crop-dialog .modal-icon {
+        width: 40px !important;
+        height: 40px !important;
+
+        margin-bottom:
+            8px !important;
+
+        font-size:
+            18px !important;
+    }
+
+    /* -------------------------------------------------
+       Crop area: much shorter on phones
+    ------------------------------------------------- */
+    .crop-workspace {
+        position: relative !important;
+
+        width: 100% !important;
+
+        height:
+            min(
+                48dvh,
+                390px
+            ) !important;
+
+        min-height:
+            250px !important;
+
+        max-height:
+            390px !important;
+
+        margin:
+            14px 0 12px !important;
+
+        overflow:
+            hidden !important;
+
+        border-radius:
+            18px !important;
+
+        background:
+            #101010 !important;
+    }
+
+    .crop-workspace img,
+    .crop-workspace .cropper-container,
+    .crop-workspace .cropper-wrap-box,
+    .crop-workspace .cropper-canvas {
+        max-width:
+            100% !important;
+    }
+
+    .crop-workspace .cropper-container {
+        width:
+            100% !important;
+
+        height:
+            100% !important;
+    }
+
+    /* -------------------------------------------------
+       Four crop tools in a compact 2 x 2 grid
+    ------------------------------------------------- */
+    .crop-tools {
+        width:
+            100% !important;
+
+        display:
+            grid !important;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            ) !important;
+
+        gap:
+            8px !important;
+
+        margin:
+            0 0 12px !important;
+    }
+
+    .crop-tools button {
+        width:
+            100% !important;
+
+        min-width:
+            0 !important;
+
+        min-height:
+            44px !important;
+
+        margin:
+            0 !important;
+
+        padding:
+            9px 8px !important;
+
+        border-radius:
+            12px !important;
+
+        font-size:
+            12px !important;
+
+        white-space:
+            nowrap !important;
+    }
+
+    /* -------------------------------------------------
+       Cancel + Apply Crop side by side
+    ------------------------------------------------- */
+    .crop-dialog .actions {
+        position:
+            sticky !important;
+
+        bottom:
+            0 !important;
+
+        width:
+            100% !important;
+
+        display:
+            grid !important;
+
+        grid-template-columns:
+            1fr 1.25fr !important;
+
+        gap:
+            9px !important;
+
+        margin-top:
+            4px !important;
+
+        padding:
+            8px 0 2px !important;
+
+        background:
+            #ffffff !important;
+
+        z-index:
+            20 !important;
+    }
+
+    .crop-dialog .actions button {
+        width:
+            100% !important;
+
+        min-height:
+            48px !important;
+
+        margin:
+            0 !important;
+
+        padding:
+            11px 8px !important;
+
+        border-radius:
+            13px !important;
+
+        font-size:
+            13px !important;
+
+        font-weight:
+            600 !important;
+    }
+
+    #applyCropButton {
+        background:
+            #1c6b43 !important;
+
+        color:
+            #ffffff !important;
+    }
+
+    /* =================================================
+       LOCATION MODALS
+    ================================================= */
+
+    .location-options {
+        gap:
+            9px !important;
+    }
+
+    .location-options button {
+        min-height:
+            62px !important;
+
+        padding:
+            11px 12px !important;
+    }
+
+    .form-grid {
+        grid-template-columns:
+            1fr !important;
+
+        gap:
+            10px !important;
+    }
+
+    .dialog:not(.crop-dialog) .actions {
+        display:
+            grid !important;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            ) !important;
+
+        gap:
+            9px !important;
+    }
+}
+
+
+/* =====================================================
+   EXTRA SMALL PHONES
+===================================================== */
+
+@media screen and (max-width: 420px) {
+
+    .modal {
+        padding:
+            8px !important;
+    }
+
+    .dialog {
+        max-height:
+            calc(
+                100dvh - 16px
+            ) !important;
+
+        border-radius:
+            20px !important;
+    }
+
+    .crop-dialog {
+        padding:
+            15px 12px 14px !important;
+    }
+
+    .crop-workspace {
+        height:
+            43dvh !important;
+
+        min-height:
+            225px !important;
+    }
+
+    .crop-tools button {
+        min-height:
+            42px !important;
+
+        font-size:
+            11px !important;
+    }
+
+    .crop-dialog .actions button {
+        min-height:
+            46px !important;
+    }
+}
