@@ -2640,3 +2640,405 @@ a {
     }
 
 }
+
+
+/* =====================================================
+   FINAL ONE-PAGE PRINT FIX
+   - Keeps all report content on one A4 page
+   - Prevents DA yellow/green accents from entering body
+   - Moves certification/signatures above footer
+   - Compresses spacing without changing web view
+===================================================== */
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin:
+            34mm
+            11mm
+            18mm
+            11mm;
+    }
+
+    html,
+    body {
+        width: 210mm !important;
+        min-height: 297mm !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: visible !important;
+
+        background: #ffffff !important;
+    }
+
+    body {
+        font-size: 7.4pt !important;
+        line-height: 1.24 !important;
+    }
+
+    .detail-page {
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .prediction-result {
+        display: block !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    /* -------------------------------------------------
+       OFFICIAL HEADER
+    ------------------------------------------------- */
+
+    .da-template-header {
+        top: -31mm !important;
+
+        height: 26mm !important;
+
+        overflow: hidden !important;
+    }
+
+    .da-header-grid {
+        height: 24mm !important;
+
+        grid-template-columns:
+            42mm
+            1fr
+            34mm !important;
+
+        gap: 3mm !important;
+    }
+
+    .da-header-left img {
+        width: 40mm !important;
+        height: 18mm !important;
+    }
+
+    .da-header-right img {
+        width: 31mm !important;
+        height: 18mm !important;
+    }
+
+    .republic-line {
+        font-size: 6.8pt !important;
+    }
+
+    .department-line {
+        font-size: 7.6pt !important;
+    }
+
+    .regional-line,
+    .address-line,
+    .telephone-line {
+        font-size: 6.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       TOP YELLOW/GREEN ACCENT
+       Confine it to header only.
+    ------------------------------------------------- */
+
+    .da-template-accent-top {
+        top: -1mm !important;
+        left: -11mm !important;
+
+        width: 58mm !important;
+        height: 6mm !important;
+
+        overflow: hidden !important;
+
+        z-index: 0 !important;
+
+        border-radius:
+            0 0 50% 0 !important;
+    }
+
+
+    /* -------------------------------------------------
+       FOOTER
+       Keep accent below content and out of signatures.
+    ------------------------------------------------- */
+
+    .da-template-footer {
+        bottom: -16mm !important;
+
+        height: 13mm !important;
+
+        overflow: hidden !important;
+    }
+
+    .da-footer-social {
+        left: 0 !important;
+        bottom: 1.5mm !important;
+
+        width: 74mm !important;
+        height: 5mm !important;
+    }
+
+    .da-footer-accent {
+        right: -11mm !important;
+        bottom: -1mm !important;
+
+        width: 57mm !important;
+        height: 8mm !important;
+
+        object-fit: fill !important;
+    }
+
+
+    /* -------------------------------------------------
+       REPORT TITLE + METADATA
+    ------------------------------------------------- */
+
+    .official-report-title {
+        margin:
+            0 0 3mm !important;
+    }
+
+    .official-report-title h1 {
+        font-size: 11pt !important;
+    }
+
+    .official-report-title p {
+        margin-top: .5mm !important;
+
+        font-size: 6.8pt !important;
+    }
+
+    .print-header {
+        margin:
+            0 0 2.5mm !important;
+
+        padding:
+            0 0 1.8mm !important;
+    }
+
+    .print-header p {
+        font-size: 6.4pt !important;
+    }
+
+    .print-meta {
+        margin-top: 1mm !important;
+    }
+
+    .print-meta span,
+    .print-meta strong {
+        font-size: 6.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       DISEASE + CONFIDENCE
+    ------------------------------------------------- */
+
+    .document-overview {
+        margin:
+            0 0 3mm !important;
+    }
+
+    .card-label,
+    .disease-content h2,
+    .confidence-row,
+    .confidence-row strong {
+        font-size: 7pt !important;
+    }
+
+    .confidence-row {
+        margin-top: 1mm !important;
+    }
+
+
+    /* -------------------------------------------------
+       DOCUMENT SECTIONS
+    ------------------------------------------------- */
+
+    .document-section {
+        margin:
+            0 0 3mm !important;
+
+        padding: 0 !important;
+
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .section-heading {
+        margin:
+            0 0 1.2mm !important;
+
+        padding:
+            0 0 .8mm !important;
+    }
+
+    .section-heading h2 {
+        font-size: 8.4pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       FIXED IMAGE SIZE
+       Smaller to guarantee one-page output.
+    ------------------------------------------------- */
+
+    .saved-image-section {
+        margin-bottom:
+            2.5mm !important;
+    }
+
+    .saved-image-wrap {
+        width: 58mm !important;
+        height: 36mm !important;
+
+        min-height: 36mm !important;
+
+        margin:
+            1mm auto 0 !important;
+    }
+
+    .saved-image-wrap img {
+        width: 56mm !important;
+        height: 34mm !important;
+
+        max-width: 56mm !important;
+        max-height: 34mm !important;
+
+        object-fit: contain !important;
+    }
+
+
+    /* -------------------------------------------------
+       ANALYSIS INFORMATION
+    ------------------------------------------------- */
+
+    .info-grid {
+        gap:
+            .8mm 5mm !important;
+    }
+
+    .info-item {
+        min-height: 0 !important;
+    }
+
+    .info-item span,
+    .info-item strong {
+        font-size: 6.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       TOP 3
+    ------------------------------------------------- */
+
+    .top-prediction-item {
+        grid-template-columns:
+            6mm
+            1fr
+            auto !important;
+
+        gap: 1mm !important;
+
+        margin:
+            0 0 .6mm !important;
+    }
+
+    .prediction-rank,
+    .prediction-info strong,
+    .prediction-info span {
+        font-size: 6.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       RECOMMENDATIONS
+    ------------------------------------------------- */
+
+    .recommendation-card {
+        margin:
+            0 0 1.4mm !important;
+    }
+
+    .recommendation-card span {
+        margin:
+            0 0 .2mm !important;
+
+        font-size: 6.2pt !important;
+    }
+
+    .recommendation-card p {
+        font-size: 6pt !important;
+        line-height: 1.26 !important;
+    }
+
+
+    /* -------------------------------------------------
+       DOCUMENT NOTE + SIGNATURES
+       Keep these attached to report, not on page 2.
+    ------------------------------------------------- */
+
+    .official-certification {
+        margin-top:
+            2.5mm !important;
+
+        padding-top:
+            1.5mm !important;
+
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .official-cert-text strong {
+        font-size: 6.4pt !important;
+    }
+
+    .official-cert-text p {
+        margin:
+            .5mm 0 0 !important;
+
+        font-size: 5.6pt !important;
+        line-height: 1.25 !important;
+    }
+
+    .official-signature-grid {
+        gap: 14mm !important;
+
+        margin-top: 5mm !important;
+    }
+
+    .signature-line {
+        height: 5mm !important;
+    }
+
+    .official-signature-box strong {
+        margin-top: 1mm !important;
+
+        font-size: 5.8pt !important;
+    }
+
+    .official-signature-box span {
+        margin-top: .2mm !important;
+
+        font-size: 5.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       REMOVE ANY EXTRA WEB FOOTER IN PRINT
+    ------------------------------------------------- */
+
+    .result-footer {
+        display: none !important;
+    }
+
+}
