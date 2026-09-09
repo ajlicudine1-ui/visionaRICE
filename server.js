@@ -24,9 +24,13 @@ const historyRoutes =
 const notificationRoutes =
     require('./routes/notificationRoutes');
 
+const imageUploadRoutes =
+    require('./routes/imageUploadRoutes');
+
 const {
     requireAdmin
 } = require('./middleware/authMiddleware');
+
 
 const app = express();
 
@@ -251,6 +255,16 @@ app.use(
 
 
 // ===============================
+// Prediction Image Upload Routes
+// ===============================
+
+app.use(
+    '/api/uploads',
+    imageUploadRoutes
+);
+
+
+// ===============================
 // History Routes
 // ===============================
 
@@ -395,6 +409,17 @@ if (
 
             console.log(
                 ` Save Prediction: POST http://localhost:${PORT}/api/predictions`
+            );
+
+
+            console.log('');
+
+            console.log(
+                ' IMAGE UPLOAD ROUTES'
+            );
+
+            console.log(
+                ` Image Upload:    POST http://localhost:${PORT}/api/uploads/prediction-image`
             );
 
 

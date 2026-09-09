@@ -2835,6 +2835,189 @@ function resetForAnotherAnalysis() {
 
 
 // =====================================================
+// CLOUDINARY IMAGE STORAGE
+// IMPORTANT:
+// This does NOT change or interfere with the Cropper.
+// It only compresses the already-selected/cropped image
+// after the prediction record has been saved.
+// =====================================================
+
+async function compressPredictionImageForStorage(
+    file
+) {
+    if (!file) {
+        return null;
+    }
+
+    const bitmap =
+        await createImageBitmap(
+            file
+        );
+
+    const maxSize =
+        800;
+
+    const scale =
+        Math.min(
+            1,
+            maxSize /
+            Math.max(
+                bitmap.width,
+                bitmap.height
+            )
+        );
+
+    const width =
+        Math.max(
+            1,
+            Math.round(
+                bitmap.width *
+                scale
+            )
+        );
+
+    const height =
+        Math.max(
+            1,
+            Math.round(
+                bitmap.height *
+                scale
+            )
+        );
+
+    const canvas =
+        document.createElement(
+            'canvas'
+        );
+
+    canvas.width =
+        width;
+
+    canvas.height =
+        height;
+
+    const context =
+        canvas.getContext(
+            '2d'
+        );
+
+    context.drawImage(
+        bitmap,
+        0,
+        0,
+        width,
+        height
+    );
+
+    bitmap.close();
+
+    const blob =
+        await new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+                canvas.toBlob(
+                    result => {
+                        if (!result) {
+                            reject(
+                                new Error(
+                                    'Unable to prepare image for storage.'
+                                )
+                            );
+
+                            return;
+                        }
+
+                        resolve(
+                            result
+                        );
+                    },
+                    'image/webp',
+                    0.78
+                );
+            }
+        );
+
+    return new File(
+        [blob],
+        'prediction.webp',
+        {
+            type:
+                'image/webp',
+
+            lastModified:
+                Date.now()
+        }
+    );
+}
+
+
+async function uploadPredictionImageToServer(
+    predictionId,
+    file
+) {
+    if (
+        !predictionId ||
+        !file
+    ) {
+        return null;
+    }
+
+    const optimizedFile =
+        await compressPredictionImageForStorage(
+            file
+        );
+
+    const formData =
+        new FormData();
+
+    formData.append(
+        'prediction_id',
+        predictionId
+    );
+
+    formData.append(
+        'image',
+        optimizedFile,
+        'prediction.webp'
+    );
+
+    const response =
+        await fetch(
+            '/api/uploads/prediction-image',
+            {
+                method:
+                    'POST',
+
+                credentials:
+                    'include',
+
+                body:
+                    formData
+            }
+        );
+
+    const result =
+        await response
+            .json()
+            .catch(
+                () => ({})
+            );
+
+    if (!response.ok) {
+        throw new Error(
+            result.message ||
+            result.error ||
+            `Image upload failed (${response.status}).`
+        );
+    }
+
+    return result;
+}
+
+
+// =====================================================
 // SAVE PREDICTION TO NODE / SUPABASE
 // =====================================================
 
@@ -2993,6 +3176,49 @@ async function handlePredictionResult(
             'Prediction saved:',
             saved
         );
+
+        /*
+         * After Supabase creates the prediction record,
+         * upload the same cropped/selected image to
+         * Cloudinary and attach its URL to the record.
+         */
+        const predictionId =
+            saved?.prediction?.id ||
+            saved?.data?.id ||
+            saved?.id ||
+            null;
+
+        if (
+            predictionId &&
+            selectedFile
+        ) {
+            try {
+                const imageUpload =
+                    await uploadPredictionImageToServer(
+                        predictionId,
+                        selectedFile
+                    );
+
+                console.log(
+                    'Prediction image uploaded:',
+                    imageUpload
+                );
+
+            } catch (imageError) {
+                /*
+                 * The AI result and database record are
+                 * still valid even if image upload fails.
+                 */
+                console.warn(
+                    'Prediction image upload failed:',
+                    imageError
+                );
+            }
+        } else {
+            console.warn(
+                'Prediction image was not uploaded because no prediction ID or selected image was available.'
+            );
+        }
 
         renderPredictionResult(
             topPrediction,
