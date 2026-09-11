@@ -13,10 +13,7 @@ const clean =
 function prettyDisease(value = '') {
     return clean(value)
         .toLowerCase()
-        .replace(
-            /_/g,
-            ' '
-        )
+        .replace(/_/g, ' ')
         .replace(
             /\b\w/g,
             char =>
@@ -62,7 +59,6 @@ function phDate(
         return '';
     }
 
-
     const parts =
         Object.fromEntries(
             new Intl.DateTimeFormat(
@@ -70,20 +66,15 @@ function phDate(
                 {
                     timeZone:
                         'Asia/Manila',
-
                     year:
                         'numeric',
-
                     month:
                         '2-digit',
-
                     day:
                         '2-digit'
                 }
             )
-                .formatToParts(
-                    date
-                )
+                .formatToParts(date)
                 .map(
                     part => [
                         part.type,
@@ -91,7 +82,6 @@ function phDate(
                     ]
                 )
         );
-
 
     return (
         `${parts.year}-` +
@@ -101,22 +91,17 @@ function phDate(
 }
 
 
-function fullName(
-    user = {}
-) {
+function fullName(user = {}) {
     return [
         clean(
             user.first_name
         ),
-
         clean(
             user.middle_name
         ),
-
         clean(
             user.last_name
         ),
-
         clean(
             user.suffix
         )
@@ -175,20 +160,29 @@ function getBarangay(row = {}) {
 }
 
 
+function getImageUrl(row = {}) {
+    return clean(
+        row.image_url ||
+        row.image ||
+        row.prediction_image ||
+        row.cloudinary_url ||
+        row.photo_url ||
+        ''
+    );
+}
+
+
 exports.getNotifications =
 async (
     req,
     res
 ) => {
-
     try {
-
         const type =
             clean(
                 req.query.type
             )
                 .toLowerCase();
-
 
         const date =
             clean(
@@ -196,17 +190,12 @@ async (
             )
                 .toLowerCase();
 
-
         const search =
             clean(
                 req.query.search
             )
                 .toLowerCase();
 
-
-        // =========================================
-        // USERS
-        // =========================================
 
         const {
             data: users,
@@ -227,7 +216,6 @@ async (
 
 
         if (userError) {
-
             console.error(
                 'Admin notifications users query:',
                 userError
@@ -238,21 +226,13 @@ async (
                 .json({
                     success:
                         false,
-
                     message:
                         'Unable to load users.',
-
                     error:
                         userError.message
                 });
         }
 
-
-        // =========================================
-        // PREDICTIONS
-        // Use select('*') so this does not fail
-        // because of one mismatched column name.
-        // =========================================
 
         const {
             data: predictions,
@@ -273,7 +253,6 @@ async (
 
 
         if (predictionError) {
-
             console.error(
                 'Admin notifications prediction query:',
                 predictionError
@@ -284,10 +263,8 @@ async (
                 .json({
                     success:
                         false,
-
                     message:
                         'Unable to load prediction activity.',
-
                     error:
                         predictionError.message
                 });
@@ -301,7 +278,6 @@ async (
                 ? users
                 : [];
 
-
         const safePredictions =
             Array.isArray(
                 predictions
@@ -309,10 +285,6 @@ async (
                 ? predictions
                 : [];
 
-
-        // =========================================
-        // USER LOOKUP
-        // =========================================
 
         const userMap =
             new Map(
@@ -327,14 +299,9 @@ async (
             );
 
 
-        // =========================================
-        // PREDICTION EVENTS
-        // =========================================
-
         const predictionEvents =
             safePredictions.map(
                 row => {
-
                     const user =
                         userMap.get(
                             String(
@@ -345,19 +312,16 @@ async (
                         ) ||
                         {};
 
-
                     const diseaseRaw =
                         getDiseaseValue(
                             row
                         );
-
 
                     const diseaseKey =
                         clean(
                             diseaseRaw
                         )
                             .toLowerCase();
-
 
                     const isHealthy =
                         diseaseKey ===
@@ -369,24 +333,20 @@ async (
                         diseaseKey ===
                         'healthy';
 
-
                     const province =
                         getProvince(
                             row
                         );
-
 
                     const municipality =
                         getMunicipality(
                             row
                         );
 
-
                     const barangay =
                         getBarangay(
                             row
                         );
-
 
                     const location =
                         [
@@ -396,7 +356,6 @@ async (
                         ]
                             .filter(Boolean)
                             .join(', ');
-
 
                     const confidenceValue =
                         Number(
@@ -411,9 +370,7 @@ async (
                                 )
                         );
 
-
                     return {
-
                         id:
                             `prediction-${row.id}`,
 
@@ -461,6 +418,11 @@ async (
                         location:
                             location,
 
+                        image_url:
+                            getImageUrl(
+                                row
+                            ),
+
                         created_at:
                             row.created_at ||
                             row.createdAt ||
@@ -469,10 +431,6 @@ async (
                 }
             );
 
-
-        // =========================================
-        // USER REGISTRATION EVENTS
-        // =========================================
 
         const registrationEvents =
             safeUsers
@@ -486,7 +444,6 @@ async (
                 )
                 .map(
                     user => ({
-
                         id:
                             `user-${user.id}`,
 
@@ -525,6 +482,9 @@ async (
                         location:
                             '',
 
+                        image_url:
+                            '',
+
                         created_at:
                             user.created_at ||
                             user.createdAt ||
@@ -533,10 +493,6 @@ async (
                 );
 
 
-        // =========================================
-        // COMBINE + FILTER
-        // =========================================
-
         const allEvents =
             [
                 ...predictionEvents,
@@ -544,11 +500,6 @@ async (
             ]
                 .filter(
                     item => {
-
-                        // -------------------------
-                        // TYPE
-                        // -------------------------
-
                         if (
                             type &&
                             type !==
@@ -559,48 +510,31 @@ async (
                             return false;
                         }
 
-
                         const itemDate =
                             phDate(
                                 item.created_at
                             );
 
-
                         const today =
                             phDate();
 
-
-                        // -------------------------
-                        // TODAY
-                        // -------------------------
-
                         if (
                             date ===
-                            'today'
+                            'today' &&
+                            itemDate !==
+                            today
                         ) {
-                            if (
-                                itemDate !==
-                                today
-                            ) {
-                                return false;
-                            }
+                            return false;
                         }
-
-
-                        // -------------------------
-                        // LAST 7 DAYS
-                        // -------------------------
 
                         if (
                             date ===
                             '7days'
                         ) {
-
                             const created =
                                 new Date(
                                     item.created_at
                                 ).getTime();
-
 
                             const start =
                                 Date.now() -
@@ -609,7 +543,6 @@ async (
                                     86400000
                                 );
 
-
                             if (
                                 !Number.isFinite(
                                     created
@@ -621,21 +554,14 @@ async (
                             }
                         }
 
-
-                        // -------------------------
-                        // LAST 30 DAYS
-                        // -------------------------
-
                         if (
                             date ===
                             '30days'
                         ) {
-
                             const created =
                                 new Date(
                                     item.created_at
                                 ).getTime();
-
 
                             const start =
                                 Date.now() -
@@ -644,7 +570,6 @@ async (
                                     86400000
                                 );
 
-
                             if (
                                 !Number.isFinite(
                                     created
@@ -656,13 +581,7 @@ async (
                             }
                         }
 
-
-                        // -------------------------
-                        // SEARCH
-                        // -------------------------
-
                         if (search) {
-
                             const searchable =
                                 [
                                     item.title,
@@ -675,7 +594,6 @@ async (
                                     .join(' ')
                                     .toLowerCase();
 
-
                             if (
                                 !searchable.includes(
                                     search
@@ -685,7 +603,6 @@ async (
                             }
                         }
 
-
                         return true;
                     }
                 )
@@ -694,12 +611,10 @@ async (
                         a,
                         b
                     ) =>
-
                         new Date(
                             b.created_at ||
                             0
                         ).getTime() -
-
                         new Date(
                             a.created_at ||
                             0
@@ -707,13 +622,8 @@ async (
                 );
 
 
-        // =========================================
-        // STATISTICS
-        // =========================================
-
         const today =
             phDate();
-
 
         const combinedEvents =
             [
@@ -721,9 +631,7 @@ async (
                 ...registrationEvents
             ];
 
-
         const stats = {
-
             total_activity:
                 combinedEvents.length,
 
@@ -752,12 +660,7 @@ async (
         };
 
 
-        // =========================================
-        // RESPONSE
-        // =========================================
-
         return res.json({
-
             success:
                 true,
 
@@ -775,19 +678,15 @@ async (
                     .toISOString()
         });
 
-
     } catch (error) {
-
         console.error(
             'Admin general notifications:',
             error
         );
 
-
         return res
             .status(500)
             .json({
-
                 success:
                     false,
 
