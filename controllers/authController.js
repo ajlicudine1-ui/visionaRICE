@@ -911,15 +911,23 @@ exports.verifyEmail = async (req, res) => {
         const now =
             new Date().toISOString();
 
+        /*
+         * Find the account using the verification token.
+         * This does NOT depend on a browser session,
+         * so the link may be clicked on any phone,
+         * laptop, or other device.
+         */
         const {
             data: user,
-            error
+            error: lookupError
         } =
             await supabaseAdmin
                 .from('users')
                 .select(`
                     id,
-                    email
+                    email,
+                    email_verified,
+                    is_active
                 `)
                 .eq(
                     'email_verification_token_hash',
@@ -931,23 +939,36 @@ exports.verifyEmail = async (req, res) => {
                 )
                 .maybeSingle();
 
-        if (
-            error ||
-            !user
-        ) {
-            if (error) {
-                console.error(
-                    'Verify email lookup error:',
-                    error
-                );
-            }
+        if (lookupError) {
+            console.error(
+                'Verify email lookup error:',
+                lookupError
+            );
 
+            return res.redirect(
+                '/login.html?verification=error'
+            );
+        }
+
+        if (!user) {
             return res.redirect(
                 '/login.html?verification=invalid'
             );
         }
 
+        if (!user.is_active) {
+            return res.redirect(
+                '/login.html?verification=inactive'
+            );
+        }
+
+        /*
+         * Persist verification in Supabase.
+         * Once this succeeds, the account is verified
+         * globally for every device.
+         */
         const {
+            data: verifiedUser,
             error: updateError
         } =
             await supabaseAdmin
@@ -968,7 +989,13 @@ exports.verifyEmail = async (req, res) => {
                 .eq(
                     'id',
                     user.id
-                );
+                )
+                .select(`
+                    id,
+                    email,
+                    email_verified
+                `)
+                .single();
 
         if (updateError) {
             console.error(
@@ -981,6 +1008,26 @@ exports.verifyEmail = async (req, res) => {
             );
         }
 
+        if (
+            !verifiedUser ||
+            verifiedUser.email_verified !== true
+        ) {
+            console.error(
+                'Verify email persistence check failed.'
+            );
+
+            return res.redirect(
+                '/login.html?verification=error'
+            );
+        }
+
+        /*
+         * Do NOT create a session here.
+         * Verification is independent of login.
+         *
+         * The user can close this page and later sign in
+         * from any other device using the verified account.
+         */
         return res.redirect(
             '/login.html?verification=success'
         );
