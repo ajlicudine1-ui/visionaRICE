@@ -235,6 +235,56 @@
     }
 
 
+    // =========================================
+    // NOTIFICATION IMAGE / FALLBACK
+    // =========================================
+
+    function notificationMedia(item) {
+        if (
+            item.image_url &&
+            String(
+                item.image_url
+            ).trim() !==
+            ''
+        ) {
+            return `
+                <div class="notification-media image">
+                    <img
+                        src="${escapeHtml(
+                            item.image_url
+                        )}"
+                        alt="${escapeHtml(
+                            item.disease ||
+                            item.title ||
+                            'Prediction image'
+                        )}"
+                        loading="lazy"
+                    >
+                </div>
+            `;
+        }
+
+
+        if (
+            item.type ===
+            'user'
+        ) {
+            return `
+                <div class="notification-media fallback user">
+                    <span>👤</span>
+                </div>
+            `;
+        }
+
+
+        return `
+            <div class="notification-media fallback alert">
+                <span>⚠</span>
+            </div>
+        `;
+    }
+
+
     function renderNotifications(items) {
         el.count.textContent =
             `${number(
@@ -261,16 +311,6 @@
         el.feed.innerHTML =
             items
                 .map(item => {
-                    const icon =
-                        item.type ===
-                        'disease'
-                            ? '⚠'
-                            : item.type ===
-                              'user'
-                                ? '👤'
-                                : '🌿';
-
-
                     const pills = [];
 
 
@@ -311,9 +351,9 @@
                             item.type
                         )}">
 
-                            <div class="notification-icon">
-                                ${icon}
-                            </div>
+                            ${notificationMedia(
+                                item
+                            )}
 
                             <div class="notification-copy">
 
