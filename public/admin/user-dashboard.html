@@ -2,12 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>User Dashboard | VISIONARICE Admin</title>
+    <title>
+        User Dashboard | VISIONARICE Admin
+    </title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
@@ -16,13 +29,15 @@
 
     <link
         rel="stylesheet"
-        href="/css/admin/user-dashboard.css?v=20260911-1"
+        href="/css/admin/user-dashboard.css?v=20260911-2"
     >
 </head>
 
 <body>
 
+
 <header class="topbar">
+
     <div class="topbar-inner">
 
         <a
@@ -42,7 +57,9 @@
             </small>
         </a>
 
+
         <nav class="desktop-nav">
+
             <a href="/admin/dashboard.html">
                 Dashboard
             </a>
@@ -65,11 +82,14 @@
             <a href="/admin/notifications.html">
                 Notifications
             </a>
+
         </nav>
+
 
         <div class="account-area">
 
             <div class="account-copy">
+
                 <small>
                     ADMINISTRATOR
                 </small>
@@ -77,28 +97,44 @@
                 <strong id="adminSessionName">
                     Admin
                 </strong>
+
             </div>
+
 
             <button
                 id="adminLogoutButton"
                 class="logout-button"
                 type="button"
                 title="Logout"
+                aria-label="Logout"
             >
-                <svg viewBox="0 0 24 24">
-                    <path d="M10 17l5-5-5-5"></path>
-                    <path d="M15 12H3"></path>
-                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M10 17l5-5-5-5"
+                    ></path>
+
+                    <path
+                        d="M15 12H3"
+                    ></path>
+
+                    <path
+                        d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"
+                    ></path>
                 </svg>
             </button>
 
         </div>
 
     </div>
+
 </header>
 
 
 <main class="dashboard-page">
+
 
     <a
         class="back-link"
@@ -108,7 +144,12 @@
     </a>
 
 
+    <!-- =========================================
+         SELECTED USER INFORMATION
+    ========================================== -->
+
     <section class="user-header-card">
+
 
         <div class="user-main">
 
@@ -119,7 +160,9 @@
                 U
             </div>
 
+
             <div>
+
                 <span class="eyebrow">
                     SELECTED USER
                 </span>
@@ -131,6 +174,7 @@
                 <p id="userEmail">
                     —
                 </p>
+
             </div>
 
         </div>
@@ -138,7 +182,9 @@
 
         <div class="user-header-meta">
 
+
             <div>
+
                 <small>
                     ACCOUNT STATUS
                 </small>
@@ -149,9 +195,12 @@
                 >
                     —
                 </strong>
+
             </div>
 
+
             <div>
+
                 <small>
                     EMAIL
                 </small>
@@ -162,9 +211,12 @@
                 >
                     —
                 </strong>
+
             </div>
 
+
             <div>
+
                 <small>
                     MEMBER SINCE
                 </small>
@@ -172,16 +224,24 @@
                 <strong id="memberSince">
                     —
                 </strong>
+
             </div>
+
 
         </div>
 
     </section>
 
 
+    <!-- =========================================
+         USER STATISTICS
+    ========================================== -->
+
     <section class="stat-grid">
 
+
         <article class="stat-card">
+
             <span>
                 Total Predictions
             </span>
@@ -189,9 +249,12 @@
             <strong id="totalPredictions">
                 0
             </strong>
+
         </article>
 
+
         <article class="stat-card">
+
             <span>
                 Average Confidence
             </span>
@@ -199,9 +262,12 @@
             <strong id="averageConfidence">
                 0%
             </strong>
+
         </article>
 
+
         <article class="stat-card">
+
             <span>
                 Healthy
             </span>
@@ -209,9 +275,12 @@
             <strong id="healthyCount">
                 0
             </strong>
+
         </article>
 
+
         <article class="stat-card">
+
             <span>
                 Diseased
             </span>
@@ -219,9 +288,12 @@
             <strong id="diseasedCount">
                 0
             </strong>
+
         </article>
 
+
         <article class="stat-card">
+
             <span>
                 Today's Scans
             </span>
@@ -229,16 +301,24 @@
             <strong id="todayCount">
                 0
             </strong>
+
         </article>
+
 
     </section>
 
 
+    <!-- =========================================
+         CHARTS
+    ========================================== -->
+
     <section class="chart-grid">
+
 
         <article class="dashboard-card">
 
             <div class="card-heading">
+
                 <span class="eyebrow">
                     DISEASE ACTIVITY
                 </span>
@@ -246,10 +326,16 @@
                 <h2>
                     Disease Distribution
                 </h2>
+
             </div>
 
+
             <div class="chart-wrap">
-                <canvas id="diseaseChart"></canvas>
+
+                <canvas
+                    id="diseaseChart"
+                ></canvas>
+
             </div>
 
         </article>
@@ -258,6 +344,7 @@
         <article class="dashboard-card">
 
             <div class="card-heading">
+
                 <span class="eyebrow">
                     MODEL CONFIDENCE
                 </span>
@@ -265,20 +352,32 @@
                 <h2>
                     Confidence Score Ranges
                 </h2>
+
             </div>
 
+
             <div class="chart-wrap">
-                <canvas id="confidenceChart"></canvas>
+
+                <canvas
+                    id="confidenceChart"
+                ></canvas>
+
             </div>
 
         </article>
 
+
     </section>
 
+
+    <!-- =========================================
+         SCANS OVER TIME
+    ========================================== -->
 
     <section class="dashboard-card">
 
         <div class="card-heading">
+
             <span class="eyebrow">
                 ACTIVITY
             </span>
@@ -290,17 +389,66 @@
             <p>
                 Prediction activity during the latest 14 days.
             </p>
+
         </div>
 
+
         <div class="chart-wrap trend-chart">
-            <canvas id="trendChart"></canvas>
+
+            <canvas
+                id="trendChart"
+            ></canvas>
+
         </div>
 
     </section>
+
+
+    <!-- =========================================
+         RECENT PREDICTIONS
+         DISPLAY ONLY — NOT CLICKABLE
+    ========================================== -->
+
+    <section class="dashboard-card recent-card">
+
+        <div class="card-heading">
+
+            <span class="eyebrow">
+                RECENT ACTIVITY
+            </span>
+
+            <h2>
+                Recent Predictions
+            </h2>
+
+            <p>
+                Latest prediction records from this user.
+            </p>
+
+        </div>
+
+
+        <div
+            id="recentPredictions"
+            class="recent-list"
+        >
+            <div class="empty-state">
+                Loading predictions...
+            </div>
+        </div>
+
+    </section>
+
+
 </main>
 
 
+<!-- =========================================
+     MOBILE NAVIGATION
+========================================== -->
+
 <nav class="mobile-nav">
+
     <a href="/admin/dashboard.html">
         Dashboard
     </a>
@@ -323,6 +471,7 @@
     <a href="/admin/notifications.html">
         Alerts
     </a>
+
 </nav>
 
 
@@ -331,8 +480,9 @@
 ></script>
 
 <script
-    src="/js/admin/user-dashboard.js?v=20260911-1"
+    src="/js/admin/user-dashboard.js?v=20260911-2"
 ></script>
+
 
 </body>
 </html>
