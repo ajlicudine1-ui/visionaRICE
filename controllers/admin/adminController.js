@@ -805,6 +805,12 @@ async (
                         location:
                             location,
 
+                        name:
+                            location,
+
+                        label:
+                            location,
+
                         count:
                             count
                     })
@@ -880,7 +886,17 @@ async (
                             created_at:
                                 row.created_at,
 
-                            user: {
+                            user:
+                                fullName(
+                                    user
+                                ),
+
+                            user_email:
+                                clean(
+                                    user?.email
+                                ),
+
+                            user_details: {
                                 id:
                                     user?.id ||
                                     null,
