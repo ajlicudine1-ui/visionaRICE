@@ -15,5 +15,6 @@ function requireAdmin(req, res, next) {
 }
 
 router.get('/dashboard', requireAdmin, adminController.getDashboard);
+router.get('/predictions', requireAdmin, adminController.getPredictions);
 
 module.exports = router;

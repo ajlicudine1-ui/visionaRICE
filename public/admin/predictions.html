@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Predictions | VISIONARICE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/admin/predictions.css?v=20260911-1">
+</head>
+<body>
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="/admin/dashboard.html">
+            <span class="brand-icon">🌾</span>
+            <span class="brand-name">VISION<span>A</span>RICE</span>
+            <small>Admin</small>
+        </a>
+
+        <nav class="desktop-nav">
+            <a href="/admin/dashboard.html">Dashboard</a>
+            <a class="active" href="/admin/predictions.html">Predictions</a>
+            <a href="/admin/users.html">Users</a>
+            <a href="/admin/profile.html">Profile</a>
+            <a href="/admin/notifications.html">Notifications</a>
+        </nav>
+
+        <div class="account-area">
+            <div class="account-copy">
+                <small>ADMINISTRATOR</small>
+                <strong id="adminSessionName">Admin</strong>
+            </div>
+            <button id="adminLogoutButton" class="logout-button" type="button" title="Logout">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="predictions-page">
+    <section class="page-heading">
+        <div>
+            <span class="eyebrow">PREDICTION MANAGEMENT</span>
+            <h1>Predictions</h1>
+            <p>Review VISIONARICE prediction records, images, users, confidence scores, and locations.</p>
+        </div>
+
+        <div class="heading-actions">
+            <div class="last-updated">
+                <small>Last updated</small>
+                <strong id="lastUpdated">Loading...</strong>
+            </div>
+            <button id="exportCsvButton" class="secondary-button" type="button">Export CSV</button>
+            <button id="refreshButton" class="primary-button" type="button">Refresh</button>
+        </div>
+    </section>
+
+    <section class="stat-grid">
+        <article class="stat-card"><span>Total Results</span><strong id="totalResults">0</strong><p>Predictions matching the current filters</p></article>
+        <article class="stat-card"><span>Average Confidence</span><strong id="averageConfidence">0%</strong><p>Mean model confidence</p></article>
+        <article class="stat-card"><span>Healthy</span><strong id="healthyCount">0</strong><p>Healthy rice plant results</p></article>
+        <article class="stat-card"><span>Diseased</span><strong id="diseasedCount">0</strong><p>Disease detections in current results</p></article>
+    </section>
+
+    <section class="filter-panel">
+        <div class="filter-top">
+            <div>
+                <span class="eyebrow">FILTERS</span>
+                <h2>Find prediction records</h2>
+            </div>
+            <button id="resetFiltersButton" class="text-button" type="button">Reset Filters</button>
+        </div>
+
+        <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-4-4"></path>
+            </svg>
+            <input type="search" id="searchFilter" placeholder="Search disease, user, email, or location..." autocomplete="off">
+        </label>
+
+        <div class="filter-grid filter-grid-main">
+            <label><span>Disease</span><select id="diseaseFilter"><option value="">All Diseases</option></select></label>
+            <label>
+                <span>Confidence</span>
+                <select id="confidenceFilter">
+                    <option value="">All Confidence</option>
+                    <option value="90-100">90–100%</option>
+                    <option value="80-89">80–89%</option>
+                    <option value="70-79">70–79%</option>
+                    <option value="below-70">Below 70%</option>
+                </select>
+            </label>
+            <label>
+                <span>Date</span>
+                <select id="dateFilter">
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d">Last 30 Days</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="filter-grid location-grid">
+            <label><span>Province</span><select id="provinceFilter"><option value="">All Provinces</option></select></label>
+            <label><span>Municipality / City</span><select id="municipalityFilter" disabled><option value="">All Municipalities / Cities</option></select></label>
+            <label><span>Barangay</span><select id="barangayFilter" disabled><option value="">All Barangays</option></select></label>
+        </div>
+
+        <div id="activeFilterSummary" class="active-filter-summary">Showing all prediction records.</div>
+    </section>
+
+    <section class="prediction-results-card">
+        <div class="results-header">
+            <div>
+                <span class="eyebrow">RECORDS</span>
+                <h2>Prediction Results</h2>
+            </div>
+
+            <div class="view-toggle">
+                <button id="cardViewButton" class="active" type="button">Cards</button>
+                <button id="tableViewButton" type="button">Table</button>
+            </div>
+        </div>
+
+        <div id="predictionCards" class="prediction-list">
+            <div class="empty-state">Loading prediction records...</div>
+        </div>
+
+        <div id="predictionTableWrap" class="prediction-table-wrap hidden">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th><th>Disease</th><th>User</th><th>Confidence</th><th>Location</th><th>Date</th><th></th>
+                    </tr>
+                </thead>
+                <tbody id="predictionTableBody">
+                    <tr><td colspan="7" class="empty-table">Loading predictions...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<nav class="mobile-nav">
+    <a href="/admin/dashboard.html">Dashboard</a>
+    <a class="active" href="/admin/predictions.html">Predictions</a>
+    <a href="/admin/users.html">Users</a>
+    <a href="/admin/profile.html">Profile</a>
+    <a href="/admin/notifications.html">Alerts</a>
+</nav>
+
+<script src="/js/admin/predictions.js?v=20260911-1"></script>
+</body>
+</html>
