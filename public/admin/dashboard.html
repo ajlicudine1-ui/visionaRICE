@@ -1,207 +1,272 @@
-<header class="admin-topnav">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <div class="admin-topnav-inner">
+    <title>Admin Dashboard | VISIONARICE</title>
 
-        <a
-            href="/admin/dashboard.html"
-            class="admin-brand"
-            aria-label="VISIONARICE Admin Dashboard"
-        >
-            <div class="admin-brand-mark">
-                🌾
-            </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-            <div class="admin-brand-copy">
-                <strong>
-                    VISION<span>A</span>RICE
-                </strong>
+    <link rel="stylesheet" href="/css/admin/dashboard.css?v=20260911-9">
+</head>
 
-                <small>
-                    Admin
-                </small>
-            </div>
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="/admin/dashboard.html">
+            <span class="brand-icon">🌾</span>
+            <span class="brand-name">VISION<span>A</span>RICE</span>
+            <small>Admin</small>
         </a>
 
-
-        <nav
-            class="admin-nav"
-            aria-label="Administrator navigation"
-        >
-
-            <a
-                href="/admin/dashboard.html"
-                data-admin-page="dashboard"
-            >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-                        <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-                        <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-                        <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-                    </svg>
-                </span>
-
-                <span>Dashboard</span>
-            </a>
-
-            <a
-                href="/admin/predictions.html"
-                data-admin-page="predictions"
-            >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M4 6h16"></path>
-                        <path d="M4 12h16"></path>
-                        <path d="M4 18h10"></path>
-                    </svg>
-                </span>
-
-                <span>Predictions</span>
-            </a>
-
-            <a
-                href="/admin/users.html"
-                data-admin-page="users"
-            >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="9" cy="8" r="3"></circle>
-                        <path d="M3.5 19c.8-3.1 2.8-5 5.5-5s4.7 1.9 5.5 5"></path>
-                        <path d="M16 7.5a2.5 2.5 0 0 1 0 5"></path>
-                        <path d="M17 14c2.1.3 3.4 1.9 3.9 4"></path>
-                    </svg>
-                </span>
-
-                <span>Users</span>
-            </a>
-
-            <a
-                href="/admin/profile.html"
-                data-admin-page="profile"
-            >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="12" cy="8" r="4"></circle>
-                        <path d="M4.5 21c.8-4.2 3.5-6.5 7.5-6.5s6.7 2.3 7.5 6.5"></path>
-                    </svg>
-                </span>
-
-                <span>Profile</span>
-            </a>
-
-            <a
-                href="/admin/notifications.html"
-                data-admin-page="notifications"
-            >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-                        <path d="M10 21h4"></path>
-                    </svg>
-                </span>
-
-                <span>Notifications</span>
-            </a>
-
+        <nav class="desktop-nav">
+            <a class="active" href="/admin/dashboard.html">Dashboard</a>
+            <a href="/admin/predictions.html">Predictions</a>
+            <a href="/admin/users.html">Users</a>
+            <a href="/admin/profile.html">Profile</a>
+            <a href="/admin/notifications.html">Notifications</a>
         </nav>
 
-
-        <div class="admin-account-actions">
-
-            <div class="admin-session-card">
-                <span>Administrator</span>
+        <div class="account-area">
+            <div class="account-copy">
+                <small>ADMINISTRATOR</small>
                 <strong id="adminSessionName">Admin</strong>
             </div>
 
-            <button
-                type="button"
-                class="admin-logout-button"
-                id="adminLogoutButton"
-                title="Logout"
-            >
+            <button id="adminLogoutButton" class="logout-button" type="button" title="Logout">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M10 17l5-5-5-5"></path>
                     <path d="M15 12H3"></path>
                     <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
                 </svg>
             </button>
-
         </div>
-
     </div>
-
 </header>
 
 
-<nav
-    class="admin-mobile-bottom-nav"
-    aria-label="Administrator mobile navigation"
->
-    <a
-        href="/admin/dashboard.html"
-        data-admin-page="dashboard"
-    >
-        <span class="admin-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-                <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-                <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-                <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-            </svg>
-        </span>
-        <small>Dashboard</small>
-    </a>
+<main class="admin-dashboard-page">
 
-    <a
-        href="/admin/predictions.html"
-        data-admin-page="predictions"
-    >
-        <span class="admin-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 6h16"></path>
-                <path d="M4 12h16"></path>
-                <path d="M4 18h10"></path>
-            </svg>
-        </span>
-        <small>Predictions</small>
-    </a>
+    <section class="page-heading">
+        <div>
+            <span class="eyebrow">SYSTEM OVERVIEW</span>
+            <h1>Administrator Dashboard</h1>
+            <p>
+                Monitor VISIONARICE predictions, users, disease activity,
+                confidence levels, and field locations.
+            </p>
+        </div>
 
-    <a
-        href="/admin/users.html"
-        data-admin-page="users"
-    >
-        <span class="admin-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="9" cy="8" r="3"></circle>
-                <path d="M3.5 19c.8-3.1 2.8-5 5.5-5s4.7 1.9 5.5 5"></path>
-            </svg>
-        </span>
-        <small>Users</small>
-    </a>
+        <div class="heading-actions">
+            <div class="last-updated">
+                <small>Last updated</small>
+                <strong id="lastUpdated">Loading...</strong>
+            </div>
 
-    <a
-        href="/admin/profile.html"
-        data-admin-page="profile"
-    >
-        <span class="admin-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4.5 21c.8-4.2 3.5-6.5 7.5-6.5s6.7 2.3 7.5 6.5"></path>
-            </svg>
-        </span>
-        <small>Profile</small>
-    </a>
+            <button id="refreshAdminDashboard" class="primary-button" type="button">
+                Refresh
+            </button>
+        </div>
+    </section>
 
-    <a
-        href="/admin/notifications.html"
-        data-admin-page="notifications"
-    >
-        <span class="admin-nav-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-                <path d="M10 21h4"></path>
-            </svg>
-        </span>
-        <small>Alerts</small>
-    </a>
+
+    <section class="filter-card">
+        <div class="filter-heading">
+            <div>
+                <span class="eyebrow">LOCATION FILTER</span>
+                <h2>Filter prediction analytics</h2>
+                <p>View predictions by province, municipality/city, and barangay.</p>
+            </div>
+
+            <button id="resetLocationFilters" class="secondary-button" type="button">
+                Reset Filters
+            </button>
+        </div>
+
+        <div class="filter-grid">
+            <label>
+                <span>Province</span>
+                <select id="provinceFilter">
+                    <option value="">All Provinces</option>
+                </select>
+            </label>
+
+            <label>
+                <span>Municipality / City</span>
+                <select id="municipalityFilter" disabled>
+                    <option value="">All Municipalities / Cities</option>
+                </select>
+            </label>
+
+            <label>
+                <span>Barangay</span>
+                <select id="barangayFilter" disabled>
+                    <option value="">All Barangays</option>
+                </select>
+            </label>
+        </div>
+
+        <div id="activeFilterSummary" class="filter-summary">
+            Showing all prediction locations.
+        </div>
+    </section>
+
+
+    <section class="kpi-grid">
+        <article class="kpi-card">
+            <span>Total Predictions</span>
+            <strong id="totalPredictions">0</strong>
+            <p>Recorded predictions in the current scope</p>
+        </article>
+
+        <article class="kpi-card">
+            <span>Active Users</span>
+            <strong id="activeUsers">0</strong>
+            <p>Active accounts represented in the current scope</p>
+        </article>
+
+        <article class="kpi-card">
+            <span>Accuracy Rate</span>
+            <strong id="accuracyRate">0%</strong>
+            <p>Average prediction confidence in the current scope</p>
+        </article>
+
+        <article class="kpi-card">
+            <span>Today's Scans</span>
+            <strong id="todaysScans">0</strong>
+            <p>Predictions recorded today in Philippine time</p>
+        </article>
+    </section>
+
+
+    <section class="dashboard-grid first-row">
+        <article class="dashboard-card">
+            <div class="card-heading">
+                <span class="eyebrow">DISEASE MONITORING</span>
+                <h2>Disease Occurrences</h2>
+                <p>Frequency of detected rice conditions.</p>
+            </div>
+
+            <div class="chart-wrap chart-wide">
+                <canvas id="diseaseChart"></canvas>
+            </div>
+        </article>
+
+        <article class="dashboard-card">
+            <div class="card-heading">
+                <span class="eyebrow">RICE HEALTH</span>
+                <h2>Healthy vs Diseased</h2>
+                <p>Overall crop-health classification.</p>
+            </div>
+
+            <div class="chart-wrap chart-donut">
+                <canvas id="healthChart"></canvas>
+            </div>
+
+            <div class="health-row">
+                <div>
+                    <span class="dot healthy"></span>
+                    <small>Healthy</small>
+                    <strong id="healthyCount">0</strong>
+                </div>
+
+                <div>
+                    <span class="dot diseased"></span>
+                    <small>Diseased</small>
+                    <strong id="diseasedCount">0</strong>
+                </div>
+            </div>
+        </article>
+    </section>
+
+
+    <section class="dashboard-grid">
+        <article class="dashboard-card">
+            <div class="card-heading">
+                <span class="eyebrow">ACTIVITY</span>
+                <h2>Scans Over Time</h2>
+                <p>Prediction activity during the latest 14 days.</p>
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </article>
+
+        <article class="dashboard-card">
+            <div class="card-heading">
+                <span class="eyebrow">MODEL QUALITY</span>
+                <h2>Confidence Score Ranges</h2>
+                <p>Distribution of predictions by confidence band.</p>
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="confidenceChart"></canvas>
+            </div>
+        </article>
+    </section>
+
+
+    <section class="dashboard-grid last-row">
+        <article class="dashboard-card">
+            <div class="card-heading">
+                <span class="eyebrow">FIELD ACTIVITY</span>
+                <h2>Top Locations Scanned</h2>
+                <p>Locations with the highest prediction activity.</p>
+            </div>
+
+            <div id="topLocations" class="location-list">
+                <div class="empty-state">No location data yet.</div>
+            </div>
+        </article>
+
+        <article class="dashboard-card">
+            <div class="card-heading">
+                <span class="eyebrow">RECENT ACTIVITY</span>
+                <h2>Latest Predictions</h2>
+                <p>Most recent analyses across VISIONARICE.</p>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Disease</th>
+                            <th>Confidence</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="recentPredictionsBody">
+                        <tr>
+                            <td colspan="5" class="empty-table">Loading predictions...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+
+</main>
+
+
+<nav class="mobile-nav">
+    <a class="active" href="/admin/dashboard.html">Dashboard</a>
+    <a href="/admin/predictions.html">Predictions</a>
+    <a href="/admin/users.html">Users</a>
+    <a href="/admin/profile.html">Profile</a>
+    <a href="/admin/notifications.html">Alerts</a>
 </nav>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="/js/admin/dashboard.js?v=20260911-9"></script>
+
+</body>
+</html>

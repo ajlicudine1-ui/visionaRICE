@@ -18,10 +18,41 @@
         healthy: $('healthyCount'),
         diseased: $('diseasedCount'),
         locations: $('topLocations'),
-        recent: $('recentPredictionsBody')
+        recent: $('recentPredictionsBody'),
+        adminName: $('adminSessionName'),
+        logout: $('adminLogoutButton')
     };
 
     const charts = {};
+
+    async function requireAdmin() {
+        const response = await fetch('/api/auth/me', {
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            window.location.href = '/login.html';
+            return false;
+        }
+
+        const result = await response.json();
+
+        if (String(result.user?.role || '').toLowerCase() !== 'admin') {
+            window.location.href = '/login.html';
+            return false;
+        }
+
+        if (el.adminName) {
+            el.adminName.textContent =
+                [result.user.first_name, result.user.last_name]
+                    .filter(Boolean)
+                    .join(' ') ||
+                result.user.email ||
+                'Administrator';
+        }
+
+        return true;
+    }
 
     async function load(overrides = {}) {
         const selected = {
@@ -40,7 +71,7 @@
         el.refresh.textContent = 'Loading...';
 
         try {
-            const response = await fetch(`/api/admin/dashboard?${params}`, {
+            const response = await fetch(`/api/admin/dashboard?${params.toString()}`, {
                 credentials: 'include'
             });
 
@@ -50,7 +81,10 @@
             }
 
             const result = await response.json();
-            if (!response.ok) throw new Error(result.message || 'Unable to load dashboard.');
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Unable to load dashboard.');
+            }
 
             renderFilters(result.filters);
             renderKpis(result.kpis);
@@ -62,7 +96,7 @@
             el.updated.textContent = formatDateTime(result.generated_at);
 
         } catch (error) {
-            console.error(error);
+            console.error('Admin dashboard:', error);
             el.updated.textContent = 'Unable to load';
         } finally {
             el.refresh.disabled = false;
@@ -100,15 +134,11 @@
         el.today.textContent = number(k.todays_scans);
     }
 
-    function chart(name, id, config) {
-        if (charts[name]) charts[name].destroy();
-        charts[name] = new Chart($(id), config);
-    }
-
     function commonOptions() {
         return {
             responsive: true,
             maintainAspectRatio: false,
+            animation: false,
             plugins: {
                 legend: { display: false }
             },
@@ -116,7 +146,7 @@
                 x: {
                     grid: { display: false },
                     ticks: {
-                        color: '#7a877f',
+                        color: '#78857d',
                         font: { family: 'Poppins', size: 9 }
                     }
                 },
@@ -124,19 +154,28 @@
                     beginAtZero: true,
                     ticks: {
                         precision: 0,
-                        color: '#7a877f',
+                        color: '#78857d',
                         font: { family: 'Poppins', size: 9 }
                     },
                     grid: {
-                        color: 'rgba(70,90,76,.08)'
+                        color: 'rgba(65,85,71,.08)'
                     }
                 }
             }
         };
     }
 
+    function replaceChart(key, canvasId, config) {
+        if (charts[key]) charts[key].destroy();
+
+        const canvas = $(canvasId);
+        if (!canvas) return;
+
+        charts[key] = new Chart(canvas, config);
+    }
+
     function renderCharts(data) {
-        chart('disease', 'diseaseChart', {
+        replaceChart('disease', 'diseaseChart', {
             type: 'bar',
             data: {
                 labels: data.disease.labels,
@@ -151,7 +190,7 @@
             options: commonOptions()
         });
 
-        chart('health', 'healthChart', {
+        replaceChart('health', 'healthChart', {
             type: 'doughnut',
             data: {
                 labels: data.health.labels,
@@ -164,15 +203,18 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: false,
                 cutout: '68%',
-                plugins: { legend: { display: false } }
+                plugins: {
+                    legend: { display: false }
+                }
             }
         });
 
         el.healthy.textContent = number(data.health.values[0] || 0);
         el.diseased.textContent = number(data.health.values[1] || 0);
 
-        chart('trend', 'trendChart', {
+        replaceChart('trend', 'trendChart', {
             type: 'line',
             data: {
                 labels: data.trend.labels,
@@ -188,7 +230,7 @@
             options: commonOptions()
         });
 
-        chart('confidence', 'confidenceChart', {
+        replaceChart('confidence', 'confidenceChart', {
             type: 'bar',
             data: {
                 labels: data.confidence.labels,
@@ -204,7 +246,8 @@
 
     function renderLocations(items) {
         if (!items?.length) {
-            el.locations.innerHTML = '<div class="empty-state">No location data for this filter.</div>';
+            el.locations.innerHTML =
+                '<div class="empty-state">No location data for this filter.</div>';
             return;
         }
 
@@ -219,21 +262,30 @@
 
     function renderRecent(items) {
         if (!items?.length) {
-            el.recent.innerHTML = '<tr><td colspan="5" class="empty-table">No predictions for this filter.</td></tr>';
+            el.recent.innerHTML =
+                '<tr><td colspan="5" class="empty-table">No predictions for this filter.</td></tr>';
             return;
         }
 
         el.recent.innerHTML = items.map(item => {
-            const location = [item.barangay, item.municipality, item.province]
-                .filter(Boolean)
-                .join(', ') || 'Unspecified';
+            const location =
+                [item.barangay, item.municipality, item.province]
+                    .filter(Boolean)
+                    .join(', ') ||
+                'Unspecified';
 
             return `
                 <tr>
                     <td>${escapeHtml(item.user)}</td>
                     <td>${escapeHtml(item.disease)}</td>
-                    <td><span class="confidence-pill">${formatConfidence(item.confidence)}</span></td>
-                    <td title="${escapeHtml(location)}">${escapeHtml(shorten(location, 34))}</td>
+                    <td>
+                        <span class="confidence-pill">
+                            ${formatConfidence(item.confidence)}
+                        </span>
+                    </td>
+                    <td title="${escapeHtml(location)}">
+                        ${escapeHtml(shorten(location, 34))}
+                    </td>
                     <td>${formatDate(item.created_at)}</td>
                 </tr>
             `;
@@ -241,15 +293,22 @@
     }
 
     function renderSummary(selected) {
-        const parts = [selected.province, selected.municipality, selected.barangay].filter(Boolean);
+        const parts =
+            [selected.province, selected.municipality, selected.barangay]
+                .filter(Boolean);
 
-        el.filterSummary.textContent = parts.length
-            ? `Showing predictions for ${parts.join(' → ')}.`
-            : 'Showing all prediction locations.';
+        el.filterSummary.textContent =
+            parts.length
+                ? `Showing predictions for ${parts.join(' → ')}.`
+                : 'Showing all prediction locations.';
     }
 
     el.province.addEventListener('change', () => {
-        load({ province: el.province.value, municipality: '', barangay: '' });
+        load({
+            province: el.province.value,
+            municipality: '',
+            barangay: ''
+        });
     });
 
     el.municipality.addEventListener('change', () => {
@@ -263,16 +322,33 @@
     el.barangay.addEventListener('change', () => load());
 
     el.reset.addEventListener('click', () => {
-        load({ province: '', municipality: '', barangay: '' });
+        load({
+            province: '',
+            municipality: '',
+            barangay: ''
+        });
     });
 
     el.refresh.addEventListener('click', () => load());
+
+    el.logout.addEventListener('click', async () => {
+        try {
+            await fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include'
+            });
+        } finally {
+            window.location.href = '/login.html';
+        }
+    });
 
     const number = value =>
         new Intl.NumberFormat('en-PH').format(Number(value || 0));
 
     const formatConfidence = value =>
-        Number.isFinite(Number(value)) ? `${Number(value).toFixed(2)}%` : '—';
+        Number.isFinite(Number(value))
+            ? `${Number(value).toFixed(2)}%`
+            : '—';
 
     function formatDate(value) {
         const date = new Date(value);
@@ -312,5 +388,7 @@
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
 
-    load();
+    requireAdmin().then(ok => {
+        if (ok) load();
+    });
 })();
