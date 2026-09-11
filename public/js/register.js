@@ -91,8 +91,36 @@ form.addEventListener(
                         .getElementById(
                             'password'
                         )
+                        .value,
+
+                confirm_password:
+                    document
+                        .getElementById(
+                            'confirm_password'
+                        )
                         .value
             };
+
+            if (
+                payload.password.length < 8
+            ) {
+                showMessage(
+                    'Password must be at least 8 characters long.'
+                );
+
+                return;
+            }
+
+            if (
+                payload.password !==
+                payload.confirm_password
+            ) {
+                showMessage(
+                    'Password and confirm password do not match.'
+                );
+
+                return;
+            }
 
             const response =
                 await fetch(
@@ -167,3 +195,128 @@ form.addEventListener(
         }
     }
 );
+
+
+document.addEventListener(
+    'click',
+    event => {
+        const button =
+            event.target.closest(
+                '[data-password-target]'
+            );
+
+        if (!button) {
+            return;
+        }
+
+        const input =
+            document.getElementById(
+                button.dataset.passwordTarget
+            );
+
+        if (!input) {
+            return;
+        }
+
+        const isPassword =
+            input.type ===
+            'password';
+
+        input.type =
+            isPassword
+                ? 'text'
+                : 'password';
+
+        button.classList.toggle(
+            'is-visible',
+            isPassword
+        );
+
+        button.setAttribute(
+            'aria-pressed',
+            isPassword
+                ? 'true'
+                : 'false'
+        );
+
+        button.setAttribute(
+            'aria-label',
+            isPassword
+                ? 'Hide password'
+                : 'Show password'
+        );
+    }
+);
+
+
+const passwordInput =
+    document.getElementById(
+        'password'
+    );
+
+const confirmPasswordInput =
+    document.getElementById(
+        'confirm_password'
+    );
+
+const passwordMatchText =
+    document.getElementById(
+        'passwordMatchText'
+    );
+
+
+function updatePasswordMatch() {
+    if (
+        !confirmPasswordInput.value
+    ) {
+        passwordMatchText.textContent =
+            'Re-enter your password';
+
+        passwordMatchText.classList.remove(
+            'password-match-success',
+            'password-match-error'
+        );
+
+        return;
+    }
+
+    if (
+        passwordInput.value ===
+        confirmPasswordInput.value
+    ) {
+        passwordMatchText.textContent =
+            'Passwords match';
+
+        passwordMatchText.classList.add(
+            'password-match-success'
+        );
+
+        passwordMatchText.classList.remove(
+            'password-match-error'
+        );
+
+    } else {
+        passwordMatchText.textContent =
+            'Passwords do not match';
+
+        passwordMatchText.classList.add(
+            'password-match-error'
+        );
+
+        passwordMatchText.classList.remove(
+            'password-match-success'
+        );
+    }
+}
+
+
+passwordInput.addEventListener(
+    'input',
+    updatePasswordMatch
+);
+
+confirmPasswordInput.addEventListener(
+    'input',
+    updatePasswordMatch
+);
+

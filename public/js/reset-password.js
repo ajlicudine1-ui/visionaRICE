@@ -150,3 +150,57 @@ form.addEventListener(
         }
     }
 );
+
+
+document.addEventListener(
+    'click',
+    event => {
+        const button =
+            event.target.closest(
+                '[data-password-target]'
+            );
+
+        if (!button) {
+            return;
+        }
+
+        const input =
+            document.getElementById(
+                button.dataset.passwordTarget
+            );
+
+        if (!input) {
+            return;
+        }
+
+        const isPassword =
+            input.type ===
+            'password';
+
+        input.type =
+            isPassword
+                ? 'text'
+                : 'password';
+
+        button.classList.toggle(
+            'is-visible',
+            isPassword
+        );
+
+        button.setAttribute(
+            'aria-pressed',
+            isPassword
+                ? 'true'
+                : 'false'
+        );
+
+        button.setAttribute(
+            'aria-label',
+            isPassword
+                ? 'Hide password'
+                : 'Show password'
+        );
+    }
+);
+
+

@@ -370,86 +370,94 @@
 
 
 /* =====================================================
-   EMAIL VERIFIED POPUP
+   PROFESSIONAL PASSWORD VISIBILITY TOGGLE
 ===================================================== */
 
-.verification-success-modal {
-    text-align:
-        center;
+.auth-password-field {
+    position: relative;
+
+    width: 100%;
 }
 
-.verification-success-icon {
-    width: 70px;
-    height: 70px;
+.auth-password-field input {
+    width: 100% !important;
 
-    margin:
-        4px auto 18px;
+    padding-right: 52px !important;
+}
 
-    display: grid;
+.auth-password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 9px;
+
+    width: 36px;
+    height: 36px;
+
+    display: inline-grid;
     place-items: center;
 
-    border-radius:
-        50%;
+    transform: translateY(-50%);
 
-    background:
-        #e9f2e7;
+    padding: 0;
 
-    color:
-        #286f45;
+    border: 0;
 
-    font-size:
-        36px;
+    border-radius: 8px;
 
-    font-weight:
-        800;
+    background: transparent;
+
+    color: #5f6f64;
+
+    cursor: pointer;
+
+    line-height: 1;
 }
 
-.verification-success-modal h2 {
-    margin:
-        0 0 10px;
+.auth-password-toggle:hover {
+    background: #eef5ed;
 
-    color:
-        #0f3c27;
+    color: #286f45;
 }
 
-.verification-success-text {
-    margin:
-        0 auto;
-
-    max-width:
-        330px;
-
-    color:
-        #3f4c44;
-
-    font-size:
-        13px;
-
-    line-height:
-        1.6;
+.auth-password-toggle:focus-visible {
+    outline: 2px solid #286f45;
+    outline-offset: 2px;
 }
 
-.verification-success-subtext {
-    margin:
-        8px auto 20px;
+.auth-password-toggle .eye-icon {
+    width: 20px;
+    height: 20px;
 
-    max-width:
-        330px;
+    fill: none;
 
-    color:
-        #728078;
+    stroke: currentColor;
 
-    font-size:
-        12px;
+    stroke-width: 1.8;
 
-    line-height:
-        1.55;
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
 }
 
-.verification-login-button {
-    width:
-        100%;
+.auth-password-toggle .eye-closed {
+    display: none;
+}
 
-    margin-top:
-        4px;
+.auth-password-toggle.is-visible .eye-open {
+    display: none;
+}
+
+.auth-password-toggle.is-visible .eye-closed {
+    display: block;
+}
+
+.password-match-success {
+    color: #286f45 !important;
+    font-weight: 600;
+}
+
+.password-match-error {
+    color: #b3261e !important;
+    font-weight: 600;
 }

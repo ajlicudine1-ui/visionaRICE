@@ -66,21 +66,10 @@ function showQueryMessage() {
         verification ===
         'success'
     ) {
-        const modal =
-            document.getElementById(
-                'verificationSuccessModal'
-            );
-
-        if (modal) {
-            modal.classList.remove(
-                'hidden'
-            );
-
-            modal.setAttribute(
-                'aria-hidden',
-                'false'
-            );
-        }
+        showMessage(
+            'Email verified successfully. You can now sign in.',
+            'success'
+        );
 
         return;
     }
@@ -520,10 +509,17 @@ document.addEventListener(
                 ? 'text'
                 : 'password';
 
-        button.textContent =
+        button.classList.toggle(
+            'is-visible',
             isPassword
-                ? '🙈'
-                : '👁';
+        );
+
+        button.setAttribute(
+            'aria-pressed',
+            isPassword
+                ? 'true'
+                : 'false'
+        );
 
         button.setAttribute(
             'aria-label',
@@ -531,67 +527,5 @@ document.addEventListener(
                 ? 'Hide password'
                 : 'Show password'
         );
-    }
-);
-
-
-const verificationSuccessModal =
-    document.getElementById(
-        'verificationSuccessModal'
-    );
-
-const verificationContinueButton =
-    document.getElementById(
-        'verificationContinueButton'
-    );
-
-function closeVerificationSuccessModal() {
-    if (!verificationSuccessModal) {
-        return;
-    }
-
-    verificationSuccessModal.classList.add(
-        'hidden'
-    );
-
-    verificationSuccessModal.setAttribute(
-        'aria-hidden',
-        'true'
-    );
-
-    const url =
-        new URL(
-            window.location.href
-        );
-
-    url.searchParams.delete(
-        'verification'
-    );
-
-    window.history.replaceState(
-        {},
-        '',
-        url.pathname +
-        url.search
-    );
-}
-
-if (verificationContinueButton) {
-    verificationContinueButton.addEventListener(
-        'click',
-        closeVerificationSuccessModal
-    );
-}
-
-document.addEventListener(
-    'click',
-    event => {
-        if (
-            event.target.closest(
-                '[data-close-verification-modal]'
-            )
-        ) {
-            closeVerificationSuccessModal();
-        }
     }
 );

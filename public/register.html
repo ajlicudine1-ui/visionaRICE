@@ -16,7 +16,7 @@
 
     <link
         rel="stylesheet"
-        href="/css/auth-email.css?v=20260911-1"
+        href="/css/auth-email.css?v=20260911-4"
     >
 </head>
 
@@ -135,16 +135,76 @@
                     Password
                 </label>
 
-                <input
-                    type="password"
-                    id="password"
-                    minlength="8"
-                    autocomplete="new-password"
-                    required
-                >
+                <div class="auth-password-field">
+                    <input
+                        type="password"
+                        id="password"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="auth-password-toggle"
+                        data-password-target="password"
+                        aria-label="Show password"
+                        aria-pressed="false"
+                    >
+<svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6S2.5 12 2.5 12Z"></path>
+    <circle cx="12" cy="12" r="2.8"></circle>
+</svg>
+<svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M3 3l18 18"></path>
+    <path d="M10.6 10.7a2.3 2.3 0 0 0 3.2 3.2"></path>
+    <path d="M9.2 5.3A10.8 10.8 0 0 1 12 5c6 0 9.5 7 9.5 7a16.2 16.2 0 0 1-2.6 3.4"></path>
+    <path d="M6.1 6.1C3.7 7.8 2.5 12 2.5 12s3.5 7 9.5 7a9.8 9.8 0 0 0 4.1-.9"></path>
+</svg>
+</button>
+                </div>
 
                 <small>
                     Minimum of 8 characters
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+                <div class="auth-password-field">
+                    <input
+                        type="password"
+                        id="confirm_password"
+                        minlength="8"
+                        autocomplete="new-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="auth-password-toggle"
+                        data-password-target="confirm_password"
+                        aria-label="Show confirm password"
+                        aria-pressed="false"
+                    >
+<svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6S2.5 12 2.5 12Z"></path>
+    <circle cx="12" cy="12" r="2.8"></circle>
+</svg>
+<svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M3 3l18 18"></path>
+    <path d="M10.6 10.7a2.3 2.3 0 0 0 3.2 3.2"></path>
+    <path d="M9.2 5.3A10.8 10.8 0 0 1 12 5c6 0 9.5 7 9.5 7a16.2 16.2 0 0 1-2.6 3.4"></path>
+    <path d="M6.1 6.1C3.7 7.8 2.5 12 2.5 12s3.5 7 9.5 7a9.8 9.8 0 0 0 4.1-.9"></path>
+</svg>
+</button>
+                </div>
+
+                <small id="passwordMatchText">
+                    Re-enter your password
                 </small>
             </div>
 
@@ -174,7 +234,7 @@
 
 </div>
 
-<script src="/js/register.js?v=20260911-1"></script>
+<script src="/js/register.js?v=20260911-4"></script>
 
 </body>
 </html>
