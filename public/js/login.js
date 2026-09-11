@@ -1,8 +1,48 @@
-const form = document.getElementById('loginForm');
-const messageBox = document.getElementById('message');
+const form =
+    document.getElementById(
+        'loginForm'
+    );
 
-function showMessage(message, type = 'error') {
+const messageBox =
+    document.getElementById(
+        'message'
+    );
 
+const resendWrap =
+    document.getElementById(
+        'resendVerificationWrap'
+    );
+
+const resendButton =
+    document.getElementById(
+        'resendVerificationButton'
+    );
+
+const forgotModal =
+    document.getElementById(
+        'forgotPasswordModal'
+    );
+
+const forgotForm =
+    document.getElementById(
+        'forgotPasswordForm'
+    );
+
+const forgotEmail =
+    document.getElementById(
+        'forgotEmail'
+    );
+
+const forgotMessage =
+    document.getElementById(
+        'forgotMessage'
+    );
+
+
+function showMessage(
+    message,
+    type = 'error'
+) {
     messageBox.innerHTML = `
         <div class="message ${type}">
             ${message}
@@ -10,88 +50,548 @@ function showMessage(message, type = 'error') {
     `;
 }
 
-form.addEventListener('submit', async (event) => {
 
-    event.preventDefault();
+function showQueryMessage() {
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    const button = form.querySelector('button');
+    const verification =
+        params.get(
+            'verification'
+        );
 
-    button.disabled = true;
-    button.textContent = 'Signing In...';
+    if (
+        verification ===
+        'success'
+    ) {
+        const modal =
+            document.getElementById(
+                'verificationSuccessModal'
+            );
 
-    try {
+        if (modal) {
+            modal.classList.remove(
+                'hidden'
+            );
 
-        const response = await fetch('/api/auth/login', {
+            modal.setAttribute(
+                'aria-hidden',
+                'false'
+            );
+        }
 
-            method: 'POST',
+        return;
+    }
 
-            headers: {
-                'Content-Type': 'application/json'
-            },
+    if (
+        verification ===
+        'invalid'
+    ) {
+        showMessage(
+            'This verification link is invalid or has expired. You can request a new verification email below.'
+        );
 
-            credentials: 'include',
+        resendWrap.classList.remove(
+            'hidden'
+        );
 
-            body: JSON.stringify({
+        return;
+    }
 
-                email:
-                    document
-                        .getElementById('email')
-                        .value,
+    if (
+        verification ===
+        'error'
+    ) {
+        showMessage(
+            'Unable to verify your email. Please request a new verification link.'
+        );
 
-                password:
-                    document
-                        .getElementById('password')
-                        .value
+        resendWrap.classList.remove(
+            'hidden'
+        );
 
-            })
+        return;
+    }
 
-        });
+    if (
+        params.get(
+            'registered'
+        ) ===
+        '1'
+    ) {
+        showMessage(
+            'Account created. Check your email and verify your account before signing in.',
+            'success'
+        );
+    }
 
-        const result = await response.json();
+    if (
+        params.get(
+            'reset'
+        ) ===
+        'success'
+    ) {
+        showMessage(
+            'Password reset successfully. Sign in with your new password.',
+            'success'
+        );
+    }
+}
 
-        if (!response.ok) {
+
+form.addEventListener(
+    'submit',
+    async event => {
+        event.preventDefault();
+
+        const button =
+            form.querySelector(
+                'button[type="submit"]'
+            );
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            'Signing In...';
+
+        resendWrap.classList.add(
+            'hidden'
+        );
+
+        try {
+            const response =
+                await fetch(
+                    '/api/auth/login',
+                    {
+                        method:
+                            'POST',
+
+                        headers: {
+                            'Content-Type':
+                                'application/json'
+                        },
+
+                        credentials:
+                            'include',
+
+                        body:
+                            JSON.stringify({
+                                email:
+                                    document
+                                        .getElementById(
+                                            'email'
+                                        )
+                                        .value
+                                        .trim(),
+
+                                password:
+                                    document
+                                        .getElementById(
+                                            'password'
+                                        )
+                                        .value
+                            })
+                    }
+                );
+
+            const result =
+                await response
+                    .json();
+
+            if (!response.ok) {
+                showMessage(
+                    result.message ||
+                    'Login failed.'
+                );
+
+                if (
+                    result.code ===
+                    'EMAIL_NOT_VERIFIED'
+                ) {
+                    resendWrap
+                        .classList
+                        .remove(
+                            'hidden'
+                        );
+                }
+
+                return;
+            }
 
             showMessage(
-                result.message || 'Login failed.'
+                'Login successful.',
+                'success'
+            );
+
+            setTimeout(
+                () => {
+                    if (
+                        result.user.role ===
+                        'admin'
+                    ) {
+                        window.location.href =
+                            '/admin.html';
+
+                    } else {
+                        window.location.href =
+                            '/analyze.html';
+                    }
+                },
+                500
+            );
+
+        } catch (error) {
+            console.error(
+                error
+            );
+
+            showMessage(
+                'Unable to connect to the server.'
+            );
+
+        } finally {
+            button.disabled =
+                false;
+
+            button.textContent =
+                'Sign In';
+        }
+    }
+);
+
+
+resendButton.addEventListener(
+    'click',
+    async () => {
+        const email =
+            document
+                .getElementById(
+                    'email'
+                )
+                .value
+                .trim();
+
+        if (!email) {
+            showMessage(
+                'Enter your email address first.'
             );
 
             return;
         }
 
-        showMessage(
-            'Login successful.',
-            'success'
-        );
+        const originalText =
+            resendButton.textContent;
 
-        setTimeout(() => {
+        resendButton.disabled =
+            true;
 
-            if (result.user.role === 'admin') {
+        resendButton.textContent =
+            'Sending...';
 
-                window.location.href =
-                    '/admin.html';
+        try {
+            const response =
+                await fetch(
+                    '/api/auth/resend-verification',
+                    {
+                        method:
+                            'POST',
 
-            } else {
+                        headers: {
+                            'Content-Type':
+                                'application/json'
+                        },
 
-                window.location.href =
-                    '/analyze.html';
+                        body:
+                            JSON.stringify({
+                                email
+                            })
+                    }
+                );
 
+            const result =
+                await response
+                    .json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result.message ||
+                    'Unable to resend verification email.'
+                );
             }
 
-        }, 500);
+            showMessage(
+                result.message,
+                'success'
+            );
 
-    } catch (error) {
+        } catch (error) {
+            showMessage(
+                error.message
+            );
 
-        console.error(error);
+        } finally {
+            resendButton.disabled =
+                false;
 
-        showMessage(
-            'Unable to connect to the server.'
+            resendButton.textContent =
+                originalText;
+        }
+    }
+);
+
+
+document
+    .getElementById(
+        'forgotPasswordLink'
+    )
+    .addEventListener(
+        'click',
+        () => {
+            const loginEmail =
+                document
+                    .getElementById(
+                        'email'
+                    )
+                    .value
+                    .trim();
+
+            forgotEmail.value =
+                loginEmail;
+
+            forgotMessage.textContent =
+                '';
+
+            forgotModal
+                .classList
+                .remove(
+                    'hidden'
+                );
+
+            forgotModal.setAttribute(
+                'aria-hidden',
+                'false'
+            );
+        }
+    );
+
+
+document.addEventListener(
+    'click',
+    event => {
+        if (
+            !event.target.closest(
+                '[data-close-auth-modal]'
+            )
+        ) {
+            return;
+        }
+
+        forgotModal
+            .classList
+            .add(
+                'hidden'
+            );
+
+        forgotModal.setAttribute(
+            'aria-hidden',
+            'true'
         );
+    }
+);
 
-    } finally {
 
-        button.disabled = false;
-        button.textContent = 'Sign In';
+forgotForm.addEventListener(
+    'submit',
+    async event => {
+        event.preventDefault();
 
+        const email =
+            forgotEmail
+                .value
+                .trim();
+
+        const button =
+            document.getElementById(
+                'sendResetButton'
+            );
+
+        const originalText =
+            button.textContent;
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            'Sending...';
+
+        forgotMessage.textContent =
+            '';
+
+        try {
+            const response =
+                await fetch(
+                    '/api/auth/forgot-password',
+                    {
+                        method:
+                            'POST',
+
+                        headers: {
+                            'Content-Type':
+                                'application/json'
+                        },
+
+                        body:
+                            JSON.stringify({
+                                email
+                            })
+                    }
+                );
+
+            const result =
+                await response
+                    .json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result.message ||
+                    'Unable to send password reset email.'
+                );
+            }
+
+            forgotMessage.textContent =
+                result.message;
+
+            forgotMessage.classList.add(
+                'success'
+            );
+
+        } catch (error) {
+            forgotMessage.textContent =
+                error.message;
+
+            forgotMessage.classList.remove(
+                'success'
+            );
+
+        } finally {
+            button.disabled =
+                false;
+
+            button.textContent =
+                originalText;
+        }
+    }
+);
+
+
+showQueryMessage();
+
+
+document.addEventListener(
+    'click',
+    event => {
+        const button =
+            event.target.closest(
+                '[data-password-target]'
+            );
+
+        if (!button) {
+            return;
+        }
+
+        const input =
+            document.getElementById(
+                button.dataset.passwordTarget
+            );
+
+        if (!input) {
+            return;
+        }
+
+        const isPassword =
+            input.type ===
+            'password';
+
+        input.type =
+            isPassword
+                ? 'text'
+                : 'password';
+
+        button.textContent =
+            isPassword
+                ? '🙈'
+                : '👁';
+
+        button.setAttribute(
+            'aria-label',
+            isPassword
+                ? 'Hide password'
+                : 'Show password'
+        );
+    }
+);
+
+
+const verificationSuccessModal =
+    document.getElementById(
+        'verificationSuccessModal'
+    );
+
+const verificationContinueButton =
+    document.getElementById(
+        'verificationContinueButton'
+    );
+
+function closeVerificationSuccessModal() {
+    if (!verificationSuccessModal) {
+        return;
     }
 
-});
+    verificationSuccessModal.classList.add(
+        'hidden'
+    );
+
+    verificationSuccessModal.setAttribute(
+        'aria-hidden',
+        'true'
+    );
+
+    const url =
+        new URL(
+            window.location.href
+        );
+
+    url.searchParams.delete(
+        'verification'
+    );
+
+    window.history.replaceState(
+        {},
+        '',
+        url.pathname +
+        url.search
+    );
+}
+
+if (verificationContinueButton) {
+    verificationContinueButton.addEventListener(
+        'click',
+        closeVerificationSuccessModal
+    );
+}
+
+document.addEventListener(
+    'click',
+    event => {
+        if (
+            event.target.closest(
+                '[data-close-verification-modal]'
+            )
+        ) {
+            closeVerificationSuccessModal();
+        }
+    }
+);

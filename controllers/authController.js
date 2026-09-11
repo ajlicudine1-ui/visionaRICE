@@ -115,6 +115,7 @@ exports.register = async (req, res) => {
         const {
             email,
             password,
+            confirm_password,
             first_name,
             middle_name,
             last_name,
@@ -125,13 +126,14 @@ exports.register = async (req, res) => {
         if (
             !email ||
             !password ||
+            !confirm_password ||
             !first_name ||
             !last_name
         ) {
             return res.status(400).json({
                 success: false,
                 message:
-                    'Email, password, first name, and last name are required.'
+                    'Email, password, confirm password, first name, and last name are required.'
             });
         }
 
@@ -142,6 +144,17 @@ exports.register = async (req, res) => {
                 success: false,
                 message:
                     'Password must be at least 8 characters long.'
+            });
+        }
+
+        if (
+            password !==
+            confirm_password
+        ) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    'Password and confirm password do not match.'
             });
         }
 

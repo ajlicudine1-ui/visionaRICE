@@ -196,3 +196,260 @@
 
     line-height: 1.5;
 }
+
+
+/* =====================================================
+   PASSWORD FIELD / EYE TOGGLE
+===================================================== */
+
+.auth-password-field {
+    position: relative;
+
+    width: 100%;
+}
+
+.auth-password-field input {
+    width: 100%;
+
+    padding-right:
+        48px !important;
+}
+
+.auth-password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 10px;
+
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    transform:
+        translateY(-50%);
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background:
+        transparent;
+
+    color:
+        #286f45;
+
+    font-size: 16px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.16s ease,
+        transform 0.16s ease;
+}
+
+.auth-password-toggle:hover {
+    background:
+        #edf5eb;
+}
+
+.auth-password-toggle:active {
+    transform:
+        translateY(-50%)
+        scale(0.94);
+}
+
+.password-match-success {
+    color:
+        #286f45 !important;
+
+    font-weight:
+        600;
+}
+
+.password-match-error {
+    color:
+        #b23a32 !important;
+
+    font-weight:
+        600;
+}
+
+
+/* =====================================================
+   EMAIL VERIFICATION SUCCESS
+===================================================== */
+
+.verification-success-card {
+    text-align:
+        center;
+}
+
+.verification-success-icon {
+    width: 74px;
+    height: 74px;
+
+    margin:
+        18px auto 18px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius:
+        50%;
+
+    background:
+        #e9f2e7;
+
+    color:
+        #286f45;
+
+    font-size:
+        38px;
+
+    font-weight:
+        800;
+}
+
+.verification-success-card h2 {
+    margin-bottom:
+        10px;
+
+    color:
+        #0f3c27;
+}
+
+.verification-success-text {
+    margin:
+        0 auto;
+
+    max-width:
+        360px;
+
+    color:
+        #3f4c44;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.65;
+}
+
+.verification-success-subtext {
+    margin:
+        10px auto 22px;
+
+    max-width:
+        360px;
+
+    color:
+        #728078;
+
+    font-size:
+        12px;
+
+    line-height:
+        1.6;
+}
+
+.verification-login-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    text-decoration:
+        none;
+}
+
+
+/* =====================================================
+   EMAIL VERIFIED POPUP
+===================================================== */
+
+.verification-success-modal {
+    text-align:
+        center;
+}
+
+.verification-success-icon {
+    width: 70px;
+    height: 70px;
+
+    margin:
+        4px auto 18px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius:
+        50%;
+
+    background:
+        #e9f2e7;
+
+    color:
+        #286f45;
+
+    font-size:
+        36px;
+
+    font-weight:
+        800;
+}
+
+.verification-success-modal h2 {
+    margin:
+        0 0 10px;
+
+    color:
+        #0f3c27;
+}
+
+.verification-success-text {
+    margin:
+        0 auto;
+
+    max-width:
+        330px;
+
+    color:
+        #3f4c44;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.6;
+}
+
+.verification-success-subtext {
+    margin:
+        8px auto 20px;
+
+    max-width:
+        330px;
+
+    color:
+        #728078;
+
+    font-size:
+        12px;
+
+    line-height:
+        1.55;
+}
+
+.verification-login-button {
+    width:
+        100%;
+
+    margin-top:
+        4px;
+}

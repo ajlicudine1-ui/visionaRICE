@@ -17,7 +17,7 @@
 
     <link
         rel="stylesheet"
-        href="/css/auth-email.css?v=20260911-1"
+        href="/css/auth-email.css?v=20260911-3"
     >
 </head>
 
@@ -64,13 +64,24 @@
                     Password
                 </label>
 
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Enter your password"
-                    autocomplete="current-password"
-                    required
-                >
+                <div class="auth-password-field">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="auth-password-toggle"
+                        data-password-target="password"
+                        aria-label="Show password"
+                    >
+                        👁
+                    </button>
+                </div>
             </div>
 
             <div class="login-help-row">
@@ -193,7 +204,103 @@
 </div>
 
 
-<script src="/js/login.js?v=20260911-1"></script>
+
+
+<!-- Email Verified Popup -->
+<div
+    id="verificationSuccessModal"
+    class="auth-modal hidden"
+    aria-hidden="true"
+>
+    <div
+        class="auth-modal-backdrop"
+        data-close-verification-modal
+    ></div>
+
+    <section
+        class="auth-modal-dialog verification-success-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="verificationSuccessTitle"
+    >
+        <div class="verification-success-icon">
+            ✓
+        </div>
+
+        <h2 id="verificationSuccessTitle">
+            Email Verified
+        </h2>
+
+        <p class="verification-success-text">
+            Your email has been verified successfully.
+            Your VISIONARICE account is now active.
+        </p>
+
+        <p class="verification-success-subtext">
+            You can now sign in using your registered
+            email and password.
+        </p>
+
+        <button
+            id="verificationContinueButton"
+            type="button"
+            class="primary-btn verification-login-button"
+        >
+            Continue to Sign In
+        </button>
+    </section>
+</div>
+
+<script src="/js/login.js?v=20260911-3"></script>
+
+
+
+<!-- Email Verified Popup -->
+<div
+    id="verificationSuccessModal"
+    class="auth-modal hidden"
+    aria-hidden="true"
+>
+    <div
+        class="auth-modal-backdrop"
+        data-close-verification-modal
+    ></div>
+
+    <section
+        class="auth-modal-dialog verification-success-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="verificationSuccessTitle"
+    >
+        <div class="verification-success-icon">
+            ✓
+        </div>
+
+        <h2 id="verificationSuccessTitle">
+            Email Verified
+        </h2>
+
+        <p class="verification-success-text">
+            Your email has been verified successfully.
+            Your VISIONARICE account is now active.
+        </p>
+
+        <p class="verification-success-subtext">
+            You can now sign in using your registered
+            email and password.
+        </p>
+
+        <button
+            id="verificationContinueButton"
+            type="button"
+            class="primary-btn verification-login-button"
+        >
+            Continue to Sign In
+        </button>
+    </section>
+</div>
+
+<script src="/js/login.js?v=20260911-3"></script>
 
 </body>
 </html>
