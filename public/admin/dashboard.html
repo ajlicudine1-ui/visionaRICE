@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | VISIONARICE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="/css/admin/admin-sidebar.css?v=20260911-1">
+    <link rel="stylesheet" href="/css/admin/dashboard.css?v=20260911-1">
+</head>
+
+<body data-admin-page="dashboard">
+
+<div id="adminSidebarContainer"></div>
+
+<div class="admin-page-shell">
+    <main class="admin-dashboard-page">
+
+        <section class="admin-heading">
+            <div>
+                <span class="eyebrow">SYSTEM OVERVIEW</span>
+                <h1>Administrator Dashboard</h1>
+
+                <p>
+                    Monitor VISIONARICE predictions, users,
+                    disease activity, confidence levels, and field locations.
+                </p>
+            </div>
+
+            <div class="heading-tools">
+                <div class="updated-box">
+                    <small>Last updated</small>
+                    <strong id="lastUpdated">Loading...</strong>
+                </div>
+
+                <button id="refreshAdminDashboard" class="green-button">
+                    Refresh
+                </button>
+            </div>
+        </section>
+
+
+        <section class="filter-card">
+            <div class="filter-header">
+                <div>
+                    <span class="eyebrow">LOCATION FILTER</span>
+                    <h2>Filter prediction analytics</h2>
+
+                    <p>
+                        View predictions by province, municipality/city, and barangay.
+                    </p>
+                </div>
+
+                <button id="resetLocationFilters" class="outline-button">
+                    Reset Filters
+                </button>
+            </div>
+
+            <div class="filter-grid">
+                <label>
+                    Province
+
+                    <select id="provinceFilter">
+                        <option value="">All Provinces</option>
+                    </select>
+                </label>
+
+                <label>
+                    Municipality / City
+
+                    <select id="municipalityFilter" disabled>
+                        <option value="">All Municipalities / Cities</option>
+                    </select>
+                </label>
+
+                <label>
+                    Barangay
+
+                    <select id="barangayFilter" disabled>
+                        <option value="">All Barangays</option>
+                    </select>
+                </label>
+            </div>
+
+            <div id="activeFilterSummary" class="filter-summary">
+                Showing all prediction locations.
+            </div>
+        </section>
+
+
+        <section class="kpi-grid">
+            <article class="kpi-card">
+                <span>Total Predictions</span>
+                <strong id="totalPredictions">0</strong>
+                <p>Recorded predictions in the current scope</p>
+            </article>
+
+            <article class="kpi-card">
+                <span>Active Users</span>
+                <strong id="activeUsers">0</strong>
+                <p>Active accounts represented in the current scope</p>
+            </article>
+
+            <article class="kpi-card">
+                <span>Accuracy Rate</span>
+                <strong id="accuracyRate">0%</strong>
+                <p>Average prediction confidence in the current scope</p>
+            </article>
+
+            <article class="kpi-card">
+                <span>Today's Scans</span>
+                <strong id="todaysScans">0</strong>
+                <p>Predictions recorded today in Philippine time</p>
+            </article>
+        </section>
+
+
+        <section class="dashboard-grid disease-grid">
+            <article class="dashboard-card">
+                <div class="card-heading">
+                    <span class="eyebrow">DISEASE MONITORING</span>
+                    <h2>Disease Occurrences</h2>
+                    <p>Frequency of detected rice conditions.</p>
+                </div>
+
+                <div class="chart-wrap large">
+                    <canvas id="diseaseChart"></canvas>
+                </div>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="card-heading">
+                    <span class="eyebrow">RICE HEALTH</span>
+                    <h2>Healthy vs Diseased</h2>
+                    <p>Overall crop-health classification.</p>
+                </div>
+
+                <div class="chart-wrap donut">
+                    <canvas id="healthChart"></canvas>
+                </div>
+
+                <div class="health-row">
+                    <span>Healthy <strong id="healthyCount">0</strong></span>
+                    <span>Diseased <strong id="diseasedCount">0</strong></span>
+                </div>
+            </article>
+        </section>
+
+
+        <section class="dashboard-grid">
+            <article class="dashboard-card">
+                <div class="card-heading">
+                    <span class="eyebrow">ACTIVITY</span>
+                    <h2>Scans Over Time</h2>
+                    <p>Prediction activity during the latest 14 days.</p>
+                </div>
+
+                <div class="chart-wrap">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="card-heading">
+                    <span class="eyebrow">MODEL QUALITY</span>
+                    <h2>Confidence Score Ranges</h2>
+                    <p>Distribution of predictions by confidence band.</p>
+                </div>
+
+                <div class="chart-wrap">
+                    <canvas id="confidenceChart"></canvas>
+                </div>
+            </article>
+        </section>
+
+
+        <section class="dashboard-grid bottom-grid">
+            <article class="dashboard-card">
+                <div class="card-heading">
+                    <span class="eyebrow">FIELD ACTIVITY</span>
+                    <h2>Top Locations Scanned</h2>
+                    <p>Locations with the highest prediction activity.</p>
+                </div>
+
+                <div id="topLocations" class="location-list">
+                    <div class="empty-state">No location data yet.</div>
+                </div>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="card-heading">
+                    <span class="eyebrow">RECENT ACTIVITY</span>
+                    <h2>Latest Predictions</h2>
+                    <p>Most recent analyses across VISIONARICE.</p>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Disease</th>
+                                <th>Confidence</th>
+                                <th>Location</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recentPredictionsBody">
+                            <tr>
+                                <td colspan="5" class="empty-table">
+                                    Loading predictions...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+
+        <section class="admin-note">
+            <strong>i</strong>
+
+            <p>
+                The old “Accuracy Rate” card is retained.
+                Since saved prediction records do not contain a
+                ground-truth correct/incorrect field, it currently
+                displays average prediction confidence.
+            </p>
+        </section>
+
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="/js/admin/admin-sidebar.js?v=20260911-1"></script>
+<script src="/js/admin/dashboard.js?v=20260911-1"></script>
+
+</body>
+</html>

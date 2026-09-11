@@ -1,0 +1,52 @@
+<aside class="admin-sidebar" id="adminSidebar">
+    <div>
+        <a href="/admin/dashboard.html" class="admin-brand">
+            <span class="admin-brand-icon">🌾</span>
+            <span>
+                <strong>VISION<span>A</span>RICE</strong>
+                <small>Admin Panel</small>
+            </span>
+        </a>
+
+        <nav class="admin-nav">
+            <a href="/admin/dashboard.html" data-admin-page="dashboard">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="/admin/predictions.html" data-admin-page="predictions">
+                <span>≡</span> Predictions
+            </a>
+
+            <a href="/admin/users.html" data-admin-page="users">
+                <span>◎</span> Users
+            </a>
+
+            <a href="/admin/profile.html" data-admin-page="profile">
+                <span>◯</span> Profile
+            </a>
+
+            <a href="/admin/notifications.html" data-admin-page="notifications">
+                <span>♢</span> Notifications
+            </a>
+        </nav>
+    </div>
+
+    <div class="admin-sidebar-footer">
+        <small>Signed in as</small>
+        <strong id="adminSessionName">Administrator</strong>
+
+        <button type="button" id="adminLogoutButton">
+            Logout
+        </button>
+    </div>
+</aside>
+
+<header class="admin-mobile-header">
+    <strong>🌾 VISIONARICE Admin</strong>
+
+    <button type="button" id="adminMenuButton" aria-label="Open menu">
+        ☰
+    </button>
+</header>
+
+<div class="admin-sidebar-backdrop" id="adminSidebarBackdrop"></div>

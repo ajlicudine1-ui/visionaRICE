@@ -27,6 +27,9 @@ const notificationRoutes =
 const imageUploadRoutes =
     require('./routes/imageUploadRoutes');
 
+const adminRoutes =
+    require('./routes/admin/adminRoutes');
+
 const {
     requireAdmin
 } = require('./middleware/authMiddleware');
@@ -112,7 +115,6 @@ app.use(
 app.get(
     '/',
     (req, res) => {
-
         res.sendFile(
             path.join(
                 __dirname,
@@ -131,7 +133,6 @@ app.get(
 app.get(
     '/api/health',
     (req, res) => {
-
         res.json({
             success: true,
 
@@ -153,9 +154,7 @@ app.get(
 app.get(
     '/api/test-db',
     async (req, res) => {
-
         try {
-
             const {
                 data,
                 error
@@ -176,7 +175,6 @@ app.get(
                     );
 
             if (error) {
-
                 console.error(
                     'Database error:',
                     error
@@ -211,7 +209,6 @@ app.get(
             });
 
         } catch (error) {
-
             console.error(
                 'Unexpected error:',
                 error
@@ -295,6 +292,16 @@ app.use(
 
 
 // ===============================
+// Admin Dashboard Routes
+// ===============================
+
+app.use(
+    '/api/admin',
+    adminRoutes
+);
+
+
+// ===============================
 // Admin Test Route
 // ===============================
 
@@ -302,7 +309,6 @@ app.get(
     '/api/admin/test',
     requireAdmin,
     (req, res) => {
-
         return res.json({
             success:
                 true,
@@ -324,7 +330,6 @@ app.get(
 
 app.use(
     (req, res) => {
-
         return res
             .status(404)
             .json({
@@ -346,11 +351,9 @@ if (
     require.main ===
     module
 ) {
-
     app.listen(
         PORT,
         () => {
-
             console.log('');
 
             console.log(
@@ -479,7 +482,15 @@ if (
             );
 
             console.log(
+                ` Admin Dashboard: GET  http://localhost:${PORT}/api/admin/dashboard`
+            );
+
+            console.log(
                 ` Admin Test:      GET  http://localhost:${PORT}/api/admin/test`
+            );
+
+            console.log(
+                ` Admin Page:      http://localhost:${PORT}/admin/dashboard.html`
             );
 
             console.log(
