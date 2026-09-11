@@ -2,11 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>VISIONARICE | Login</title>
 
-    <link rel="stylesheet" href="/css/auth.css">
+    <link
+        rel="stylesheet"
+        href="/css/auth.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/auth-email.css?v=20260911-1"
+    >
 </head>
 
 <body>
@@ -17,54 +29,171 @@
 
         <div class="brand">
             <h1>VISIONARICE</h1>
-            <p>Rice Disease Detection and Monitoring System</p>
+
+            <p>
+                Rice Disease Detection and Monitoring System
+            </p>
         </div>
 
         <h2>Welcome Back</h2>
-        <p class="subtitle">Sign in to your account</p>
+
+        <p class="subtitle">
+            Sign in to your account
+        </p>
 
         <div id="message"></div>
 
         <form id="loginForm">
 
             <div class="form-group">
-                <label>Email</label>
+                <label for="email">
+                    Email
+                </label>
 
                 <input
                     type="email"
                     id="email"
                     placeholder="Enter your email"
+                    autocomplete="email"
                     required
                 >
             </div>
 
             <div class="form-group">
-                <label>Password</label>
+                <label for="password">
+                    Password
+                </label>
 
                 <input
                     type="password"
                     id="password"
                     placeholder="Enter your password"
+                    autocomplete="current-password"
                     required
                 >
             </div>
 
-            <button type="submit" class="primary-btn">
+            <div class="login-help-row">
+                <button
+                    id="forgotPasswordLink"
+                    type="button"
+                    class="auth-text-link"
+                >
+                    Forgot Password?
+                </button>
+            </div>
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
                 Sign In
             </button>
 
         </form>
 
+        <div
+            id="resendVerificationWrap"
+            class="resend-verification hidden"
+        >
+            <span>
+                Didn't receive the verification email?
+            </span>
+
+            <button
+                id="resendVerificationButton"
+                type="button"
+                class="auth-text-link"
+            >
+                Resend Verification Email
+            </button>
+        </div>
+
         <p class="switch-text">
             Don't have an account?
-            <a href="/register.html">Register</a>
+            <a href="/register.html">
+                Register
+            </a>
         </p>
 
     </div>
 
 </div>
 
-<script src="/js/login.js"></script>
+
+<!-- Forgot Password Modal -->
+<div
+    id="forgotPasswordModal"
+    class="auth-modal hidden"
+    aria-hidden="true"
+>
+    <div
+        class="auth-modal-backdrop"
+        data-close-auth-modal
+    ></div>
+
+    <section
+        class="auth-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="forgotPasswordTitle"
+    >
+        <button
+            type="button"
+            class="auth-modal-close"
+            data-close-auth-modal
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+        <div class="auth-modal-icon">
+            🔑
+        </div>
+
+        <h2 id="forgotPasswordTitle">
+            Forgot Password?
+        </h2>
+
+        <p>
+            Enter your registered email address.
+            We will send you a secure password reset link.
+        </p>
+
+        <form id="forgotPasswordForm">
+
+            <div class="form-group">
+                <label for="forgotEmail">
+                    Email Address
+                </label>
+
+                <input
+                    id="forgotEmail"
+                    type="email"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <button
+                id="sendResetButton"
+                type="submit"
+                class="primary-btn"
+            >
+                Send Reset Link
+            </button>
+
+        </form>
+
+        <div
+            id="forgotMessage"
+            class="modal-message"
+        ></div>
+    </section>
+</div>
+
+
+<script src="/js/login.js?v=20260911-1"></script>
 
 </body>
 </html>
