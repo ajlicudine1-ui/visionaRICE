@@ -221,8 +221,8 @@ form.addEventListener(
                         result.user.role ===
                         'admin'
                     ) {
-                        window.location.href =
-                            '/admin.html';
+                           window.location.href =
+                        '/admin/dashboard.html';
 
                     } else {
                         window.location.href =
