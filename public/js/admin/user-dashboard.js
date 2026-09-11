@@ -59,10 +59,7 @@
             $('diseasedCount'),
 
         today:
-            $('todayCount'),
-
-        recent:
-            $('recentPredictions')
+            $('todayCount')
     };
 
 
@@ -165,10 +162,6 @@
 
             renderCharts(
                 result.charts
-            );
-
-            renderRecent(
-                result.recent_predictions
             );
 
         } catch (error) {
@@ -474,81 +467,8 @@
     }
 
 
-    function renderRecent(items) {
-        if (!items.length) {
-            el.recent.innerHTML =
-                `
-                    <div class="empty-state">
-                        This user has no prediction records yet.
-                    </div>
-                `;
 
-            return;
-        }
 
-        el.recent.innerHTML =
-            items
-                .map(
-                    item => {
-                        const location =
-                            [
-                                item.barangay,
-                                item.municipality,
-                                item.province
-                            ]
-                                .filter(Boolean)
-                                .join(', ') ||
-                            'Unspecified';
-
-                        return `
-                            <article class="recent-item">
-
-                                <div class="recent-thumb">
-                                    ${
-                                        item.image_url
-                                            ? `
-                                                <img
-                                                    src="${escapeHtml(item.image_url)}"
-                                                    alt=""
-                                                    loading="lazy"
-                                                >
-                                            `
-                                            : ''
-                                    }
-                                </div>
-
-                                <div class="recent-copy">
-                                    <strong>
-                                        ${escapeHtml(item.disease)}
-                                    </strong>
-
-                                    <span>
-                                        ${escapeHtml(location)}
-                                    </span>
-
-                                    <span>
-                                        ${formatDateTime(item.created_at)}
-                                    </span>
-                                </div>
-
-                                <div class="recent-action">
-                                    <span class="confidence-pill">
-                                        ${Number(item.confidence).toFixed(2)}%
-                                    </span>
-
-                                    <a
-                                        href="/prediction-detail.html?id=${encodeURIComponent(item.id)}"
-                                    >
-                                        View Result →
-                                    </a>
-                                </div>
-
-                            </article>
-                        `;
-                    }
-                )
-                .join('');
-    }
 
 
     el.logout.addEventListener(
