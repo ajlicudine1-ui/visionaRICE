@@ -1,58 +1,175 @@
 (() => {
     'use strict';
 
-    const container = document.getElementById('adminSidebarContainer');
-    if (!container) return;
+    const container =
+        document.getElementById(
+            'adminSidebarContainer'
+        );
 
-    async function start() {
-        const response = await fetch('/admin/components/sidebar.html', { cache: 'no-store' });
-        container.innerHTML = await response.text();
+    if (!container) {
+        return;
+    }
 
-        const current = document.body.dataset.adminPage;
+    async function loadNavigation() {
+        try {
+            const response =
+                await fetch(
+                    '/admin/components/sidebar.html',
+                    {
+                        cache:
+                            'no-store'
+                    }
+                );
 
-        document.querySelectorAll('[data-admin-page]').forEach(link => {
-            link.classList.toggle('active', link.dataset.adminPage === current);
-        });
+            if (!response.ok) {
+                throw new Error(
+                    'Unable to load administrator navigation.'
+                );
+            }
 
-        document.getElementById('adminMenuButton')?.addEventListener('click', () => {
-            document.body.classList.toggle('admin-menu-open');
-        });
+            container.innerHTML =
+                await response.text();
 
-        document.getElementById('adminSidebarBackdrop')?.addEventListener('click', () => {
-            document.body.classList.remove('admin-menu-open');
-        });
+            activateCurrentPage();
+
+            await loadAdminIdentity();
+
+            bindLogout();
+
+        } catch (error) {
+            console.error(
+                'Admin navigation error:',
+                error
+            );
+        }
+    }
+
+
+    function activateCurrentPage() {
+        const page =
+            document.body.dataset.adminPage ||
+            '';
+
+        document
+            .querySelectorAll(
+                '[data-admin-page]'
+            )
+            .forEach(link => {
+                link.classList.toggle(
+                    'active',
+                    link.dataset.adminPage ===
+                        page
+                );
+            });
+    }
+
+
+    async function loadAdminIdentity() {
+        const nameElement =
+            document.getElementById(
+                'adminSessionName'
+            );
 
         try {
-            const me = await fetch('/api/auth/me', { credentials: 'include' });
-            const result = await me.json();
+            const response =
+                await fetch(
+                    '/api/auth/me',
+                    {
+                        credentials:
+                            'include'
+                    }
+                );
 
-            if (!me.ok || String(result.user?.role || '').toLowerCase() !== 'admin') {
-                window.location.href = '/login.html';
+            if (!response.ok) {
+                window.location.href =
+                    '/login.html';
+
                 return;
             }
 
-            const name = [result.user.first_name, result.user.last_name]
-                .filter(Boolean)
-                .join(' ');
+            const result =
+                await response.json();
 
-            document.getElementById('adminSessionName').textContent =
-                name || result.user.email || 'Administrator';
+            if (
+                !result.user ||
+                String(
+                    result.user.role ||
+                    ''
+                ).toLowerCase() !==
+                    'admin'
+            ) {
+                window.location.href =
+                    '/login.html';
 
-        } catch {
-            window.location.href = '/login.html';
-        }
-
-        document.getElementById('adminLogoutButton')?.addEventListener('click', async () => {
-            try {
-                await fetch('/api/auth/logout', {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-            } finally {
-                window.location.href = '/login.html';
+                return;
             }
-        });
+
+            if (nameElement) {
+                const fullName =
+                    [
+                        result.user.first_name,
+                        result.user.last_name
+                    ]
+                        .filter(Boolean)
+                        .join(' ');
+
+                nameElement.textContent =
+                    fullName ||
+                    result.user.email ||
+                    'Administrator';
+            }
+
+        } catch (error) {
+            console.error(
+                'Admin identity error:',
+                error
+            );
+        }
     }
 
-    start().catch(console.error);
+
+    function bindLogout() {
+        const button =
+            document.getElementById(
+                'adminLogoutButton'
+            );
+
+        if (!button) {
+            return;
+        }
+
+        button.addEventListener(
+            'click',
+            async () => {
+                button.disabled =
+                    true;
+
+                try {
+                    await fetch(
+                        '/api/auth/logout',
+                        {
+                            method:
+                                'POST',
+
+                            credentials:
+                                'include'
+                        }
+                    );
+
+                } catch (error) {
+                    console.error(
+                        'Admin logout error:',
+                        error
+                    );
+
+                } finally {
+                    window.location.href =
+                        '/login.html';
+                }
+            }
+        );
+    }
+
+
+    loadNavigation();
 })();

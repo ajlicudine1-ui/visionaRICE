@@ -406,3 +406,15 @@ td {
         height: 245px;
     }
 }
+
+
+/* Top-navigation layout adjustment */
+.admin-dashboard-page {
+    padding-top: 30px;
+}
+
+@media (max-width: 760px) {
+    .admin-dashboard-page {
+        padding-top: 22px;
+    }
+}
