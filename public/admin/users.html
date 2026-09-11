@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Users | VISIONARICE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/admin/users.css?v=20260911-1"
+    >
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+
+        <a
+            class="brand"
+            href="/admin/dashboard.html"
+        >
+            <span class="brand-icon">
+                🌾
+            </span>
+
+            <span class="brand-name">
+                VISION<span>A</span>RICE
+            </span>
+
+            <small>
+                Admin
+            </small>
+        </a>
+
+        <nav class="desktop-nav">
+            <a href="/admin/dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="/admin/predictions.html">
+                Predictions
+            </a>
+
+            <a
+                class="active"
+                href="/admin/users.html"
+            >
+                Users
+            </a>
+
+            <a href="/admin/profile.html">
+                Profile
+            </a>
+
+            <a href="/admin/notifications.html">
+                Notifications
+            </a>
+        </nav>
+
+        <div class="account-area">
+
+            <div class="account-copy">
+                <small>
+                    ADMINISTRATOR
+                </small>
+
+                <strong id="adminSessionName">
+                    Admin
+                </strong>
+            </div>
+
+            <button
+                id="adminLogoutButton"
+                class="logout-button"
+                type="button"
+                title="Logout"
+            >
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                </svg>
+            </button>
+
+        </div>
+
+    </div>
+</header>
+
+
+<main class="users-page">
+
+    <section class="page-heading">
+
+        <div>
+            <span class="eyebrow">
+                USER MANAGEMENT
+            </span>
+
+            <h1>
+                Users
+            </h1>
+
+            <p>
+                Review registered VISIONARICE users, account status,
+                verification state, and prediction activity.
+            </p>
+        </div>
+
+        <div class="heading-actions">
+
+            <div class="last-updated">
+                <small>
+                    Last updated
+                </small>
+
+                <strong id="lastUpdated">
+                    Loading...
+                </strong>
+            </div>
+
+            <button
+                id="refreshUsersButton"
+                class="primary-button"
+                type="button"
+            >
+                Refresh
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <section class="stat-grid">
+
+        <article class="stat-card">
+            <span>
+                Total Users
+            </span>
+
+            <strong id="totalUsers">
+                0
+            </strong>
+
+            <p>
+                Registered non-admin accounts
+            </p>
+        </article>
+
+        <article class="stat-card">
+            <span>
+                Active Users
+            </span>
+
+            <strong id="activeUsers">
+                0
+            </strong>
+
+            <p>
+                Accounts currently enabled
+            </p>
+        </article>
+
+        <article class="stat-card">
+            <span>
+                Inactive Users
+            </span>
+
+            <strong id="inactiveUsers">
+                0
+            </strong>
+
+            <p>
+                Accounts currently disabled
+            </p>
+        </article>
+
+        <article class="stat-card">
+            <span>
+                Verified Emails
+            </span>
+
+            <strong id="verifiedUsers">
+                0
+            </strong>
+
+            <p>
+                Users with verified email addresses
+            </p>
+        </article>
+
+    </section>
+
+
+    <section class="filter-card">
+
+        <div class="filter-heading">
+            <div>
+                <span class="eyebrow">
+                    FILTERS
+                </span>
+
+                <h2>
+                    Find users
+                </h2>
+            </div>
+
+            <button
+                id="resetUserFilters"
+                class="text-button"
+                type="button"
+            >
+                Reset Filters
+            </button>
+        </div>
+
+
+        <div class="filter-row">
+
+            <label class="search-box">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+                </svg>
+
+                <input
+                    id="userSearch"
+                    type="search"
+                    placeholder="Search name, email, or phone..."
+                    autocomplete="off"
+                >
+            </label>
+
+
+            <select id="statusFilter">
+                <option value="">
+                    All Statuses
+                </option>
+
+                <option value="active">
+                    Active
+                </option>
+
+                <option value="inactive">
+                    Inactive
+                </option>
+            </select>
+
+
+            <select id="roleFilter">
+                <option value="">
+                    All Roles
+                </option>
+
+                <option value="user">
+                    User
+                </option>
+
+                <option value="admin">
+                    Admin
+                </option>
+            </select>
+
+        </div>
+
+    </section>
+
+
+    <section class="users-card">
+
+        <div class="users-card-heading">
+
+            <div>
+                <span class="eyebrow">
+                    ACCOUNTS
+                </span>
+
+                <h2>
+                    User Directory
+                </h2>
+            </div>
+
+            <span
+                id="visibleUserCount"
+                class="record-count"
+            >
+                0 records
+            </span>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>
+                            User
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Predictions
+                        </th>
+
+                        <th>
+                            Verification
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Joined
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody id="usersTableBody">
+                    <tr>
+                        <td
+                            colspan="7"
+                            class="empty-table"
+                        >
+                            Loading users...
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<div
+    id="statusConfirmModal"
+    class="modal hidden"
+    aria-hidden="true"
+>
+    <div
+        class="modal-backdrop"
+        data-close-status-modal
+    ></div>
+
+    <section class="modal-dialog">
+
+        <div class="modal-icon">
+            !
+        </div>
+
+        <h2 id="statusModalTitle">
+            Update account?
+        </h2>
+
+        <p id="statusModalMessage">
+            Confirm this account status change.
+        </p>
+
+        <div class="modal-actions">
+            <button
+                id="cancelStatusButton"
+                class="secondary-button"
+                type="button"
+            >
+                Cancel
+            </button>
+
+            <button
+                id="confirmStatusButton"
+                class="primary-button"
+                type="button"
+            >
+                Confirm
+            </button>
+        </div>
+
+    </section>
+</div>
+
+
+<nav class="mobile-nav">
+    <a href="/admin/dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="/admin/predictions.html">
+        Predictions
+    </a>
+
+    <a
+        class="active"
+        href="/admin/users.html"
+    >
+        Users
+    </a>
+
+    <a href="/admin/profile.html">
+        Profile
+    </a>
+
+    <a href="/admin/notifications.html">
+        Alerts
+    </a>
+</nav>
+
+
+<script src="/js/admin/users.js?v=20260911-1"></script>
+
+</body>
+</html>
