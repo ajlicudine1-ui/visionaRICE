@@ -13,6 +13,11 @@ const adminUsersController =
         '../../controllers/admin/adminUsersController'
     );
 
+const adminNotificationsController =
+    require(
+        '../../controllers/admin/adminNotificationsController'
+    );
+
 
 function requireAdmin(
     req,
@@ -80,6 +85,13 @@ router.get(
     '/users/:id/dashboard',
     requireAdmin,
     adminUsersController.getUserDashboard
+);
+
+
+router.get(
+    '/notifications',
+    requireAdmin,
+    adminNotificationsController.getNotifications
 );
 
 

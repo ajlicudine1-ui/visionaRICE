@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Admin Notifications | VISIONARICE
+    </title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/admin/notifications.css?v=20260911-1"
+    >
+</head>
+
+<body>
+
+
+<header class="topbar">
+
+    <div class="topbar-inner">
+
+        <a
+            class="brand"
+            href="/admin/dashboard.html"
+        >
+            <span class="brand-icon">
+                🌾
+            </span>
+
+            <span class="brand-name">
+                VISION<span>A</span>RICE
+            </span>
+
+            <small>
+                Admin
+            </small>
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="/admin/dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="/admin/predictions.html">
+                Predictions
+            </a>
+
+            <a href="/admin/users.html">
+                Users
+            </a>
+
+            <a href="/admin/profile.html">
+                Profile
+            </a>
+
+            <a
+                class="active"
+                href="/admin/notifications.html"
+            >
+                Notifications
+            </a>
+
+        </nav>
+
+
+        <div class="account-area">
+
+            <div class="account-copy">
+                <small>
+                    ADMINISTRATOR
+                </small>
+
+                <strong id="adminSessionName">
+                    Admin
+                </strong>
+            </div>
+
+            <button
+                id="adminLogoutButton"
+                class="logout-button"
+                type="button"
+                title="Logout"
+                aria-label="Logout"
+            >
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                </svg>
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="notifications-page">
+
+
+    <section class="page-heading">
+
+        <div>
+            <span class="eyebrow">
+                SYSTEM-WIDE ACTIVITY
+            </span>
+
+            <h1>
+                Notifications
+            </h1>
+
+            <p>
+                General activity from all VISIONARICE users,
+                including rice scans, disease detections, and
+                newly registered users.
+            </p>
+        </div>
+
+
+        <div class="heading-actions">
+
+            <div class="last-updated">
+                <small>
+                    Last updated
+                </small>
+
+                <strong id="lastUpdated">
+                    Loading...
+                </strong>
+            </div>
+
+            <button
+                id="refreshNotifications"
+                class="primary-button"
+                type="button"
+            >
+                Refresh
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <section class="stat-grid">
+
+        <article class="stat-card">
+            <span>
+                Total Activity
+            </span>
+
+            <strong id="totalActivity">
+                0
+            </strong>
+
+            <p>
+                All recorded system activity
+            </p>
+        </article>
+
+
+        <article class="stat-card">
+            <span>
+                Today
+            </span>
+
+            <strong id="todayActivity">
+                0
+            </strong>
+
+            <p>
+                Activity recorded today
+            </p>
+        </article>
+
+
+        <article class="stat-card">
+            <span>
+                Disease Alerts
+            </span>
+
+            <strong id="diseaseAlerts">
+                0
+            </strong>
+
+            <p>
+                Diseased rice detections
+            </p>
+        </article>
+
+
+        <article class="stat-card">
+            <span>
+                Registered Users
+            </span>
+
+            <strong id="newUsers">
+                0
+            </strong>
+
+            <p>
+                Non-admin user accounts
+            </p>
+        </article>
+
+    </section>
+
+
+    <section class="filter-card">
+
+        <div class="filter-heading">
+
+            <div>
+                <span class="eyebrow">
+                    FILTERS
+                </span>
+
+                <h2>
+                    General Notifications
+                </h2>
+            </div>
+
+
+            <button
+                id="resetFilters"
+                class="text-button"
+                type="button"
+            >
+                Reset Filters
+            </button>
+
+        </div>
+
+
+        <div class="filter-grid">
+
+            <label class="search-box">
+
+                <svg viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+                </svg>
+
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search user, disease, location..."
+                    autocomplete="off"
+                >
+
+            </label>
+
+
+            <select id="typeFilter">
+                <option value="">
+                    All Activity
+                </option>
+
+                <option value="disease">
+                    Disease Alerts
+                </option>
+
+                <option value="scan">
+                    Healthy Scans
+                </option>
+
+                <option value="user">
+                    New Users
+                </option>
+            </select>
+
+
+            <select id="dateFilter">
+                <option value="">
+                    Any Date
+                </option>
+
+                <option value="today">
+                    Today
+                </option>
+
+                <option value="7days">
+                    Last 7 Days
+                </option>
+
+                <option value="30days">
+                    Last 30 Days
+                </option>
+            </select>
+
+        </div>
+
+    </section>
+
+
+    <section class="feed-card">
+
+        <div class="feed-heading">
+
+            <div>
+                <span class="eyebrow">
+                    ACTIVITY FEED
+                </span>
+
+                <h2>
+                    Latest System Activity
+                </h2>
+
+                <p>
+                    Notifications are for monitoring only and are not clickable.
+                </p>
+            </div>
+
+            <span
+                id="notificationCount"
+                class="record-count"
+            >
+                0 records
+            </span>
+
+        </div>
+
+
+        <div
+            id="notificationFeed"
+            class="notification-feed"
+        >
+            <div class="empty-state">
+                Loading notifications...
+            </div>
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<nav class="mobile-nav">
+
+    <a href="/admin/dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="/admin/predictions.html">
+        Predictions
+    </a>
+
+    <a href="/admin/users.html">
+        Users
+    </a>
+
+    <a href="/admin/profile.html">
+        Profile
+    </a>
+
+    <a
+        class="active"
+        href="/admin/notifications.html"
+    >
+        Alerts
+    </a>
+
+</nav>
+
+
+<script
+    src="/js/admin/notifications.js?v=20260911-1"
+></script>
+
+</body>
+</html>
