@@ -576,6 +576,10 @@ async function getNotifications(
                                 )
                             ),
 
+                        image_url:
+                            row.image_url ||
+                            '',
+
                         location:
                             locationLabel(
                                 row
