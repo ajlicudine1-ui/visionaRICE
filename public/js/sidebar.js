@@ -28,13 +28,11 @@
                     href="/analyze.html"
                     class="sidebar-brand"
                 >
-                    <span class="sidebar-logo">
-                        🌾
-                    </span>
-
-                    <span class="sidebar-brand-text">
-                        <span class="brand-vision">VISION</span><span class="brand-a">a</span><span class="brand-rice">RICE</span>
-                    </span>
+                    <img
+                        src="/images/visionarice_logo.png"
+                        alt="VISIONARICE Logo"
+                        class="sidebar-logo-img"
+                    >
                 </a>
 
                 <nav class="sidebar-nav">
