@@ -302,118 +302,87 @@ body {
 }
 
 
-/* =====================================================
-   ADMIN NOTIFICATION BELL - YELLOW
-===================================================== */
+/* =========================================
+   ADMIN NOTIFICATION BELL
+========================================= */
 
 .admin-nav .admin-notification-bell {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
 
-    min-width: 40px;
-    min-height: 40px;
+    min-width: 42px;
+    min-height: 42px;
 
     padding: 0;
 
     display: grid;
-
     place-items: center;
 
-    flex:
-        0 0 40px;
+    flex: 0 0 42px;
 
-    border:
-        1px solid
-        var(--admin-yellow-border);
+    border: 1px solid #dfe6df;
+    border-radius: 12px;
 
-    border-radius: 11px;
+    background: #f8faf7;
 
-    background:
-        var(--admin-yellow-soft);
-
-    color:
-        var(--admin-yellow);
+    color: #f2b632;
 
     text-decoration: none;
 
     transition:
         background .16s ease,
         border-color .16s ease,
-        color .16s ease,
         transform .16s ease,
         box-shadow .16s ease;
 }
 
 
 .admin-nav .admin-notification-bell:hover {
-    background:
-        var(--admin-yellow-hover);
+    background: #fffdf6;
 
-    border-color:
-        #dfb84b;
+    border-color: #eadcae;
 
-    color:
-        #b67800;
-
-    transform:
-        translateY(-1px);
+    transform: translateY(-1px);
 
     box-shadow:
         0 4px 12px
-        rgba(215,155,22,.16);
+        rgba(0,0,0,.06);
 }
 
 
 .admin-nav .admin-notification-bell.active {
-    background:
-        #ffe58b;
+    background: #f8faf7;
 
-    border-color:
-        #d9aa27;
+    border-color: #dfe6df;
 
-    color:
-        #a96d00;
-
-    box-shadow:
-        0 4px 12px
-        rgba(215,155,22,.14);
+    color: #f2b632;
 }
 
 
-.admin-nav
-.admin-notification-bell
-.admin-nav-icon {
-    width: 18px;
-    height: 18px;
+.admin-nav .admin-notification-bell .admin-nav-icon {
+    width: 20px;
+    height: 20px;
 
     display: grid;
-
     place-items: center;
 
     margin: 0;
 }
 
 
-.admin-nav
-.admin-notification-bell
-svg {
-    width: 18px;
-    height: 18px;
+.admin-nav .admin-notification-bell svg {
+    width: 20px;
+    height: 20px;
 
-    fill: none;
+    fill: #f6c344;
 
-    stroke:
-        currentColor;
+    stroke: #e0aa22;
 
-    stroke-width: 1.8;
+    stroke-width: 1.4;
 
-    stroke-linecap:
-        round;
-
-    stroke-linejoin:
-        round;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
-
 
 /* =====================================================
    ADMIN ACCOUNT AREA
