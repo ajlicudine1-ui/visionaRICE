@@ -9,7 +9,7 @@
     >
 
     <title>
-        Admin Notifications | VISIONARICE
+        Admin Predictions | VISIONARICE
     </title>
 
     <link
@@ -28,123 +28,64 @@
         rel="stylesheet"
     >
 
+    <!-- GLOBAL ADMIN NAVIGATION -->
     <link
         rel="stylesheet"
-        href="/css/admin/notifications.css?v=20260911-1"
+        href="/css/admin/admin-sidebar.css?v=20260915-2"
+    >
+
+    <!-- PREDICTIONS PAGE -->
+    <link
+        rel="stylesheet"
+        href="/css/admin/predictions.css?v=20260915-2"
     >
 </head>
 
-<body>
+
+<body data-admin-page="predictions">
 
 
-<header class="topbar">
+<!-- =========================================
+     GLOBAL ADMIN NAVIGATION
+========================================= -->
 
-    <div class="topbar-inner">
-
-        <a
-            class="brand"
-            href="/admin/dashboard.html"
-        >
-            <span class="brand-icon">
-                🌾
-            </span>
-
-            <span class="brand-name">
-                VISION<span>A</span>RICE
-            </span>
-
-            <small>
-                Admin
-            </small>
-        </a>
+<div id="adminSidebarContainer"></div>
 
 
-        <nav class="desktop-nav">
+<!-- =========================================
+     PREDICTIONS PAGE
+========================================= -->
 
-            <a href="/admin/dashboard.html">
-                Dashboard
-            </a>
-
-            <a href="/admin/predictions.html">
-                Predictions
-            </a>
-
-            <a href="/admin/users.html">
-                Users
-            </a>
-
-            <a href="/admin/profile.html">
-                Profile
-            </a>
-
-            <a
-                class="active"
-                href="/admin/notifications.html"
-            >
-                Notifications
-            </a>
-
-        </nav>
+<main class="predictions-page admin-page-shell">
 
 
-        <div class="account-area">
-
-            <div class="account-copy">
-                <small>
-                    ADMINISTRATOR
-                </small>
-
-                <strong id="adminSessionName">
-                    Admin
-                </strong>
-            </div>
-
-            <button
-                id="adminLogoutButton"
-                class="logout-button"
-                type="button"
-                title="Logout"
-                aria-label="Logout"
-            >
-                <svg viewBox="0 0 24 24">
-                    <path d="M10 17l5-5-5-5"></path>
-                    <path d="M15 12H3"></path>
-                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
-                </svg>
-            </button>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-<main class="notifications-page">
-
+    <!-- PAGE HEADING -->
 
     <section class="page-heading">
 
         <div>
+
             <span class="eyebrow">
-                SYSTEM-WIDE ACTIVITY
+                PREDICTION MANAGEMENT
             </span>
 
             <h1>
-                Notifications
+                Predictions
             </h1>
 
             <p>
-                General activity from all VISIONARICE users,
-                including rice scans, disease detections, and
-                newly registered users.
+                Review VISIONARICE prediction records,
+                images, users, confidence scores,
+                and locations.
             </p>
+
         </div>
 
 
         <div class="heading-actions">
 
             <div class="last-updated">
+
                 <small>
                     Last updated
                 </small>
@@ -152,10 +93,21 @@
                 <strong id="lastUpdated">
                     Loading...
                 </strong>
+
             </div>
 
+
             <button
-                id="refreshNotifications"
+                id="exportCsvButton"
+                class="secondary-button"
+                type="button"
+            >
+                Export CSV
+            </button>
+
+
+            <button
+                id="refreshButton"
                 class="primary-button"
                 type="button"
             >
@@ -167,87 +119,101 @@
     </section>
 
 
+    <!-- STAT CARDS -->
+
     <section class="stat-grid">
 
         <article class="stat-card">
+
             <span>
-                Total Activity
+                Total Results
             </span>
 
-            <strong id="totalActivity">
+            <strong id="totalResults">
                 0
             </strong>
 
             <p>
-                All recorded system activity
+                Predictions matching the current filters
             </p>
+
         </article>
 
 
         <article class="stat-card">
+
             <span>
-                Today
+                Average Confidence
             </span>
 
-            <strong id="todayActivity">
-                0
+            <strong id="averageConfidence">
+                0%
             </strong>
 
             <p>
-                Activity recorded today
+                Mean model confidence
             </p>
+
         </article>
 
 
         <article class="stat-card">
+
             <span>
-                Disease Alerts
+                Healthy
             </span>
 
-            <strong id="diseaseAlerts">
+            <strong id="healthyCount">
                 0
             </strong>
 
             <p>
-                Diseased rice detections
+                Healthy rice plant results
             </p>
+
         </article>
 
 
         <article class="stat-card">
+
             <span>
-                Registered Users
+                Diseased
             </span>
 
-            <strong id="newUsers">
+            <strong id="diseasedCount">
                 0
             </strong>
 
             <p>
-                Non-admin user accounts
+                Disease detections in current results
             </p>
+
         </article>
 
     </section>
 
 
-    <section class="filter-card">
+    <!-- FILTERS -->
 
-        <div class="filter-heading">
+    <section class="filter-panel">
+
+        <div class="filter-top">
 
             <div>
+
                 <span class="eyebrow">
                     FILTERS
                 </span>
 
                 <h2>
-                    General Notifications
+                    Find prediction records
                 </h2>
+
             </div>
 
 
             <button
-                id="resetFilters"
+                id="resetFiltersButton"
                 class="text-button"
                 type="button"
             >
@@ -257,102 +223,280 @@
         </div>
 
 
-        <div class="filter-grid">
+        <label class="search-box">
 
-            <label class="search-box">
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                ></circle>
 
-                <svg viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="7"></circle>
-                    <path d="m20 20-4-4"></path>
-                </svg>
+                <path
+                    d="m20 20-4-4"
+                ></path>
+            </svg>
 
-                <input
-                    id="searchInput"
-                    type="search"
-                    placeholder="Search user, disease, location..."
-                    autocomplete="off"
-                >
+
+            <input
+                type="search"
+                id="searchFilter"
+                placeholder="Search disease, user, email, or location..."
+                autocomplete="off"
+            >
+
+        </label>
+
+
+        <div class="filter-grid filter-grid-main">
+
+            <label>
+
+                <span>
+                    Disease
+                </span>
+
+                <select id="diseaseFilter">
+
+                    <option value="">
+                        All Diseases
+                    </option>
+
+                </select>
 
             </label>
 
 
-            <select id="typeFilter">
-                <option value="">
-                    All Activity
-                </option>
+            <label>
 
-                <option value="disease">
-                    Disease Alerts
-                </option>
+                <span>
+                    Confidence
+                </span>
 
-                <option value="scan">
-                    Healthy Scans
-                </option>
+                <select id="confidenceFilter">
 
-                <option value="user">
-                    New Users
-                </option>
-            </select>
+                    <option value="">
+                        All Confidence
+                    </option>
+
+                    <option value="90-100">
+                        90–100%
+                    </option>
+
+                    <option value="80-89">
+                        80–89%
+                    </option>
+
+                    <option value="70-79">
+                        70–79%
+                    </option>
+
+                    <option value="below-70">
+                        Below 70%
+                    </option>
+
+                </select>
+
+            </label>
 
 
-            <select id="dateFilter">
-                <option value="">
-                    Any Date
-                </option>
+            <label>
 
-                <option value="today">
-                    Today
-                </option>
+                <span>
+                    Date
+                </span>
 
-                <option value="7days">
-                    Last 7 Days
-                </option>
+                <select id="dateFilter">
 
-                <option value="30days">
-                    Last 30 Days
-                </option>
-            </select>
+                    <option value="">
+                        All Dates
+                    </option>
+
+                    <option value="today">
+                        Today
+                    </option>
+
+                    <option value="7d">
+                        Last 7 Days
+                    </option>
+
+                    <option value="30d">
+                        Last 30 Days
+                    </option>
+
+                </select>
+
+            </label>
 
         </div>
 
-    </section>
 
+        <div class="filter-grid location-grid">
 
-    <section class="feed-card">
+            <label>
 
-        <div class="feed-heading">
-
-            <div>
-                <span class="eyebrow">
-                    ACTIVITY FEED
+                <span>
+                    Province
                 </span>
 
-                <h2>
-                    Latest System Activity
-                </h2>
+                <select id="provinceFilter">
 
-                <p>
-                    Notifications are for monitoring only and are not clickable.
-                </p>
-            </div>
+                    <option value="">
+                        All Provinces
+                    </option>
 
-            <span
-                id="notificationCount"
-                class="record-count"
-            >
-                0 records
-            </span>
+                </select>
+
+            </label>
+
+
+            <label>
+
+                <span>
+                    Municipality / City
+                </span>
+
+                <select
+                    id="municipalityFilter"
+                    disabled
+                >
+
+                    <option value="">
+                        All Municipalities / Cities
+                    </option>
+
+                </select>
+
+            </label>
+
+
+            <label>
+
+                <span>
+                    Barangay
+                </span>
+
+                <select
+                    id="barangayFilter"
+                    disabled
+                >
+
+                    <option value="">
+                        All Barangays
+                    </option>
+
+                </select>
+
+            </label>
 
         </div>
 
 
         <div
-            id="notificationFeed"
-            class="notification-feed"
+            id="activeFilterSummary"
+            class="active-filter-summary"
         >
-            <div class="empty-state">
-                Loading notifications...
+            Showing all prediction records.
+        </div>
+
+    </section>
+
+
+    <!-- RESULTS -->
+
+    <section class="prediction-results-card">
+
+        <div class="results-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    RECORDS
+                </span>
+
+                <h2>
+                    Prediction Results
+                </h2>
+
             </div>
+
+
+            <div class="view-toggle">
+
+                <button
+                    id="cardViewButton"
+                    class="active"
+                    type="button"
+                >
+                    Cards
+                </button>
+
+                <button
+                    id="tableViewButton"
+                    type="button"
+                >
+                    Table
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="predictionCards"
+            class="prediction-list"
+        >
+
+            <div class="empty-state">
+                Loading prediction records...
+            </div>
+
+        </div>
+
+
+        <div
+            id="predictionTableWrap"
+            class="prediction-table-wrap hidden"
+        >
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Image</th>
+                        <th>Disease</th>
+                        <th>User</th>
+                        <th>Confidence</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="predictionTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="empty-table"
+                        >
+                            Loading predictions...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
         </div>
 
     </section>
@@ -361,37 +505,18 @@
 </main>
 
 
-<nav class="mobile-nav">
-
-    <a href="/admin/dashboard.html">
-        Dashboard
-    </a>
-
-    <a href="/admin/predictions.html">
-        Predictions
-    </a>
-
-    <a href="/admin/users.html">
-        Users
-    </a>
-
-    <a href="/admin/profile.html">
-        Profile
-    </a>
-
-    <a
-        class="active"
-        href="/admin/notifications.html"
-    >
-        Alerts
-    </a>
-
-</nav>
-
+<!-- =========================================
+     SCRIPTS
+========================================= -->
 
 <script
-    src="/js/admin/notifications.js?v=20260911-1"
+    src="/js/admin/admin-sidebar.js?v=20260915-2"
 ></script>
+
+<script
+    src="/js/admin/predictions.js?v=20260915-2"
+></script>
+
 
 </body>
 </html>

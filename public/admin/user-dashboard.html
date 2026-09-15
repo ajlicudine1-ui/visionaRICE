@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -27,113 +29,35 @@
         rel="stylesheet"
     >
 
+    <!-- GLOBAL ADMIN NAVIGATION CSS -->
     <link
         rel="stylesheet"
-        href="/css/admin/user-dashboard.css?v=20260911-2"
+        href="/css/admin/admin-sidebar.css?v=20260915-3"
+    >
+
+    <!-- USER DASHBOARD CSS -->
+    <link
+        rel="stylesheet"
+        href="/css/admin/user-dashboard.css?v=20260915-3"
     >
 </head>
 
-<body>
+
+<body data-admin-page="users">
 
 
-<header class="topbar">
+<!-- =========================================
+     GLOBAL ADMIN NAVIGATION
+========================================= -->
 
-    <div class="topbar-inner">
-
-        <a
-            class="brand"
-            href="/admin/dashboard.html"
-        >
-            <span class="brand-icon">
-                🌾
-            </span>
-
-            <span class="brand-name">
-                VISION<span>A</span>RICE
-            </span>
-
-            <small>
-                Admin
-            </small>
-        </a>
+<div id="adminSidebarContainer"></div>
 
 
-        <nav class="desktop-nav">
+<!-- =========================================
+     USER DASHBOARD
+========================================= -->
 
-            <a href="/admin/dashboard.html">
-                Dashboard
-            </a>
-
-            <a href="/admin/predictions.html">
-                Predictions
-            </a>
-
-            <a
-                class="active"
-                href="/admin/users.html"
-            >
-                Users
-            </a>
-
-            <a href="/admin/profile.html">
-                Profile
-            </a>
-
-            <a href="/admin/notifications.html">
-                Notifications
-            </a>
-
-        </nav>
-
-
-        <div class="account-area">
-
-            <div class="account-copy">
-
-                <small>
-                    ADMINISTRATOR
-                </small>
-
-                <strong id="adminSessionName">
-                    Admin
-                </strong>
-
-            </div>
-
-
-            <button
-                id="adminLogoutButton"
-                class="logout-button"
-                type="button"
-                title="Logout"
-                aria-label="Logout"
-            >
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                >
-                    <path
-                        d="M10 17l5-5-5-5"
-                    ></path>
-
-                    <path
-                        d="M15 12H3"
-                    ></path>
-
-                    <path
-                        d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"
-                    ></path>
-                </svg>
-            </button>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-<main class="dashboard-page">
+<main class="dashboard-page admin-page-shell">
 
 
     <a
@@ -432,9 +356,11 @@
             id="recentPredictions"
             class="recent-list"
         >
+
             <div class="empty-state">
                 Loading predictions...
             </div>
+
         </div>
 
     </section>
@@ -444,45 +370,32 @@
 
 
 <!-- =========================================
-     MOBILE NAVIGATION
-========================================== -->
-
-<nav class="mobile-nav">
-
-    <a href="/admin/dashboard.html">
-        Dashboard
-    </a>
-
-    <a href="/admin/predictions.html">
-        Predictions
-    </a>
-
-    <a
-        class="active"
-        href="/admin/users.html"
-    >
-        Users
-    </a>
-
-    <a href="/admin/profile.html">
-        Profile
-    </a>
-
-    <a href="/admin/notifications.html">
-        Alerts
-    </a>
-
-</nav>
-
+     CHART.JS
+========================================= -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"
 ></script>
 
+
+<!-- =========================================
+     GLOBAL ADMIN NAVIGATION
+========================================= -->
+
 <script
-    src="/js/admin/user-dashboard.js?v=20260911-2"
+    src="/js/admin/admin-sidebar.js?v=20260915-3"
+></script>
+
+
+<!-- =========================================
+     USER DASHBOARD
+========================================= -->
+
+<script
+    src="/js/admin/user-dashboard.js?v=20260915-3"
 ></script>
 
 
 </body>
+
 </html>

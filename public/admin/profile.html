@@ -27,105 +27,30 @@
     rel="stylesheet"
   >
 
+  <!-- GLOBAL ADMIN NAVIGATION CSS -->
   <link
     rel="stylesheet"
-    href="/css/admin/profile.css?v=20260911-2"
+    href="/css/admin/admin-sidebar.css?v=20260915-3"
+  >
+
+  <!-- PROFILE PAGE CSS -->
+  <link
+    rel="stylesheet"
+    href="/css/admin/profile.css?v=20260915-3"
   >
 </head>
 
-<body>
+<body data-admin-page="profile">
 
 
-<header class="topbar">
 
-  <div class="topbar-inner">
+<!-- =========================================
+     GLOBAL ADMIN NAVIGATION
+========================================= -->
 
-    <a
-      class="brand"
-      href="/admin/dashboard.html"
-    >
-      <span class="brand-icon">
-        🌾
-      </span>
+<div id="adminSidebarContainer"></div>
 
-      <span class="brand-name">
-        VISION<span>A</span>RICE
-      </span>
-
-      <small>
-        Admin
-      </small>
-    </a>
-
-
-    <nav class="desktop-nav">
-
-      <a href="/admin/dashboard.html">
-        Dashboard
-      </a>
-
-      <a href="/admin/predictions.html">
-        Predictions
-      </a>
-
-      <a href="/admin/users.html">
-        Users
-      </a>
-
-      <a
-        class="active"
-        href="/admin/profile.html"
-      >
-        Profile
-      </a>
-
-      <a href="/admin/notifications.html">
-        Notifications
-      </a>
-
-    </nav>
-
-
-    <div class="account-area">
-
-      <div class="account-copy">
-
-        <small>
-          ADMINISTRATOR
-        </small>
-
-        <strong id="adminSessionName">
-          Admin
-        </strong>
-
-      </div>
-
-
-      <button
-        id="adminLogoutButton"
-        class="logout-button"
-        type="button"
-        aria-label="Logout"
-        title="Logout"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path d="M10 17l5-5-5-5"></path>
-          <path d="M15 12H3"></path>
-          <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
-        </svg>
-      </button>
-
-    </div>
-
-  </div>
-
-</header>
-
-
-<main class="profile-page">
+<main class="profile-page admin-page-shell">
 
 
   <section class="page-heading">
@@ -831,40 +756,14 @@
 </div>
 
 
-<!-- =========================================
-     MOBILE NAVIGATION
-========================================= -->
-
-<nav class="mobile-nav">
-
-  <a href="/admin/dashboard.html">
-    Dashboard
-  </a>
-
-  <a href="/admin/predictions.html">
-    Predictions
-  </a>
-
-  <a href="/admin/users.html">
-    Users
-  </a>
-
-  <a
-    class="active"
-    href="/admin/profile.html"
-  >
-    Profile
-  </a>
-
-  <a href="/admin/notifications.html">
-    Alerts
-  </a>
-
-</nav>
-
-
+<!-- GLOBAL ADMIN NAVIGATION -->
 <script
-  src="/js/admin/profile.js?v=20260911-2"
+  src="/js/admin/admin-sidebar.js?v=20260915-3"
+></script>
+
+<!-- PROFILE PAGE -->
+<script
+  src="/js/admin/profile.js?v=20260915-3"
 ></script>
 
 
