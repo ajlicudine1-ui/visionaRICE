@@ -487,14 +487,16 @@ body {
    PAGE SHELL
 ===================================================== */
 
+/*
+   Keep this class layout-neutral.
+   Individual admin page CSS files already control their
+   own width and centering with margin: 0 auto.
+*/
 .admin-page-shell {
     min-height:
         calc(
             100vh - 72px
         );
-
-    margin-left:
-        0 !important;
 }
 
 
