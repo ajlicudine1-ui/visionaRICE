@@ -78,6 +78,19 @@
 
     flex-shrink: 0;
 
+    color:
+        var(--green-700) !important;
+
+    text-decoration: none;
+}
+
+.sidebar-brand:link,
+.sidebar-brand:visited,
+.sidebar-brand:hover,
+.sidebar-brand:active {
+    color:
+        var(--green-700) !important;
+
     text-decoration: none;
 }
 
@@ -95,6 +108,8 @@
         var(--green-100);
 
     font-size: 23px;
+
+    line-height: 1;
 }
 
 
@@ -102,10 +117,12 @@
     display: inline-flex;
     align-items: baseline;
 
+    font-family:
+        "Poppins",
+        sans-serif;
+
     font-size: 25px;
-
     font-style: normal;
-
     font-weight: 700;
 
     letter-spacing: -0.8px;
@@ -113,34 +130,55 @@
     line-height: 1;
 
     white-space: nowrap;
+
+    color:
+        var(--green-700) !important;
 }
 
 
+/* VISION */
 .sidebar-brand-text .brand-vision {
     color:
-        var(--green-700);
+        var(--green-700) !important;
+
+    font: inherit;
 
     text-transform:
-        uppercase;
+        uppercase !important;
 }
 
 
+/* lowercase a */
 .sidebar-brand-text .brand-a {
     color:
-        var(--orange);
+        var(--orange) !important;
+
+    font: inherit;
 
     text-transform:
-        lowercase;
+        lowercase !important;
 }
 
 
+/* RICE */
 .sidebar-brand-text .brand-rice {
     color:
-        var(--green-700);
+        var(--green-700) !important;
+
+    font: inherit;
 
     text-transform:
-        uppercase;
+        uppercase !important;
 }
+
+
+/*
+   Required HTML:
+   <span class="sidebar-brand-text">
+       <span class="brand-vision">VISION</span><span class="brand-a">a</span><span class="brand-rice">RICE</span>
+   </span>
+*/
+
 /* =====================================================
    NAVIGATION
 ===================================================== */
@@ -1840,5 +1878,68 @@
 
         margin-left: 3px;
     }
+}
+
+/* =====================================================
+   FINAL BRAND OVERRIDE — VISIONaRICE
+   Keep this at the very end of the stylesheet.
+===================================================== */
+
+.sidebar-brand,
+.sidebar-brand:link,
+.sidebar-brand:visited,
+.sidebar-brand:hover,
+.sidebar-brand:active {
+    color:
+        var(--green-700) !important;
+
+    text-decoration: none !important;
+}
+
+.sidebar-brand-text {
+    display: inline-flex !important;
+    align-items: baseline !important;
+
+    color:
+        var(--green-700) !important;
+
+    font-family:
+        "Poppins",
+        sans-serif !important;
+
+    font-style: normal !important;
+    font-weight: 700 !important;
+
+    white-space: nowrap !important;
+}
+
+.sidebar-brand-text .brand-vision {
+    color:
+        var(--green-700) !important;
+
+    font: inherit !important;
+
+    text-transform:
+        uppercase !important;
+}
+
+.sidebar-brand-text .brand-a {
+    color:
+        var(--orange) !important;
+
+    font: inherit !important;
+
+    text-transform:
+        lowercase !important;
+}
+
+.sidebar-brand-text .brand-rice {
+    color:
+        var(--green-700) !important;
+
+    font: inherit !important;
+
+    text-transform:
+        uppercase !important;
 }
 
