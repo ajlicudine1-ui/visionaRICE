@@ -1110,7 +1110,7 @@ select {
 
         padding:
             35px 14px
-            110px;
+            20px;
     }
 
 
@@ -1234,7 +1234,7 @@ select {
     .page {
         padding:
             28px 12px
-            105px;
+            20px;
     }
 
 
@@ -1299,4 +1299,30 @@ select {
 
 }
 
+/* =====================================================
+   MOBILE BOTTOM SPACE FIX
+   Places the mobile navigation after the page content
+   instead of reserving a large blank fixed-nav area.
+===================================================== */
+
+@media (max-width: 700px) {
+
+    body {
+        min-height: auto;
+        padding-bottom: 0 !important;
+    }
+
+    .mobile-bottom-nav,
+    .sidebar-mobile-nav,
+    .mobile-nav {
+        position: static !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+
+        width: 100%;
+        margin-top: 0;
+    }
+
+}
 
