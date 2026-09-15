@@ -33,6 +33,10 @@
                         alt="VISIONARICE Logo"
                         class="sidebar-logo-img"
                     >
+
+                    <span class="sidebar-brand-text">
+                        <span class="brand-vision">VISION</span><span class="brand-a">a</span><span class="brand-rice">RICE</span>
+                    </span>
                 </a>
 
                 <nav class="sidebar-nav">
