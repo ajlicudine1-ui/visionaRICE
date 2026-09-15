@@ -272,11 +272,21 @@
                                         : "disease"
                                 }"
                             >
-                                <div class="notification-icon">
+                                <div class="notification-image">
                                     ${
-                                        healthy
-                                            ? "🌿"
-                                            : "🩺"
+                                        item.image_url
+                                            ? `
+                                                <img
+                                                    src="${escapeHtml(item.image_url)}"
+                                                    alt="${escapeHtml(item.title || 'Prediction image')}"
+                                                    loading="lazy"
+                                                >
+                                            `
+                                            : `
+                                                <div class="notification-image-placeholder">
+                                                    ${healthy ? "🌿" : "🌾"}
+                                                </div>
+                                            `
                                     }
                                 </div>
 
