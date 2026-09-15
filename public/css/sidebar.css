@@ -1943,3 +1943,49 @@
         uppercase !important;
 }
 
+/* =====================================================
+   VISIONARICE HEADER LOGO IMAGE
+   Uses: /images/visionarice_logo.png
+   Keep this at the very end of the stylesheet.
+===================================================== */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    margin-right: 18px;
+    text-decoration: none !important;
+}
+
+.sidebar-logo-img {
+    display: block;
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* Desktop */
+@media screen and (min-width: 761px) {
+    .sidebar-logo-img {
+        width: 62px;
+        height: 62px;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 760px) {
+    .sidebar-logo-img {
+        width: 68px;
+        height: 68px;
+    }
+}
+
+/* Very small phones */
+@media screen and (max-width: 420px) {
+    .sidebar-logo-img {
+        width: 62px;
+        height: 62px;
+    }
+}
+
