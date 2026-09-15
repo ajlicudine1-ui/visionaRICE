@@ -167,9 +167,12 @@ button {
    New matching Admin-style markup:
    <span class="sidebar-brand-text">VISION<span>A</span>RICE</span>
 */
-.sidebar-brand-text > span {
-    color:
-        #eea148;
+.sidebar-brand-text {
+    color: var(--green-900);
+}
+
+.sidebar-brand-text .brand-a {
+    color: #eea148;
 }
 
 
