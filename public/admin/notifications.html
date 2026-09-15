@@ -30,90 +30,98 @@
 
     <link
         rel="stylesheet"
-        href="/css/admin/notifications.css?v=20260915-1"
+        href="/css/admin/notifications.css?v=20260911-1"
     >
 </head>
 
 <body>
 
-<header class="sidebar">
-    <div class="sidebar-inner">
+
+<header class="topbar">
+
+    <div class="topbar-inner">
 
         <a
-            href="/analyze.html"
-            class="sidebar-brand"
+            class="brand"
+            href="/admin/dashboard.html"
         >
-            <span class="sidebar-logo">
+            <span class="brand-icon">
                 🌾
             </span>
 
-            <span class="sidebar-brand-text">
-                VISION<span class="brand-a">a</span>RICE
+            <span class="brand-name">
+                VISION<span>A</span>RICE
             </span>
-            </a>
+
+            <small>
+                Admin
+            </small>
+        </a>
 
 
-        <nav class="sidebar-nav">
+        <nav class="desktop-nav">
 
-            <a
-                href="/analyze.html"
-                data-page="analyze"
-            >
-                <span>📷</span>
-                Analyze
-            </a>
-
-            <a
-                href="/dashboard.html"
-                data-page="dashboard"
-            >
-                <span>◉</span>
+            <a href="/admin/dashboard.html">
                 Dashboard
             </a>
 
-            <a
-                href="/history.html"
-                data-page="history"
-            >
-                <span>↶</span>
-                History
+            <a href="/admin/predictions.html">
+                Predictions
             </a>
 
-            <a
-                href="/profile.html"
-                data-page="profile"
-            >
-                <span>👤</span>
+            <a href="/admin/users.html">
+                Users
+            </a>
+
+            <a href="/admin/profile.html">
                 Profile
             </a>
 
             <a
-                href="/help.html"
-                data-page="help"
+                class="active"
+                href="/admin/notifications.html"
             >
-                <span>?</span>
-                Help
+                Notifications
             </a>
 
         </nav>
 
 
-        <a
-            href="/notifications.html"
-            class="notification-bell"
-            aria-label="Open notifications"
-            title="Notifications"
-        >
-            <span aria-hidden="true">
-                🔔
-            </span>
-        </a>
+        <div class="account-area">
+
+            <div class="account-copy">
+                <small>
+                    ADMINISTRATOR
+                </small>
+
+                <strong id="adminSessionName">
+                    Admin
+                </strong>
+            </div>
+
+            <button
+                id="adminLogoutButton"
+                class="logout-button"
+                type="button"
+                title="Logout"
+                aria-label="Logout"
+            >
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                </svg>
+            </button>
+
+        </div>
 
     </div>
+
 </header>
 
 
 <main class="notifications-page">
+
 
     <section class="page-heading">
 
@@ -162,7 +170,9 @@
     <section class="stat-grid">
 
         <article class="stat-card">
-            <span>Total Activity</span>
+            <span>
+                Total Activity
+            </span>
 
             <strong id="totalActivity">
                 0
@@ -175,7 +185,9 @@
 
 
         <article class="stat-card">
-            <span>Today</span>
+            <span>
+                Today
+            </span>
 
             <strong id="todayActivity">
                 0
@@ -188,7 +200,9 @@
 
 
         <article class="stat-card">
-            <span>Disease Alerts</span>
+            <span>
+                Disease Alerts
+            </span>
 
             <strong id="diseaseAlerts">
                 0
@@ -201,7 +215,9 @@
 
 
         <article class="stat-card">
-            <span>Registered Users</span>
+            <span>
+                Registered Users
+            </span>
 
             <strong id="newUsers">
                 0
@@ -227,10 +243,6 @@
                 <h2>
                     General Notifications
                 </h2>
-
-                <p class="filter-description">
-                    Showing system-wide activity for the selected period.
-                </p>
             </div>
 
 
@@ -283,47 +295,23 @@
             </select>
 
 
-            <div
-                class="period-filter"
-                id="periodFilter"
-                aria-label="Notification period"
-            >
-                <button
-                    class="period-button active"
-                    type="button"
-                    data-period=""
-                    aria-pressed="true"
-                >
-                    Overall
-                </button>
+            <select id="dateFilter">
+                <option value="">
+                    Any Date
+                </option>
 
-                <button
-                    class="period-button"
-                    type="button"
-                    data-period="today"
-                    aria-pressed="false"
-                >
-                    Daily
-                </button>
+                <option value="today">
+                    Today
+                </option>
 
-                <button
-                    class="period-button"
-                    type="button"
-                    data-period="7days"
-                    aria-pressed="false"
-                >
-                    Weekly
-                </button>
+                <option value="7days">
+                    Last 7 Days
+                </option>
 
-                <button
-                    class="period-button"
-                    type="button"
-                    data-period="30days"
-                    aria-pressed="false"
-                >
-                    Monthly
-                </button>
-            </div>
+                <option value="30days">
+                    Last 30 Days
+                </option>
+            </select>
 
         </div>
 
@@ -369,14 +357,27 @@
 
     </section>
 
+
 </main>
 
 
 <nav class="mobile-nav">
-    <a href="/admin/dashboard.html">Dashboard</a>
-    <a href="/admin/predictions.html">Predictions</a>
-    <a href="/admin/users.html">Users</a>
-    <a href="/admin/profile.html">Profile</a>
+
+    <a href="/admin/dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="/admin/predictions.html">
+        Predictions
+    </a>
+
+    <a href="/admin/users.html">
+        Users
+    </a>
+
+    <a href="/admin/profile.html">
+        Profile
+    </a>
 
     <a
         class="active"
@@ -384,11 +385,12 @@
     >
         Alerts
     </a>
+
 </nav>
 
 
 <script
-    src="/js/admin/notifications.js?v=20260915-1"
+    src="/js/admin/notifications.js?v=20260911-1"
 ></script>
 
 </body>

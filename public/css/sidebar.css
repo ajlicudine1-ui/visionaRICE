@@ -99,35 +99,48 @@
 
 
 .sidebar-brand-text {
+    display: inline-flex;
+    align-items: baseline;
+
     font-size: 25px;
 
     font-style: normal;
 
-    font-weight: 600;
+    font-weight: 700;
 
     letter-spacing: -0.8px;
 
-    color:
-        var(--text-dark);
+    line-height: 1;
+
+    white-space: nowrap;
 }
 
 
-.sidebar-brand-text strong {
+.sidebar-brand-text .brand-vision {
     color:
         var(--green-700);
 
-    font-weight: 700;
+    text-transform:
+        uppercase;
 }
 
 
-.sidebar-brand-text em {
+.sidebar-brand-text .brand-a {
     color:
         var(--orange);
 
-    font-style: normal;
+    text-transform:
+        lowercase;
 }
 
 
+.sidebar-brand-text .brand-rice {
+    color:
+        var(--green-700);
+
+    text-transform:
+        uppercase;
+}
 /* =====================================================
    NAVIGATION
 ===================================================== */
