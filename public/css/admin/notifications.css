@@ -551,9 +551,11 @@ body {
     display: grid;
 
     grid-template-columns:
-        minmax(0,1fr)
-        190px
-        170px;
+        minmax(280px,1fr)
+        180px
+        auto;
+
+    align-items: center;
 
     gap: 10px;
 }
@@ -626,6 +628,95 @@ body {
     font: inherit;
 
     font-size: 10px;
+}
+
+
+/* =========================================
+   PERIOD FILTER
+========================================= */
+
+.filter-description {
+    margin:
+        4px 0 0;
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    line-height: 1.5;
+}
+
+
+.period-filter {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+
+.period-button {
+    min-height: 43px;
+
+    padding:
+        0 16px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid #d8e4d8;
+
+    border-radius: 999px;
+
+    background: #f8fbf7;
+
+    color: var(--g800);
+
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background .18s ease,
+        color .18s ease,
+        border-color .18s ease,
+        transform .18s ease;
+}
+
+
+.period-button:hover {
+    background: #edf5eb;
+
+    border-color: #bad2bc;
+}
+
+
+.period-button:active {
+    transform:
+        scale(.98);
+}
+
+
+.period-button.active {
+    background: var(--g700);
+
+    border-color: var(--g700);
+
+    color: #ffffff;
 }
 
 
@@ -989,6 +1080,31 @@ body {
 
         align-self:
             flex-start;
+    }
+
+
+    .period-filter {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+        justify-content: stretch;
+    }
+
+
+    .period-button {
+        width: 100%;
+
+        min-width: 0;
+
+        padding:
+            0 10px;
     }
 
 

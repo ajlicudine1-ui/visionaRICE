@@ -30,52 +30,34 @@
 
     <link
         rel="stylesheet"
-        href="/css/admin/notifications.css?v=20260911-1"
+        href="/css/admin/notifications.css?v=20260915-1"
     >
 </head>
 
 <body>
 
-
 <header class="topbar">
-
     <div class="topbar-inner">
 
         <a
             class="brand"
             href="/admin/dashboard.html"
         >
-            <span class="brand-icon">
-                🌾
-            </span>
+            <span class="brand-icon">🌾</span>
 
             <span class="brand-name">
                 VISION<span>A</span>RICE
             </span>
 
-            <small>
-                Admin
-            </small>
+            <small>Admin</small>
         </a>
 
 
         <nav class="desktop-nav">
-
-            <a href="/admin/dashboard.html">
-                Dashboard
-            </a>
-
-            <a href="/admin/predictions.html">
-                Predictions
-            </a>
-
-            <a href="/admin/users.html">
-                Users
-            </a>
-
-            <a href="/admin/profile.html">
-                Profile
-            </a>
+            <a href="/admin/dashboard.html">Dashboard</a>
+            <a href="/admin/predictions.html">Predictions</a>
+            <a href="/admin/users.html">Users</a>
+            <a href="/admin/profile.html">Profile</a>
 
             <a
                 class="active"
@@ -83,16 +65,13 @@
             >
                 Notifications
             </a>
-
         </nav>
 
 
         <div class="account-area">
 
             <div class="account-copy">
-                <small>
-                    ADMINISTRATOR
-                </small>
+                <small>ADMINISTRATOR</small>
 
                 <strong id="adminSessionName">
                     Admin
@@ -116,12 +95,10 @@
         </div>
 
     </div>
-
 </header>
 
 
 <main class="notifications-page">
-
 
     <section class="page-heading">
 
@@ -170,9 +147,7 @@
     <section class="stat-grid">
 
         <article class="stat-card">
-            <span>
-                Total Activity
-            </span>
+            <span>Total Activity</span>
 
             <strong id="totalActivity">
                 0
@@ -185,9 +160,7 @@
 
 
         <article class="stat-card">
-            <span>
-                Today
-            </span>
+            <span>Today</span>
 
             <strong id="todayActivity">
                 0
@@ -200,9 +173,7 @@
 
 
         <article class="stat-card">
-            <span>
-                Disease Alerts
-            </span>
+            <span>Disease Alerts</span>
 
             <strong id="diseaseAlerts">
                 0
@@ -215,9 +186,7 @@
 
 
         <article class="stat-card">
-            <span>
-                Registered Users
-            </span>
+            <span>Registered Users</span>
 
             <strong id="newUsers">
                 0
@@ -243,6 +212,10 @@
                 <h2>
                     General Notifications
                 </h2>
+
+                <p class="filter-description">
+                    Showing system-wide activity for the selected period.
+                </p>
             </div>
 
 
@@ -295,23 +268,47 @@
             </select>
 
 
-            <select id="dateFilter">
-                <option value="">
-                    Any Date
-                </option>
+            <div
+                class="period-filter"
+                id="periodFilter"
+                aria-label="Notification period"
+            >
+                <button
+                    class="period-button active"
+                    type="button"
+                    data-period=""
+                    aria-pressed="true"
+                >
+                    Overall
+                </button>
 
-                <option value="today">
-                    Today
-                </option>
+                <button
+                    class="period-button"
+                    type="button"
+                    data-period="today"
+                    aria-pressed="false"
+                >
+                    Daily
+                </button>
 
-                <option value="7days">
-                    Last 7 Days
-                </option>
+                <button
+                    class="period-button"
+                    type="button"
+                    data-period="7days"
+                    aria-pressed="false"
+                >
+                    Weekly
+                </button>
 
-                <option value="30days">
-                    Last 30 Days
-                </option>
-            </select>
+                <button
+                    class="period-button"
+                    type="button"
+                    data-period="30days"
+                    aria-pressed="false"
+                >
+                    Monthly
+                </button>
+            </div>
 
         </div>
 
@@ -357,27 +354,14 @@
 
     </section>
 
-
 </main>
 
 
 <nav class="mobile-nav">
-
-    <a href="/admin/dashboard.html">
-        Dashboard
-    </a>
-
-    <a href="/admin/predictions.html">
-        Predictions
-    </a>
-
-    <a href="/admin/users.html">
-        Users
-    </a>
-
-    <a href="/admin/profile.html">
-        Profile
-    </a>
+    <a href="/admin/dashboard.html">Dashboard</a>
+    <a href="/admin/predictions.html">Predictions</a>
+    <a href="/admin/users.html">Users</a>
+    <a href="/admin/profile.html">Profile</a>
 
     <a
         class="active"
@@ -385,12 +369,11 @@
     >
         Alerts
     </a>
-
 </nav>
 
 
 <script
-    src="/js/admin/notifications.js?v=20260911-1"
+    src="/js/admin/notifications.js?v=20260915-1"
 ></script>
 
 </body>

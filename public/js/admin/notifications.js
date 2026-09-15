@@ -37,8 +37,10 @@
         type:
             $('typeFilter'),
 
-        date:
-            $('dateFilter'),
+        periodButtons:
+            document.querySelectorAll(
+                '.period-button'
+            ),
 
         reset:
             $('resetFilters'),
@@ -53,6 +55,9 @@
 
     let searchTimer =
         null;
+
+    let selectedPeriod =
+        '';
 
 
     async function requireAdmin() {
@@ -123,10 +128,10 @@
             );
         }
 
-        if (el.date.value) {
+        if (selectedPeriod) {
             params.set(
                 'date',
-                el.date.value
+                selectedPeriod
             );
         }
 
@@ -416,9 +421,39 @@
     );
 
 
-    el.date.addEventListener(
-        'change',
-        loadNotifications
+    el.periodButtons.forEach(
+        button => {
+            button.addEventListener(
+                'click',
+                () => {
+                    selectedPeriod =
+                        button.dataset.period ||
+                        '';
+
+                    el.periodButtons.forEach(
+                        item => {
+                            const active =
+                                item ===
+                                button;
+
+                            item.classList.toggle(
+                                'active',
+                                active
+                            );
+
+                            item.setAttribute(
+                                'aria-pressed',
+                                active
+                                    ? 'true'
+                                    : 'false'
+                            );
+                        }
+                    );
+
+                    loadNotifications();
+                }
+            );
+        }
     );
 
 
@@ -431,8 +466,28 @@
             el.type.value =
                 '';
 
-            el.date.value =
+            selectedPeriod =
                 '';
+
+            el.periodButtons.forEach(
+                button => {
+                    const active =
+                        button.dataset.period ===
+                        '';
+
+                    button.classList.toggle(
+                        'active',
+                        active
+                    );
+
+                    button.setAttribute(
+                        'aria-pressed',
+                        active
+                            ? 'true'
+                            : 'false'
+                    );
+                }
+            );
 
             loadNotifications();
         }
