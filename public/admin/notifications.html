@@ -36,63 +36,78 @@
 
 <body>
 
-<header class="topbar">
-    <div class="topbar-inner">
+<header class="sidebar">
+    <div class="sidebar-inner">
 
         <a
-            class="brand"
-            href="/admin/dashboard.html"
+            href="/analyze.html"
+            class="sidebar-brand"
         >
-            <span class="brand-icon">🌾</span>
-
-            <span class="brand-name">
-                VISION<span>A</span>RICE
+            <span class="sidebar-logo">
+                🌾
             </span>
 
-            <small>Admin</small>
+            <span class="sidebar-brand-text">
+                VISION<span>A</span>RICE
+            </span>
         </a>
 
 
-        <nav class="desktop-nav">
-            <a href="/admin/dashboard.html">Dashboard</a>
-            <a href="/admin/predictions.html">Predictions</a>
-            <a href="/admin/users.html">Users</a>
-            <a href="/admin/profile.html">Profile</a>
+        <nav class="sidebar-nav">
 
             <a
-                class="active"
-                href="/admin/notifications.html"
+                href="/analyze.html"
+                data-page="analyze"
             >
-                Notifications
+                <span>📷</span>
+                Analyze
             </a>
+
+            <a
+                href="/dashboard.html"
+                data-page="dashboard"
+            >
+                <span>◉</span>
+                Dashboard
+            </a>
+
+            <a
+                href="/history.html"
+                data-page="history"
+            >
+                <span>↶</span>
+                History
+            </a>
+
+            <a
+                href="/profile.html"
+                data-page="profile"
+            >
+                <span>👤</span>
+                Profile
+            </a>
+
+            <a
+                href="/help.html"
+                data-page="help"
+            >
+                <span>?</span>
+                Help
+            </a>
+
         </nav>
 
 
-        <div class="account-area">
-
-            <div class="account-copy">
-                <small>ADMINISTRATOR</small>
-
-                <strong id="adminSessionName">
-                    Admin
-                </strong>
-            </div>
-
-            <button
-                id="adminLogoutButton"
-                class="logout-button"
-                type="button"
-                title="Logout"
-                aria-label="Logout"
-            >
-                <svg viewBox="0 0 24 24">
-                    <path d="M10 17l5-5-5-5"></path>
-                    <path d="M15 12H3"></path>
-                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
-                </svg>
-            </button>
-
-        </div>
+        <a
+            href="/notifications.html"
+            class="notification-bell"
+            aria-label="Open notifications"
+            title="Notifications"
+        >
+            <span aria-hidden="true">
+                🔔
+            </span>
+        </a>
 
     </div>
 </header>
