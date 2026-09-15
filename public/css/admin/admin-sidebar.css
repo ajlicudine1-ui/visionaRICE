@@ -302,10 +302,6 @@ body {
 }
 
 
-/* =========================================
-   ADMIN NOTIFICATION BELL
-========================================= */
-
 .admin-nav .admin-notification-bell {
     width: 42px;
     height: 42px;
@@ -336,17 +332,15 @@ body {
         box-shadow .16s ease;
 }
 
-
 .admin-nav .admin-notification-bell:hover {
-    background: #fffdf6;
-
-    border-color: #eadcae;
+    background: #eaf4e8;
+    border-color: #c8dcc8;
 
     transform: translateY(-1px);
 
     box-shadow:
         0 4px 12px
-        rgba(0,0,0,.06);
+        rgba(28, 94, 58, .08);
 }
 
 
