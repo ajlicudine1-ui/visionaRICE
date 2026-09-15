@@ -7,3 +7,46 @@
 .prediction-table-wrap{width:100%;overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:10px 9px;border-bottom:1px solid #edf1ec;text-align:left;white-space:nowrap}th{color:#7b887f;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.6px}td{color:#46534b;font-size:9px}.table-thumb{width:46px;height:38px;overflow:hidden;border-radius:7px;background:#edf2ec}.table-thumb img{width:100%;height:100%;object-fit:cover}.empty-state,.empty-table{padding:30px!important;color:var(--muted)!important;text-align:center!important;font-size:10px!important}.mobile-nav{display:none}
 @media(max-width:1100px){.account-copy{display:none}.desktop-nav a{padding:8px;font-size:9px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){body{padding-bottom:68px}.topbar-inner,.predictions-page{width:calc(100% - 28px)}.topbar-inner{min-height:62px}.brand-name{font-size:17px}.brand small,.desktop-nav,.account-copy{display:none}.account-area{margin-left:auto}.page-heading,.heading-actions,.filter-top{flex-direction:column}.heading-actions,.primary-button,.secondary-button{width:100%}.stat-grid,.filter-grid{grid-template-columns:1fr}.prediction-item{grid-template-columns:68px minmax(0,1fr);gap:11px}.prediction-thumb{width:68px;height:68px}.prediction-actions{grid-column:1/-1;width:100%;flex-direction:row;align-items:center;justify-content:space-between}.prediction-meta{grid-template-columns:1fr}.mobile-nav{position:fixed;left:0;right:0;bottom:0;z-index:1200;height:66px;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.98);border-top:1px solid var(--border);box-shadow:0 -4px 18px rgba(20,70,42,.07)}.mobile-nav a{display:flex;align-items:center;justify-content:center;color:#66736a;text-decoration:none;font-size:7px;font-weight:600}.mobile-nav a.active{color:var(--green-800);background:#f1f7ef}}
+
+
+.desktop-nav .desktop-notification-bell {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+
+    padding: 0;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid #dfe6df;
+    border-radius: 12px;
+
+    background: #f8faf7;
+    color: #f2b632;
+
+    text-decoration: none;
+}
+
+.desktop-nav .desktop-notification-bell:hover {
+    background: #eaf4e8;
+    border-color: #c8dcc8;
+}
+
+.desktop-nav .desktop-notification-bell.active {
+    background: #eaf4e8;
+    border-color: #c8dcc8;
+}
+
+.desktop-nav .desktop-notification-bell svg {
+    width: 20px;
+    height: 20px;
+
+    fill: #f6c344;
+    stroke: #e0aa22;
+
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
