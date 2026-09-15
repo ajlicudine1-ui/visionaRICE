@@ -904,7 +904,6 @@ function renderRecent(
         `;
 
         return;
-
     }
 
 
@@ -923,17 +922,34 @@ function renderRecent(
                         );
 
 
-                    const isHealthy =
-                        disease ===
-                        'Healthy Rice Plant';
+                    const imageUrl =
+                        item.image_url ||
+                        '';
 
 
                     return `
                         <article class="recent-item">
 
-                            <div class="recent-icon">
-                                ${isHealthy ? '🌿' : '🩺'}
+                            <div class="recent-image">
+
+                                ${
+                                    imageUrl
+                                        ? `
+                                            <img
+                                                src="${escapeHTML(imageUrl)}"
+                                                alt="${escapeHTML(disease)}"
+                                                loading="lazy"
+                                            >
+                                        `
+                                        : `
+                                            <div class="recent-image-placeholder">
+                                                🌿
+                                            </div>
+                                        `
+                                }
+
                             </div>
+
 
                             <div class="recent-info">
 
@@ -948,6 +964,7 @@ function renderRecent(
                                 </small>
 
                             </div>
+
 
                             <div class="recent-confidence">
                                 ${Number(item.confidence || 0).toFixed(2)}%
