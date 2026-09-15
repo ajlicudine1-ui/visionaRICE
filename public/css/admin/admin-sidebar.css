@@ -320,4 +320,91 @@ body {
     .admin-page-shell {
         min-height: calc(100vh - 62px);
     }
+
+
+    /* =========================================
+   ADMIN NOTIFICATION BELL
+========================================= */
+
+.admin-nav .admin-notification-bell {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+    min-height: 40px;
+
+    padding: 0;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid #dce6de;
+
+    border-radius: 11px;
+
+    background:
+        #f7faf7;
+
+    color:
+        var(--admin-green-800);
+
+    text-decoration: none;
+
+    flex:
+        0 0 40px;
+
+    transition:
+        background .16s ease,
+        border-color .16s ease,
+        color .16s ease,
+        transform .16s ease,
+        box-shadow .16s ease;
+}
+
+
+.admin-nav .admin-notification-bell:hover {
+    background:
+        var(--admin-green-100);
+
+    border-color:
+        #c6d9ca;
+
+    color:
+        var(--admin-green-900);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 4px 12px
+        rgba(28,94,58,.08);
+}
+
+
+.admin-nav .admin-notification-bell.active {
+    background:
+        var(--admin-green-100);
+
+    border-color:
+        #a9c8b1;
+
+    color:
+        var(--admin-green-900);
+}
+
+
+.admin-nav .admin-notification-bell .admin-nav-icon {
+    width: 18px;
+    height: 18px;
+
+    display: grid;
+    place-items: center;
+}
+
+
+.admin-nav .admin-notification-bell svg {
+    width: 18px;
+    height: 18px;
+}
 }
