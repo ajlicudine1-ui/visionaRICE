@@ -24,11 +24,10 @@
         healthy: $('healthyCount'),
         diseased: $('diseasedCount'),
         updated: $('lastUpdated'),
-        summary: $('activeFilterSummary')
+        summary: $('activeFilterSummary'),
+        adminName: $('adminSessionName'),
+        logout: $('adminLogoutButton')
     };
-
-    // Shared admin navigation owns admin identity and logout.
-    // This page script only handles prediction-page data and controls.
 
     let currentPredictions = [];
     let searchTimer = null;
@@ -49,6 +48,13 @@
             window.location.href = '/login.html';
             return false;
         }
+
+        el.adminName.textContent =
+            [result.user.first_name, result.user.last_name]
+                .filter(Boolean)
+                .join(' ') ||
+            result.user.email ||
+            'Administrator';
 
         return true;
     }
@@ -282,6 +288,14 @@
         el.tableWrap.classList.remove('hidden');
         el.cardView.classList.remove('active');
         el.tableView.classList.add('active');
+    });
+
+    el.logout.addEventListener('click', async () => {
+        try {
+            await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+        } finally {
+            window.location.href = '/login.html';
+        }
     });
 
     const number = value => new Intl.NumberFormat('en-PH').format(Number(value || 0));

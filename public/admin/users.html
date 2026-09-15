@@ -2,69 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Admin Users | VISIONARICE</title>
 
-    <title>
-        Admin Users | VISIONARICE
-    </title>
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
     >
 
-    <!-- GLOBAL ADMIN NAVIGATION CSS -->
     <link
         rel="stylesheet"
-        href="/css/admin/admin-sidebar.css?v=20260915-3"
-    >
-
-    <!-- USERS PAGE CSS -->
-    <link
-        rel="stylesheet"
-        href="/css/admin/users.css?v=20260915-3"
+        href="/css/admin/users.css?v=20260911-1"
     >
 </head>
 
+<body>
 
-<body data-admin-page="users">
+<header class="topbar">
+    <div class="topbar-inner">
+
+        <a
+            class="brand"
+            href="/admin/dashboard.html"
+        >
+            <span class="brand-icon">
+                🌾
+            </span>
+
+            <span class="brand-name">
+                VISION<span>A</span>RICE
+            </span>
+
+            <small>
+                Admin
+            </small>
+        </a>
+
+        <nav class="desktop-nav">
+            <a href="/admin/dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="/admin/predictions.html">
+                Predictions
+            </a>
+
+            <a
+                class="active"
+                href="/admin/users.html"
+            >
+                Users
+            </a>
+
+            <a href="/admin/profile.html">
+                Profile
+            </a>
+
+            <a href="/admin/notifications.html">
+                Notifications
+            </a>
+        </nav>
+
+        <div class="account-area">
+
+            <div class="account-copy">
+                <small>
+                    ADMINISTRATOR
+                </small>
+
+                <strong id="adminSessionName">
+                    Admin
+                </strong>
+            </div>
+
+            <button
+                id="adminLogoutButton"
+                class="logout-button"
+                type="button"
+                title="Logout"
+            >
+                <svg viewBox="0 0 24 24">
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                </svg>
+            </button>
+
+        </div>
+
+    </div>
+</header>
 
 
-<!-- =========================================
-     GLOBAL ADMIN NAVIGATION
-========================================= -->
-
-<div id="adminSidebarContainer"></div>
-
-
-<!-- =========================================
-     USERS PAGE
-========================================= -->
-
-<main class="users-page admin-page-shell">
-
-
-    <!-- PAGE HEADING -->
+<main class="users-page">
 
     <section class="page-heading">
 
         <div>
-
             <span class="eyebrow">
                 USER MANAGEMENT
             </span>
@@ -74,18 +112,14 @@
             </h1>
 
             <p>
-                Review registered VISIONARICE users,
-                account status, verification state,
-                and prediction activity.
+                Review registered VISIONARICE users, account status,
+                verification state, and prediction activity.
             </p>
-
         </div>
-
 
         <div class="heading-actions">
 
             <div class="last-updated">
-
                 <small>
                     Last updated
                 </small>
@@ -93,9 +127,7 @@
                 <strong id="lastUpdated">
                     Loading...
                 </strong>
-
             </div>
-
 
             <button
                 id="refreshUsersButton"
@@ -110,15 +142,9 @@
     </section>
 
 
-    <!-- =========================================
-         STAT CARDS
-    ========================================== -->
-
     <section class="stat-grid">
 
-
         <article class="stat-card">
-
             <span>
                 Total Users
             </span>
@@ -130,12 +156,9 @@
             <p>
                 Registered non-admin accounts
             </p>
-
         </article>
 
-
         <article class="stat-card">
-
             <span>
                 Active Users
             </span>
@@ -147,12 +170,9 @@
             <p>
                 Accounts currently enabled
             </p>
-
         </article>
 
-
         <article class="stat-card">
-
             <span>
                 Inactive Users
             </span>
@@ -164,12 +184,9 @@
             <p>
                 Accounts currently disabled
             </p>
-
         </article>
 
-
         <article class="stat-card">
-
             <span>
                 Verified Emails
             </span>
@@ -181,24 +198,15 @@
             <p>
                 Users with verified email addresses
             </p>
-
         </article>
-
 
     </section>
 
 
-    <!-- =========================================
-         FILTERS
-    ========================================== -->
-
     <section class="filter-card">
 
-
         <div class="filter-heading">
-
             <div>
-
                 <span class="eyebrow">
                     FILTERS
                 </span>
@@ -206,9 +214,7 @@
                 <h2>
                     Find users
                 </h2>
-
             </div>
-
 
             <button
                 id="resetUserFilters"
@@ -217,30 +223,16 @@
             >
                 Reset Filters
             </button>
-
         </div>
 
 
         <div class="filter-row">
 
-
             <label class="search-box">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                >
-                    <circle
-                        cx="11"
-                        cy="11"
-                        r="7"
-                    ></circle>
-
-                    <path
-                        d="m20 20-4-4"
-                    ></path>
+                <svg viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
                 </svg>
-
 
                 <input
                     id="userSearch"
@@ -248,12 +240,10 @@
                     placeholder="Search name, email, or phone..."
                     autocomplete="off"
                 >
-
             </label>
 
 
             <select id="statusFilter">
-
                 <option value="">
                     All Statuses
                 </option>
@@ -265,12 +255,10 @@
                 <option value="inactive">
                     Inactive
                 </option>
-
             </select>
 
 
             <select id="roleFilter">
-
                 <option value="">
                     All Roles
                 </option>
@@ -282,26 +270,18 @@
                 <option value="admin">
                     Admin
                 </option>
-
             </select>
-
 
         </div>
 
     </section>
 
 
-    <!-- =========================================
-         USER DIRECTORY
-    ========================================== -->
-
     <section class="users-card">
-
 
         <div class="users-card-heading">
 
             <div>
-
                 <span class="eyebrow">
                     ACCOUNTS
                 </span>
@@ -309,9 +289,7 @@
                 <h2>
                     User Directory
                 </h2>
-
             </div>
-
 
             <span
                 id="visibleUserCount"
@@ -328,9 +306,7 @@
             <table>
 
                 <thead>
-
                     <tr>
-
                         <th>
                             User
                         </th>
@@ -358,25 +334,18 @@
                         <th>
                             Actions
                         </th>
-
                     </tr>
-
                 </thead>
 
-
                 <tbody id="usersTableBody">
-
                     <tr>
-
                         <td
                             colspan="7"
                             class="empty-table"
                         >
                             Loading users...
                         </td>
-
                     </tr>
-
                 </tbody>
 
             </table>
@@ -385,25 +354,18 @@
 
     </section>
 
-
 </main>
 
-
-<!-- =========================================
-     STATUS CONFIRM MODAL
-========================================= -->
 
 <div
     id="statusConfirmModal"
     class="modal hidden"
     aria-hidden="true"
 >
-
     <div
         class="modal-backdrop"
         data-close-status-modal
     ></div>
-
 
     <section class="modal-dialog">
 
@@ -411,19 +373,15 @@
             !
         </div>
 
-
         <h2 id="statusModalTitle">
             Update account?
         </h2>
-
 
         <p id="statusModalMessage">
             Confirm this account status change.
         </p>
 
-
         <div class="modal-actions">
-
             <button
                 id="cancelStatusButton"
                 class="secondary-button"
@@ -432,7 +390,6 @@
                 Cancel
             </button>
 
-
             <button
                 id="confirmStatusButton"
                 class="primary-button"
@@ -440,31 +397,39 @@
             >
                 Confirm
             </button>
-
         </div>
 
     </section>
-
 </div>
 
 
-<!-- =========================================
-     GLOBAL ADMIN NAVIGATION JS
-========================================= -->
+<nav class="mobile-nav">
+    <a href="/admin/dashboard.html">
+        Dashboard
+    </a>
 
-<script
-    src="/js/admin/admin-sidebar.js?v=20260915-3"
-></script>
+    <a href="/admin/predictions.html">
+        Predictions
+    </a>
+
+    <a
+        class="active"
+        href="/admin/users.html"
+    >
+        Users
+    </a>
+
+    <a href="/admin/profile.html">
+        Profile
+    </a>
+
+    <a href="/admin/notifications.html">
+        Alerts
+    </a>
+</nav>
 
 
-<!-- =========================================
-     USERS PAGE JS
-========================================= -->
-
-<script
-    src="/js/admin/users.js?v=20260915-3"
-></script>
-
+<script src="/js/admin/users.js?v=20260911-1"></script>
 
 </body>
 </html>

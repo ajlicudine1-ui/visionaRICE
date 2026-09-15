@@ -4,27 +4,13 @@
     --admin-green-800: #1c5e3a;
     --admin-green-700: #286f45;
     --admin-green-100: #e9f2e7;
-
     --admin-cream: #f6f4ec;
     --admin-white: #ffffff;
-
     --admin-text: #243029;
     --admin-muted: #728078;
-
     --admin-border: #e0e7df;
-
     --admin-orange: #efa043;
-
-    --admin-yellow: #d79b16;
-    --admin-yellow-border: #ebcf7c;
-    --admin-yellow-soft: #fff7d8;
-    --admin-yellow-hover: #ffefad;
 }
-
-
-/* =====================================================
-   BASE
-===================================================== */
 
 * {
     box-sizing: border-box;
@@ -32,738 +18,306 @@
 
 body {
     margin: 0;
-
-    font-family:
-        "Poppins",
-        sans-serif;
-
-    color:
-        var(--admin-text);
-
-    background:
-        var(--admin-cream);
+    font-family: "Poppins", sans-serif;
+    color: var(--admin-text);
+    background: var(--admin-cream);
 }
-
-
-/* =====================================================
-   ADMIN TOP NAVIGATION
-===================================================== */
 
 .admin-topnav {
     position: sticky;
-
     top: 0;
-
     width: 100%;
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .98
-        );
-
-    border-bottom:
-        1px solid
-        var(--admin-border);
-
-    box-shadow:
-        0 2px 14px
-        rgba(22,73,44,.045);
-
-    backdrop-filter:
-        blur(12px);
-
-    -webkit-backdrop-filter:
-        blur(12px);
-
+    background: rgba(255,255,255,.98);
+    border-bottom: 1px solid var(--admin-border);
+    box-shadow: 0 2px 14px rgba(22,73,44,.045);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 1500;
 }
 
-
 .admin-topnav-inner {
-    width:
-        min(
-            calc(100% - 48px),
-            1480px
-        );
-
+    width: min(calc(100% - 48px), 1480px);
     min-height: 72px;
-
-    margin:
-        0 auto;
-
+    margin: 0 auto;
     display: flex;
-
     align-items: center;
-
     gap: 18px;
 }
 
-
-/* =====================================================
-   ADMIN BRAND
-===================================================== */
-
 .admin-brand {
-    flex:
-        0 0 auto;
-
+    flex: 0 0 auto;
     display: flex;
-
     align-items: center;
-
     gap: 10px;
-
     margin-right: 10px;
-
     text-decoration: none;
 }
-
 
 .admin-brand-mark {
     width: 40px;
     height: 40px;
-
     display: grid;
-
     place-items: center;
-
     border-radius: 12px;
-
-    background:
-        var(--admin-green-100);
-
+    background: var(--admin-green-100);
     font-size: 20px;
 }
 
-
 .admin-brand-copy {
     display: flex;
-
     flex-direction: column;
 }
 
-
 .admin-brand-copy strong {
-    color:
-        var(--admin-green-900);
-
+    color: var(--admin-green-900);
     font-size: 21px;
-
     line-height: 1;
-
     letter-spacing: -.6px;
 }
 
-
 .admin-brand-copy strong span {
-    color:
-        var(--admin-orange);
+    color: var(--admin-orange);
 }
-
 
 .admin-brand-copy small {
     margin-top: 4px;
-
-    color:
-        var(--admin-muted);
-
+    color: var(--admin-muted);
     font-size: 8px;
-
     font-weight: 700;
-
     letter-spacing: 1.2px;
-
     text-transform: uppercase;
 }
 
-
-/* =====================================================
-   ADMIN DESKTOP NAVIGATION
-===================================================== */
-
 .admin-nav {
     margin-left: auto;
-
     display: flex;
-
     align-items: center;
-
     gap: 3px;
 }
 
-
 .admin-nav a {
     min-height: 40px;
-
-    padding:
-        8px 11px;
-
+    padding: 8px 11px;
     display: inline-flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 7px;
-
-    border:
-        1px solid transparent;
-
+    border: 1px solid transparent;
     border-radius: 10px;
-
-    color:
-        #3c4941;
-
-    background:
-        transparent;
-
+    color: #3c4941;
+    background: transparent;
     font-size: 11px;
-
     font-weight: 500;
-
     line-height: 1;
-
     text-decoration: none;
-
     white-space: nowrap;
-
-    transition:
-        background .16s ease,
-        color .16s ease,
-        border-color .16s ease,
-        transform .16s ease;
+    transition: .16s ease;
 }
-
 
 .admin-nav a:hover {
-    color:
-        var(--admin-green-800);
-
-    background:
-        #f6faf5;
-
-    border-color:
-        #e2ebe3;
+    color: var(--admin-green-800);
+    background: #f6faf5;
+    border-color: #e2ebe3;
 }
-
 
 .admin-nav a.active {
-    color:
-        var(--admin-green-800);
-
-    background:
-        var(--admin-green-100);
-
-    border-color:
-        #d8e8db;
-
+    color: var(--admin-green-800);
+    background: var(--admin-green-100);
+    border-color: #d8e8db;
     font-weight: 600;
 }
-
-
-/* =====================================================
-   ADMIN NAV ICONS
-===================================================== */
 
 .admin-nav-icon {
     width: 18px;
     height: 18px;
-
-    display:
-        inline-grid;
-
+    display: inline-grid;
     place-items: center;
-
-    flex:
-        0 0 auto;
+    flex: 0 0 auto;
 }
-
 
 .admin-nav-icon svg,
 .admin-logout-button svg {
     width: 17px;
     height: 17px;
-
     fill: none;
-
-    stroke:
-        currentColor;
-
+    stroke: currentColor;
     stroke-width: 1.8;
-
-    stroke-linecap:
-        round;
-
-    stroke-linejoin:
-        round;
-}
-
-
-.admin-nav .admin-notification-bell {
-    width: 42px;
-    height: 42px;
-
-    min-width: 42px;
-    min-height: 42px;
-
-    padding: 0;
-
-    display: grid;
-    place-items: center;
-
-    flex: 0 0 42px;
-
-    border: 1px solid #dfe6df;
-    border-radius: 12px;
-
-    background: #f8faf7;
-
-    color: #f2b632;
-
-    text-decoration: none;
-
-    transition:
-        background .16s ease,
-        border-color .16s ease,
-        transform .16s ease,
-        box-shadow .16s ease;
-}
-
-.admin-nav .admin-notification-bell:hover {
-    background: #eaf4e8;
-    border-color: #c8dcc8;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 4px 12px
-        rgba(28, 94, 58, .08);
-}
-
-
-.admin-nav .admin-notification-bell.active {
-    background: #f8faf7;
-
-    border-color: #dfe6df;
-
-    color: #f2b632;
-}
-
-
-.admin-nav .admin-notification-bell .admin-nav-icon {
-    width: 20px;
-    height: 20px;
-
-    display: grid;
-    place-items: center;
-
-    margin: 0;
-}
-
-
-.admin-nav .admin-notification-bell svg {
-    width: 20px;
-    height: 20px;
-
-    fill: #f6c344;
-
-    stroke: #e0aa22;
-
-    stroke-width: 1.4;
-
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
-/* =====================================================
-   ADMIN ACCOUNT AREA
-===================================================== */
-
 .admin-account-actions {
     display: flex;
-
     align-items: center;
-
     gap: 8px;
-
     margin-left: 5px;
 }
 
-
 .admin-session-card {
     max-width: 130px;
-
     display: flex;
-
     flex-direction: column;
-
     line-height: 1.05;
 }
 
-
 .admin-session-card span {
-    color:
-        var(--admin-muted);
-
+    color: var(--admin-muted);
     font-size: 7px;
-
     font-weight: 600;
-
-    text-transform:
-        uppercase;
-
-    letter-spacing:
-        .8px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
 }
-
 
 .admin-session-card strong {
     margin-top: 3px;
-
-    color:
-        var(--admin-green-900);
-
+    color: var(--admin-green-900);
     font-size: 9px;
-
     font-weight: 600;
-
     overflow: hidden;
-
-    text-overflow:
-        ellipsis;
-
-    white-space:
-        nowrap;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
-
-
-/* =====================================================
-   LOGOUT BUTTON
-===================================================== */
 
 .admin-logout-button {
     width: 40px;
     height: 40px;
-
-    flex:
-        0 0 auto;
-
+    flex: 0 0 auto;
     display: grid;
-
     place-items: center;
-
-    border:
-        1px solid #dce6de;
-
+    border: 1px solid #dce6de;
     border-radius: 11px;
-
-    background:
-        #f7faf7;
-
-    color:
-        var(--admin-green-800);
-
+    background: #f7faf7;
+    color: var(--admin-green-800);
     cursor: pointer;
-
-    transition:
-        background .16s ease,
-        border-color .16s ease;
+    transition: .16s ease;
 }
-
 
 .admin-logout-button:hover {
-    background:
-        var(--admin-green-100);
-
-    border-color:
-        #c6d9ca;
+    background: var(--admin-green-100);
+    border-color: #c6d9ca;
 }
 
-
-/* =====================================================
-   PAGE SHELL
-===================================================== */
-
-/*
-   Keep this class layout-neutral.
-   Individual admin page CSS files already control their
-   own width and centering with margin: 0 auto.
-*/
 .admin-page-shell {
-    min-height:
-        calc(
-            100vh - 72px
-        );
+    min-height: calc(100vh - 72px);
+    margin-left: 0 !important;
 }
-
-
-/* =====================================================
-   MOBILE BOTTOM NAV
-===================================================== */
 
 .admin-mobile-bottom-nav {
     display: none;
 }
 
 
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media
-(
-    max-width: 1150px
-)
-and
-(
-    min-width: 761px
-) {
-
+@media (max-width: 1150px) and (min-width: 761px) {
     .admin-topnav-inner {
-        width:
-            calc(
-                100% - 30px
-            );
-
+        width: calc(100% - 30px);
         gap: 10px;
     }
-
 
     .admin-brand-copy strong {
         font-size: 18px;
     }
-
 
     .admin-brand-copy small,
     .admin-session-card {
         display: none;
     }
 
-
     .admin-nav a {
-        padding:
-            8px 8px;
-
-        font-size:
-            10px;
+        padding: 8px 8px;
+        font-size: 10px;
     }
-
-
-    .admin-nav
-    .admin-notification-bell {
-        width: 38px;
-        height: 38px;
-
-        min-width: 38px;
-        min-height: 38px;
-
-        flex:
-            0 0 38px;
-    }
-
 }
 
 
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media
-(
-    max-width: 760px
-) {
-
+@media (max-width: 760px) {
     body {
-        padding-bottom:
-            72px;
+        padding-bottom: 72px;
     }
 
-
     .admin-topnav {
-        position:
-            sticky;
-
+        position: sticky;
         top: 0;
     }
 
-
     .admin-topnav-inner {
         width: 100%;
-
         min-height: 62px;
-
-        padding:
-            0 15px;
+        padding: 0 15px;
     }
-
 
     .admin-brand-mark {
         width: 36px;
         height: 36px;
-
         font-size: 18px;
     }
-
 
     .admin-brand-copy strong {
         font-size: 18px;
     }
 
-
     .admin-brand-copy small {
         display: none;
     }
-
-
-    /*
-       Desktop nav hidden on mobile.
-       Mobile bottom nav is used instead.
-    */
 
     .admin-nav,
     .admin-session-card {
         display: none;
     }
 
-
     .admin-account-actions {
-        margin-left:
-            auto;
+        margin-left: auto;
     }
-
 
     .admin-logout-button {
         width: 38px;
         height: 38px;
     }
 
-
-    /* =========================================
-       MOBILE BOTTOM NAVIGATION
-    ========================================= */
-
     .admin-mobile-bottom-nav {
         position: fixed;
-
         left: 0;
         right: 0;
         bottom: 0;
-
         height: 66px;
-
         display: grid;
-
-        grid-template-columns:
-            repeat(
-                5,
-                1fr
-            );
-
-        background:
-            rgba(
-                255,
-                255,
-                255,
-                .98
-            );
-
-        border-top:
-            1px solid
-            var(--admin-border);
-
-        box-shadow:
-            0 -5px 18px
-            rgba(18,61,36,.06);
-
+        grid-template-columns: repeat(5, 1fr);
+        background: rgba(255,255,255,.98);
+        border-top: 1px solid var(--admin-border);
+        box-shadow: 0 -5px 18px rgba(18,61,36,.06);
         z-index: 1700;
     }
 
-
     .admin-mobile-bottom-nav a {
         min-width: 0;
-
         display: flex;
-
-        flex-direction:
-            column;
-
-        align-items:
-            center;
-
-        justify-content:
-            center;
-
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         gap: 3px;
-
-        color:
-            #66736a;
-
-        text-decoration:
-            none;
+        color: #66736a;
+        text-decoration: none;
     }
-
 
     .admin-mobile-bottom-nav a.active {
-        color:
-            var(--admin-green-800);
-
-        background:
-            #f2f7f1;
+        color: var(--admin-green-800);
+        background: #f2f7f1;
     }
 
-
-    .admin-mobile-bottom-nav
-    .admin-nav-icon {
+    .admin-mobile-bottom-nav .admin-nav-icon {
         width: 19px;
         height: 19px;
     }
 
-
-    .admin-mobile-bottom-nav
-    .admin-nav-icon svg {
-        width: 18px;
-        height: 18px;
-
-        fill: none;
-
-        stroke:
-            currentColor;
-
-        stroke-width: 1.8;
-
-        stroke-linecap:
-            round;
-
-        stroke-linejoin:
-            round;
-    }
-
-
     .admin-mobile-bottom-nav small {
         max-width: 100%;
-
         font-size: 7px;
-
         font-weight: 600;
-
         overflow: hidden;
-
-        text-overflow:
-            ellipsis;
-
-        white-space:
-            nowrap;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
-
 
     .admin-page-shell {
-        min-height:
-            calc(
-                100vh - 62px
-            );
+        min-height: calc(100vh - 62px);
     }
-
 }
