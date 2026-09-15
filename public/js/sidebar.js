@@ -33,7 +33,7 @@
                     </span>
 
                     <span class="sidebar-brand-text">
-                        <strong>VISION</strong><em>aRice</em>
+                        <span class="brand-vision">VISION</span><span class="brand-a">a</span><span class="brand-rice">RICE</span>
                     </span>
                 </a>
 
