@@ -33,107 +33,10 @@
   >
 </head>
 
-<body>
+<body data-admin-page="profile">
 
 
-<header class="topbar">
-
-  <div class="topbar-inner">
-
-    <a
-      class="brand"
-      href="/admin/dashboard.html"
-    >
-      <span class="brand-icon">
-        🌾
-      </span>
-
-      <span class="brand-name">
-        VISION<span>A</span>RICE
-      </span>
-
-      <small>
-        Admin
-      </small>
-    </a>
-
-
-    <nav class="desktop-nav">
-
-      <a href="/admin/dashboard.html">
-        Dashboard
-      </a>
-
-      <a href="/admin/predictions.html">
-        Predictions
-      </a>
-
-      <a href="/admin/users.html">
-        Users
-      </a>
-
-      <a
-        class="active"
-        href="/admin/profile.html"
-      >
-        Profile
-      </a>
-
-      <a
-          class="desktop-notification-bell active"
-          href="/admin/notifications.html"
-          aria-label="Notifications"
-          title="Notifications"
-      >
-          <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-          >
-              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-              <path d="M10 21h4"></path>
-          </svg>
-      </a>
-
-    </nav>
-
-
-    <div class="account-area">
-
-      <div class="account-copy">
-
-        <small>
-          ADMINISTRATOR
-        </small>
-
-        <strong id="adminSessionName">
-          Admin
-        </strong>
-
-      </div>
-
-
-      <button
-        id="adminLogoutButton"
-        class="logout-button"
-        type="button"
-        aria-label="Logout"
-        title="Logout"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path d="M10 17l5-5-5-5"></path>
-          <path d="M15 12H3"></path>
-          <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
-        </svg>
-      </button>
-
-    </div>
-
-  </div>
-
-</header>
+<div id="adminSidebarContainer"></div>
 
 
 <main class="profile-page">
@@ -841,42 +744,9 @@
 
 </div>
 
+<script src="/js/admin/admin-sidebar.js?v=20260916-4"></script>
 
-<!-- =========================================
-     MOBILE NAVIGATION
-========================================= -->
-
-<nav class="mobile-nav">
-
-  <a href="/admin/dashboard.html">
-    Dashboard
-  </a>
-
-  <a href="/admin/predictions.html">
-    Predictions
-  </a>
-
-  <a href="/admin/users.html">
-    Users
-  </a>
-
-  <a
-    class="active"
-    href="/admin/profile.html"
-  >
-    Profile
-  </a>
-
-  <a href="/admin/notifications.html">
-    Alerts
-  </a>
-
-</nav>
-
-
-<script
-  src="/js/admin/profile.js?v=20260911-2"
-></script>
+<script src="/js/admin/profile.js?v=20260911-2"></script>
 
 
 </body>
