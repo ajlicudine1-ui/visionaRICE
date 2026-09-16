@@ -128,6 +128,7 @@
         } catch (error) {
 
             // Ignore storage errors.
+
         }
 
     }
@@ -166,7 +167,6 @@
     }
 
 
-
     // =====================================================
     // LOAD NAVIGATION
     // =====================================================
@@ -198,20 +198,14 @@
                 await response.text();
 
 
-            /*
-             * Display cached admin name immediately.
-             * No waiting for /api/auth/me.
-             */
+            // Show cached name immediately.
             showCachedAdminName();
 
 
             activateCurrentPage();
 
 
-            /*
-             * Refresh admin identity silently
-             * from the server.
-             */
+            // Refresh silently from server.
             loadAdminIdentity();
 
 
@@ -228,7 +222,6 @@
         }
 
     }
-
 
 
     // =====================================================
@@ -257,7 +250,6 @@
             });
 
     }
-
 
 
     // =====================================================
@@ -329,7 +321,6 @@
             }
 
 
-            // Save for instant display on other admin pages.
             saveAdminProfile(
                 result.user
             );
@@ -343,9 +334,12 @@
                     );
 
 
-                nameElement.textContent =
-                    displayName ||
-                    'Administrator';
+                if (displayName) {
+
+                    nameElement.textContent =
+                        displayName;
+
+                }
 
             }
 
@@ -357,16 +351,14 @@
                 error
             );
 
-
             /*
-             * Do not replace the cached name just because
-             * the background refresh temporarily failed.
+             * Keep the cached name visible if
+             * the background refresh fails.
              */
 
         }
 
     }
-
 
 
     // =====================================================
@@ -418,11 +410,6 @@
 
                 } finally {
 
-                    /*
-                     * Remove cached identity so another
-                     * account never sees the previous
-                     * administrator's name.
-                     */
                     clearAdminProfile();
 
 
@@ -435,7 +422,6 @@
         );
 
     }
-
 
 
     // =====================================================
