@@ -2,12 +2,10 @@
 
     'use strict';
 
-
     const container =
         document.getElementById(
             'adminSidebarContainer'
         );
-
 
     if (!container) {
         return;
@@ -47,7 +45,6 @@
             return '';
         }
 
-
         const firstName =
             String(
                 profile.first_name ||
@@ -55,14 +52,12 @@
                 ''
             ).trim();
 
-
         const lastName =
             String(
                 profile.last_name ||
                 profile.lastName ||
                 ''
             ).trim();
-
 
         const fullName =
             [
@@ -72,7 +67,6 @@
                 .filter(Boolean)
                 .join(' ')
                 .trim();
-
 
         return (
             fullName ||
@@ -94,7 +88,6 @@
         if (!profile) {
             return;
         }
-
 
         try {
 
@@ -134,94 +127,245 @@
     }
 
 
-    function showCachedAdminName() {
-
-        const nameElement =
-            document.getElementById(
-                'adminSessionName'
-            );
-
-
-        if (!nameElement) {
-            return;
-        }
-
-
-        const profile =
-            getCachedAdminProfile();
-
-
-        const displayName =
-            getAdminDisplayName(
-                profile
-            );
-
-
-        if (displayName) {
-
-            nameElement.textContent =
-                displayName;
-
-        }
-
-    }
-
-
     // =====================================================
-    // LOAD NAVIGATION
+    // IMMEDIATE ADMIN HEADER
     // =====================================================
 
-    async function loadNavigation() {
+    const cachedAdminProfile =
+        getCachedAdminProfile();
 
-        try {
-
-            const response =
-                await fetch(
-                    '/admin/components/sidebar.html',
-                    {
-                        cache:
-                            'no-store'
-                    }
-                );
+    const cachedAdminName =
+        getAdminDisplayName(
+            cachedAdminProfile
+        );
 
 
-            if (!response.ok) {
+    const ADMIN_SIDEBAR_HTML = `
 
-                throw new Error(
-                    'Unable to load administrator navigation.'
-                );
+        <header class="admin-topnav">
 
-            }
+            <div class="admin-topnav-inner">
+
+                <a
+                    href="/admin/dashboard.html"
+                    class="admin-brand"
+                    aria-label="VISIONARICE Admin Dashboard"
+                >
+                    <div class="admin-brand-mark">
+                        🌾
+                    </div>
+
+                    <div class="admin-brand-copy">
+                        <strong>
+                            VISION<span>A</span>RICE
+                        </strong>
+
+                        <small>
+                            Admin
+                        </small>
+                    </div>
+                </a>
 
 
-            container.innerHTML =
-                await response.text();
+                <nav
+                    class="admin-nav"
+                    aria-label="Administrator navigation"
+                >
+
+                    <a
+                        href="/admin/dashboard.html"
+                        data-admin-page="dashboard"
+                    >
+                        <span class="admin-nav-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                                <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                                <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                                <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                            </svg>
+                        </span>
+
+                        <span>Dashboard</span>
+                    </a>
+
+                    <a
+                        href="/admin/predictions.html"
+                        data-admin-page="predictions"
+                    >
+                        <span class="admin-nav-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M4 6h16"></path>
+                                <path d="M4 12h16"></path>
+                                <path d="M4 18h10"></path>
+                            </svg>
+                        </span>
+
+                        <span>Predictions</span>
+                    </a>
+
+                    <a
+                        href="/admin/users.html"
+                        data-admin-page="users"
+                    >
+                        <span class="admin-nav-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="9" cy="8" r="3"></circle>
+                                <path d="M3.5 19c.8-3.1 2.8-5 5.5-5s4.7 1.9 5.5 5"></path>
+                                <path d="M16 7.5a2.5 2.5 0 0 1 0 5"></path>
+                                <path d="M17 14c2.1.3 3.4 1.9 3.9 4"></path>
+                            </svg>
+                        </span>
+
+                        <span>Users</span>
+                    </a>
+
+                    <a
+                        href="/admin/profile.html"
+                        data-admin-page="profile"
+                    >
+                        <span class="admin-nav-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M4.5 21c.8-4.2 3.5-6.5 7.5-6.5s6.7 2.3 7.5 6.5"></path>
+                            </svg>
+                        </span>
+
+                        <span>Profile</span>
+                    </a>
+
+                    <a
+                        href="/admin/notifications.html"
+                        data-admin-page="notifications"
+                    >
+                        <span class="admin-nav-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                                <path d="M10 21h4"></path>
+                            </svg>
+                        </span>
+
+                        <span>Notifications</span>
+                    </a>
+
+                </nav>
 
 
-            // Show cached name immediately.
-            showCachedAdminName();
+                <div class="admin-account-actions">
+
+                    <div class="admin-session-card">
+                        <strong id="adminSessionName">${cachedAdminName}</strong>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="admin-logout-button"
+                        id="adminLogoutButton"
+                        title="Logout"
+                        aria-label="Logout"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M10 17l5-5-5-5"></path>
+                            <path d="M15 12H3"></path>
+                            <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                        </svg>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
 
 
-            activateCurrentPage();
+        <nav
+            class="admin-mobile-bottom-nav"
+            aria-label="Administrator mobile navigation"
+        >
+
+            <a
+                href="/admin/dashboard.html"
+                data-admin-page="dashboard"
+            >
+                <span class="admin-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                    </svg>
+                </span>
+
+                <small>Dashboard</small>
+            </a>
+
+            <a
+                href="/admin/predictions.html"
+                data-admin-page="predictions"
+            >
+                <span class="admin-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 6h16"></path>
+                        <path d="M4 12h16"></path>
+                        <path d="M4 18h10"></path>
+                    </svg>
+                </span>
+
+                <small>Predictions</small>
+            </a>
+
+            <a
+                href="/admin/users.html"
+                data-admin-page="users"
+            >
+                <span class="admin-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="9" cy="8" r="3"></circle>
+                        <path d="M3.5 19c.8-3.1 2.8-5 5.5-5s4.7 1.9 5.5 5"></path>
+                    </svg>
+                </span>
+
+                <small>Users</small>
+            </a>
+
+            <a
+                href="/admin/profile.html"
+                data-admin-page="profile"
+            >
+                <span class="admin-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4.5 21c.8-4.2 3.5-6.5 7.5-6.5s6.7 2.3 7.5 6.5"></path>
+                    </svg>
+                </span>
+
+                <small>Profile</small>
+            </a>
+
+            <a
+                href="/admin/notifications.html"
+                data-admin-page="notifications"
+            >
+                <span class="admin-nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                        <path d="M10 21h4"></path>
+                    </svg>
+                </span>
+
+                <small>Alerts</small>
+            </a>
+
+        </nav>
+    `;
 
 
-            // Refresh silently from server.
-            loadAdminIdentity();
-
-
-            bindLogout();
-
-
-        } catch (error) {
-
-            console.error(
-                'Admin navigation error:',
-                error
-            );
-
-        }
-
-    }
+    /*
+     * Render immediately.
+     * No fetch of /admin/components/sidebar.html.
+     * Cached name is already inside the header HTML.
+     */
+    container.innerHTML =
+        ADMIN_SIDEBAR_HTML;
 
 
     // =====================================================
@@ -234,8 +378,7 @@
             document.body.dataset.adminPage ||
             '';
 
-
-        document
+        container
             .querySelectorAll(
                 '[data-admin-page]'
             )
@@ -259,10 +402,9 @@
     async function loadAdminIdentity() {
 
         const nameElement =
-            document.getElementById(
-                'adminSessionName'
+            container.querySelector(
+                '#adminSessionName'
             );
-
 
         try {
 
@@ -281,24 +423,19 @@
                     }
                 );
 
-
             if (!response.ok) {
 
                 clearAdminProfile();
 
-
                 window.location.href =
                     '/login.html';
-
 
                 return;
 
             }
 
-
             const result =
                 await response.json();
-
 
             if (
                 !result.user ||
@@ -311,20 +448,20 @@
 
                 clearAdminProfile();
 
-
                 window.location.href =
                     '/login.html';
-
 
                 return;
 
             }
 
-
+            /*
+             * Save profile for immediate rendering
+             * on the next admin page.
+             */
             saveAdminProfile(
                 result.user
             );
-
 
             if (nameElement) {
 
@@ -332,7 +469,6 @@
                     getAdminDisplayName(
                         result.user
                     );
-
 
                 if (displayName) {
 
@@ -342,7 +478,6 @@
                 }
 
             }
-
 
         } catch (error) {
 
@@ -368,15 +503,13 @@
     function bindLogout() {
 
         const button =
-            document.getElementById(
-                'adminLogoutButton'
+            container.querySelector(
+                '#adminLogoutButton'
             );
-
 
         if (!button) {
             return;
         }
-
 
         button.addEventListener(
             'click',
@@ -384,7 +517,6 @@
 
                 button.disabled =
                     true;
-
 
                 try {
 
@@ -399,7 +531,6 @@
                         }
                     );
 
-
                 } catch (error) {
 
                     console.error(
@@ -407,11 +538,9 @@
                         error
                     );
 
-
                 } finally {
 
                     clearAdminProfile();
-
 
                     window.location.href =
                         '/login.html';
@@ -428,7 +557,14 @@
     // INITIALIZE
     // =====================================================
 
-    loadNavigation();
+    activateCurrentPage();
 
+    bindLogout();
+
+    /*
+     * Verify/refresh the admin session silently.
+     * The cached name is already visible.
+     */
+    loadAdminIdentity();
 
 })();
