@@ -140,21 +140,53 @@
         }
 
         const setName = profile => {
-            const fullName =
+
+            if (!profile) {
+                return false;
+            }
+
+            const firstName =
                 String(
-                    profile?.full_name ||
-                    profile?.fullName ||
-                    profile?.name ||
-                    profile?.username ||
+                    profile.first_name ||
+                    profile.firstName ||
                     ''
                 ).trim();
 
-            if (!fullName) {
+            const lastName =
+                String(
+                    profile.last_name ||
+                    profile.lastName ||
+                    ''
+                ).trim();
+
+            const fullName =
+                [
+                    firstName,
+                    lastName
+                ]
+                    .filter(Boolean)
+                    .join(' ')
+                    .trim();
+
+            const fallbackName =
+                String(
+                    profile.full_name ||
+                    profile.fullName ||
+                    profile.name ||
+                    profile.username ||
+                    ''
+                ).trim();
+
+            const displayName =
+                fullName ||
+                fallbackName;
+
+            if (!displayName) {
                 return false;
             }
 
             nameElement.textContent =
-                fullName;
+                displayName;
 
             return true;
         };
@@ -246,7 +278,12 @@
                 const result =
                     await response.json();
 
-                if (setName(result?.profile)) {
+                if (
+                    setName(
+                        result?.user ||
+                        result?.profile
+                    )
+                ) {
                     return;
                 }
             }
