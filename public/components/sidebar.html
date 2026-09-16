@@ -1,7 +1,10 @@
 <header class="sidebar">
     <div class="sidebar-inner">
 
-        <a href="/analyze.html" class="sidebar-brand">
+        <a
+            href="/analyze.html"
+            class="sidebar-brand"
+        >
             <img
                 src="/images/visionarice_logo.png"
                 alt="VISIONARICE Logo"
@@ -11,27 +14,42 @@
 
         <nav class="sidebar-nav">
 
-            <a href="/analyze.html" data-page="analyze">
+            <a
+                href="/analyze.html"
+                data-page="analyze"
+            >
                 <span>📷</span>
                 Analyze
             </a>
 
-            <a href="/dashboard.html" data-page="dashboard">
+            <a
+                href="/dashboard.html"
+                data-page="dashboard"
+            >
                 <span>◉</span>
                 Dashboard
             </a>
 
-            <a href="/history.html" data-page="history">
+            <a
+                href="/history.html"
+                data-page="history"
+            >
                 <span>↶</span>
                 History
             </a>
 
-            <a href="/profile.html" data-page="profile">
+            <a
+                href="/profile.html"
+                data-page="profile"
+            >
                 <span>👤</span>
                 Profile
             </a>
 
-            <a href="/help.html" data-page="help">
+            <a
+                href="/help.html"
+                data-page="help"
+            >
                 <span>?</span>
                 Help
             </a>
@@ -44,8 +62,44 @@
             aria-label="Open notifications"
             title="Notifications"
         >
-            <span aria-hidden="true">🔔</span>
+            <span aria-hidden="true">
+                🔔
+            </span>
         </a>
+
+        <div class="user-account-actions">
+
+            <div class="user-session-card">
+
+                <span>
+                    USER
+                </span>
+
+                <strong
+                    id="headerUserName"
+                    class="header-user-name-loading"
+                ></strong>
+
+            </div>
+
+            <button
+                id="headerLogoutButton"
+                class="user-logout-button"
+                type="button"
+                aria-label="Logout"
+                title="Logout"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path d="M10 17l5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                </svg>
+            </button>
+
+        </div>
 
     </div>
 </header>

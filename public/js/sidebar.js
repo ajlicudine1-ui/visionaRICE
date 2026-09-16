@@ -97,7 +97,7 @@
 
                     <div class="user-session-card">
                         <span>USER</span>
-                        <strong id="headerUserName">User</strong>
+                        <strong id="headerUserName" class="header-user-name-loading"></strong>
                     </div>
 
                     <button
@@ -187,6 +187,10 @@
 
             nameElement.textContent =
                 displayName;
+
+            nameElement.classList.remove(
+                'header-user-name-loading'
+            );
 
             return true;
         };
@@ -296,6 +300,10 @@
 
         nameElement.textContent =
             'User';
+
+        nameElement.classList.remove(
+            'header-user-name-loading'
+        );
     }
 
 

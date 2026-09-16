@@ -2151,3 +2151,12 @@
         display: none !important;
     }
 }
+
+
+.header-user-name-loading {
+    visibility: hidden;
+}
+
+#headerUserName {
+    transition: opacity .15s ease;
+}
