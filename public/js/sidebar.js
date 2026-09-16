@@ -93,6 +93,23 @@
                     <span aria-hidden="true">🔔</span>
                 </a>
 
+                <div class="header-user-account">
+                    <div class="header-user-details">
+                        <span class="header-user-role">USER</span>
+                        <span class="header-user-name" id="headerUserName">User</span>
+                    </div>
+
+                    <a
+                        href="/login.html"
+                        class="header-logout"
+                        id="headerLogout"
+                        aria-label="Logout"
+                        title="Logout"
+                    >
+                        <span aria-hidden="true">↪</span>
+                    </a>
+                </div>
+
             </div>
         </header>
     `;
@@ -100,6 +117,84 @@
     // Render immediately. No fetch, no await, no network delay.
     container.innerHTML =
         SIDEBAR_HTML;
+
+
+    // =====================================================
+    // HEADER USER NAME
+    // =====================================================
+
+    function setHeaderUserName() {
+        const nameElement =
+            container.querySelector(
+                '#headerUserName'
+            );
+
+        if (!nameElement) {
+            return;
+        }
+
+        let displayName = '';
+
+        const directKeys = [
+            'full_name',
+            'fullName',
+            'name',
+            'username',
+            'user_name'
+        ];
+
+        for (const key of directKeys) {
+            const value =
+                localStorage.getItem(key);
+
+            if (
+                value &&
+                value.trim()
+            ) {
+                displayName = value.trim();
+                break;
+            }
+        }
+
+        if (!displayName) {
+            const objectKeys = [
+                'user',
+                'currentUser',
+                'profile',
+                'auth_user'
+            ];
+
+            for (const key of objectKeys) {
+                const raw =
+                    localStorage.getItem(key);
+
+                if (!raw) {
+                    continue;
+                }
+
+                try {
+                    const parsed =
+                        JSON.parse(raw);
+
+                    displayName =
+                        parsed.full_name ||
+                        parsed.fullName ||
+                        parsed.name ||
+                        parsed.username ||
+                        '';
+
+                    if (displayName) {
+                        break;
+                    }
+                } catch (error) {
+                    // Ignore non-JSON values.
+                }
+            }
+        }
+
+        nameElement.textContent =
+            displayName || 'User';
+    }
 
 
     // =====================================================
@@ -571,6 +666,8 @@
     // =====================================================
     // INITIALIZE
     // =====================================================
+
+    setHeaderUserName();
 
     setActiveNavigation();
 
