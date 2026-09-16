@@ -30,6 +30,9 @@ const imageUploadRoutes =
 const adminRoutes =
     require('./routes/admin/adminRoutes');
 
+const adminPredictionDetailRoutes =
+    require('./routes/admin/adminPredictionDetailRoutes');
+
 const {
     requireAdmin
 } = require('./middleware/authMiddleware');
@@ -292,6 +295,16 @@ app.use(
 
 
 // ===============================
+// Admin Prediction Detail Routes
+// ===============================
+
+app.use(
+    '/api/admin/prediction-detail',
+    adminPredictionDetailRoutes
+);
+
+
+// ===============================
 // Admin Dashboard Routes
 // ===============================
 
@@ -483,6 +496,10 @@ if (
 
             console.log(
                 ` Admin Dashboard: GET  http://localhost:${PORT}/api/admin/dashboard`
+            );
+
+            console.log(
+                ` Admin Detail:    GET  http://localhost:${PORT}/api/admin/prediction-detail/:id`
             );
 
             console.log(
