@@ -2160,3 +2160,16 @@
 #headerUserName {
     transition: opacity .15s ease;
 }
+
+/* =====================================================
+   ADMIN NAME — PREVENT "ADMIN" FLASH
+===================================================== */
+
+.admin-name-loading {
+    visibility: hidden;
+}
+
+#adminSessionName {
+    transition: opacity .15s ease;
+}
+

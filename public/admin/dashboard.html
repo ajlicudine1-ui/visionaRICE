@@ -17,17 +17,35 @@
 
 <header class="topbar">
     <div class="topbar-inner">
+
         <a class="brand" href="/admin/dashboard.html">
             <span class="brand-icon">🌾</span>
-            <span class="brand-name">VISION<span>A</span>RICE</span>
+            <span class="brand-name">
+                VISION<span>A</span>RICE
+            </span>
             <small>Admin</small>
         </a>
 
         <nav class="desktop-nav">
-            <a class="active" href="/admin/dashboard.html">Dashboard</a>
-            <a href="/admin/predictions.html">Predictions</a>
-            <a href="/admin/users.html">Users</a>
-            <a href="/admin/profile.html">Profile</a>
+            <a
+                class="active"
+                href="/admin/dashboard.html"
+            >
+                Dashboard
+            </a>
+
+            <a href="/admin/predictions.html">
+                Predictions
+            </a>
+
+            <a href="/admin/users.html">
+                Users
+            </a>
+
+            <a href="/admin/profile.html">
+                Profile
+            </a>
+
             <a
                 href="/admin/notifications.html"
                 class="desktop-notification-bell"
@@ -45,22 +63,41 @@
         </nav>
 
         <div class="account-area">
+
             <div class="account-copy">
-                <small>ADMINISTRATOR</small>
-                <strong id="adminSessionName">Admin</strong>
+
+                <small>
+                    ADMINISTRATOR
+                </small>
+
+                <strong
+                    id="adminSessionName"
+                    class="admin-name-loading"
+                ></strong>
+
             </div>
 
-            <button id="adminLogoutButton" class="logout-button" type="button" title="Logout">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
+            <button
+                id="adminLogoutButton"
+                class="logout-button"
+                type="button"
+                title="Logout"
+                aria-label="Logout"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
                     <path d="M10 17l5-5-5-5"></path>
                     <path d="M15 12H3"></path>
                     <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
                 </svg>
             </button>
+
         </div>
+
     </div>
 </header>
-
 
 <main class="admin-dashboard-page">
 

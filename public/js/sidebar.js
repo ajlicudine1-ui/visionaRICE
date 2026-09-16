@@ -255,7 +255,7 @@
                 displayName;
 
             nameElement.classList.remove(
-                'header-user-name-loading'
+                'admin-name-loading'
             );
 
             try {
