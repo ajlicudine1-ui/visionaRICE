@@ -158,7 +158,11 @@
             const isHealthy = item.disease_key === 'healthy_rice_plant';
 
             return `
-                <article class="prediction-item">
+                <a
+                    class="prediction-item"
+                    href="/admin/prediction-detail.html?id=${encodeURIComponent(item.id)}"
+                    aria-label="View ${escapeHtml(item.disease)} prediction result"
+                >
                     <div class="prediction-thumb">
                         ${item.image_url
                             ? `<img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.disease)}" loading="lazy">`
@@ -181,9 +185,8 @@
 
                     <div class="prediction-actions">
                         <span class="confidence-pill">${formatConfidence(item.confidence)}</span>
-                        <a class="view-result-link" href="/admin/prediction-detail.html?id=${encodeURIComponent(item.id)}">View Result →</a>
                     </div>
-                </article>
+                </a>
             `;
         }).join('');
     }
