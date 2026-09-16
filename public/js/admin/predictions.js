@@ -181,7 +181,7 @@
 
                     <div class="prediction-actions">
                         <span class="confidence-pill">${formatConfidence(item.confidence)}</span>
-                        <a class="view-result-link" href="/prediction-detail.html?id=${encodeURIComponent(item.id)}">View Result →</a>
+                        <a class="view-result-link" href="/admin/prediction-detail.html?id=${encodeURIComponent(item.id)}">View Result →</a>
                     </div>
                 </article>
             `;
@@ -207,7 +207,7 @@
                     <td><span class="confidence-pill">${formatConfidence(item.confidence)}</span></td>
                     <td title="${escapeHtml(location)}">${escapeHtml(shorten(location, 30))}</td>
                     <td>${formatDate(item.created_at)}</td>
-                    <td><a class="view-result-link" href="/prediction-detail.html?id=${encodeURIComponent(item.id)}">View</a></td>
+                    <td><a class="view-result-link" href="/admin/prediction-detail.html?id=${encodeURIComponent(item.id)}">View</a></td>
                 </tr>
             `;
         }).join('');

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Prediction Result | VISIONARICE</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" href="/css/admin/predictions.css?v=20260911-1">
+<link rel="stylesheet" href="/css/admin/prediction-detail.css?v=20260916-1">
+</head>
+
+<body data-admin-page="predictions">
+
+    <div id="adminSidebarContainer"></div>
+
+    <main class="detail-page">
+
+        <div class="detail-toolbar no-print">
+            <a
+                href="/admin/predictions.html"
+                class="back-link"
+            >
+                ← Back to Predictions
+            </a>
+
+            <button
+                id="printResultButton"
+                type="button"
+                class="print-button"
+            >
+                🖨 Print Result
+            </button>
+        </div>
+
+
+        <section
+            id="detailLoading"
+            class="detail-state"
+        >
+            <div class="detail-spinner"></div>
+
+            <strong>
+                Loading prediction result
+            </strong>
+        </section>
+
+
+        <section
+            id="detailError"
+            class="detail-state hidden"
+        >
+            <div class="state-icon">
+                !
+            </div>
+
+            <strong>
+                Unable to load prediction
+            </strong>
+
+            <p id="detailErrorText">
+                Please try again.
+            </p>
+
+            <a
+                href="/admin/predictions.html"
+                class="back-button no-print"
+            >
+                Return to Predictions
+            </a>
+        </section>
+
+
+        <section
+            id="predictionResult"
+            class="prediction-result hidden"
+        >
+
+            <img
+                class="da-fullpage-background print-only"
+                src="/images/print-template/DA_RFO1_template_bg.png"
+                alt=""
+                aria-hidden="true"
+            >
+
+            <section class="da-template-header print-only">
+                <div class="da-template-accent da-template-accent-top"></div>
+
+                <div class="da-header-grid">
+                    <div class="da-header-left">
+                        <img
+                            src="/images/print-template/da_logos.png"
+                            alt="Bagong Pilipinas and Department of Agriculture logos"
+                        >
+                    </div>
+
+                    <div class="da-header-center">
+                        <div class="republic-line">
+                            Republic of the Philippines
+                        </div>
+
+                        <div class="department-line">
+                            DEPARTMENT OF AGRICULTURE
+                        </div>
+
+                        <div class="regional-line">
+                            Regional Field Office No. 1
+                        </div>
+
+                        <div class="address-line">
+                            Aguila Road, Sevilla, City of San Fernando, La Union
+                        </div>
+
+                        <div class="telephone-line">
+                            Telephone No. (072) 242 1045/1046
+                        </div>
+                    </div>
+
+                    <div class="da-header-right">
+                        <img
+                            src="/images/print-template/certification.jpg"
+                            alt="ISO certification"
+                        >
+                    </div>
+                </div>
+            </section>
+
+            <section class="da-template-footer print-only">
+                <img
+                    class="da-footer-social"
+                    src="/images/print-template/social_footer.png"
+                    alt=""
+                >
+
+                <img
+                    class="da-footer-accent"
+                    src="/images/print-template/bottom_accent.png"
+                    alt=""
+                >
+            </section>
+
+            <section class="official-report-title print-only">
+                <h1>
+                    VISIONARICE PREDICTION ANALYSIS REPORT
+                </h1>
+
+                <p>
+                    Rice Leaf Disease Detection System
+                </p>
+            </section>
+
+            <header class="print-header">
+                <div>
+                    <span class="eyebrow">
+                        VISIONARICE ANALYSIS
+                    </span>
+
+                    <h1>
+                        Prediction Result
+                    </h1>
+
+                    <p>
+                        Saved rice leaf disease analysis record.
+                    </p>
+                </div>
+
+                <div class="print-meta">
+                    <span>
+                        Record ID
+                    </span>
+
+                    <strong id="recordId">
+                        —
+                    </strong>
+                </div>
+            </header>
+
+
+            <div class="overview-grid document-overview">
+
+                <article
+                    id="diseaseCard"
+                    class="disease-card"
+                >
+                    <div class="disease-icon">
+                        🩺
+                    </div>
+
+                    <div class="disease-content">
+                        <span class="card-label">
+                            Detected Disease
+                        </span>
+
+                        <h2 id="diseaseName">
+                            —
+                        </h2>
+
+                        <div class="confidence-row">
+                            <span>
+                                Confidence
+                            </span>
+
+                            <strong id="confidenceValue">
+                                —
+                            </strong>
+                        </div>
+
+                        <div class="confidence-track">
+                            <div
+                                id="confidenceFill"
+                                class="confidence-fill"
+                            ></div>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="language-card no-print">
+                    <label for="languageSelect">
+                        Recommendation Language
+                    </label>
+
+                    <select id="languageSelect">
+                        <option value="en">
+                            English
+                        </option>
+
+                        <option value="ilo">
+                            Ilocano
+                        </option>
+
+                        <option value="tl">
+                            Tagalog
+                        </option>
+                    </select>
+
+                    <small id="languageHint">
+                        Recommendations are shown in English.
+                    </small>
+                </article>
+
+            </div>
+
+
+
+            <section
+                id="savedImageSection"
+                class="result-section saved-image-section hidden document-section"
+            >
+                <div class="section-heading">
+                    <span>
+                        📷
+                    </span>
+
+                    <div>
+                        <h2>
+                            Analyzed Leaf Image
+                        </h2>
+
+                        <p>
+                            Image stored with this prediction record.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="saved-image-wrap">
+                    <img
+                        id="savedPredictionImage"
+                        alt="Stored rice leaf prediction image"
+                    >
+                </div>
+            </section>
+
+
+            <section class="result-section document-section">
+                <div class="section-heading">
+                    <span>
+                        📋
+                    </span>
+
+                    <div>
+                        <h2>
+                            Analysis Information
+                        </h2>
+
+                        <p>
+                            Details saved with this prediction.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+
+                    <div class="info-item">
+                        <span>
+                            Date & Time
+                        </span>
+
+                        <strong id="resultDate">
+                            —
+                        </strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>
+                            Location
+                        </span>
+
+                        <strong id="resultLocation">
+                            —
+                        </strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>
+                            Municipality / City
+                        </span>
+
+                        <strong id="resultMunicipality">
+                            —
+                        </strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>
+                            Province
+                        </span>
+
+                        <strong id="resultProvince">
+                            —
+                        </strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>
+                            Latitude
+                        </span>
+
+                        <strong id="resultLatitude">
+                            —
+                        </strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>
+                            Longitude
+                        </span>
+
+                        <strong id="resultLongitude">
+                            —
+                        </strong>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <section class="result-section document-section">
+                <div class="section-heading">
+                    <span>
+                        📊
+                    </span>
+
+                    <div>
+                        <h2>
+                            Top 3 Predictions
+                        </h2>
+
+                        <p>
+                            The model's three highest confidence scores.
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    id="topPredictionsGrid"
+                    class="top-predictions-grid"
+                ></div>
+            </section>
+
+
+            <section class="result-section document-section">
+                <div class="section-heading">
+                    <span>
+                        🌾
+                    </span>
+
+                    <div>
+                        <h2>
+                            Recommended Management
+                        </h2>
+
+                        <p>
+                            Suggested actions based on the predicted class.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="recommendation-grid">
+
+                    <article class="recommendation-card">
+                        <div class="recommendation-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <span>
+                                General Recommendation
+                            </span>
+
+                            <p id="generalRecommendation">
+                                —
+                            </p>
+                        </div>
+                    </article>
+
+
+                    <article class="recommendation-card">
+                        <div class="recommendation-icon">
+                            🌱
+                        </div>
+
+                        <div>
+                            <span>
+                                Cultural Control
+                            </span>
+
+                            <p id="culturalControl">
+                                —
+                            </p>
+                        </div>
+                    </article>
+
+
+                    <article class="recommendation-card">
+                        <div class="recommendation-icon">
+                            🧫
+                        </div>
+
+                        <div>
+                            <span>
+                                Biological Control
+                            </span>
+
+                            <p id="biologicalControl">
+                                —
+                            </p>
+                        </div>
+                    </article>
+
+
+                    <article class="recommendation-card">
+                        <div class="recommendation-icon">
+                            🧪
+                        </div>
+
+                        <div>
+                            <span>
+                                Chemical Control
+                            </span>
+
+                            <p id="chemicalControl">
+                                —
+                            </p>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+
+            <section class="official-certification print-only">
+                <div class="official-cert-text">
+                    <strong>Document Note</strong>
+                    <p>
+                        This report was generated automatically by VISIONARICE
+                        based on the recorded prediction result. It is intended
+                        to support field assessment and should be interpreted
+                        together with appropriate agricultural guidance.
+                    </p>
+                </div>
+
+                <div class="official-signature-grid">
+                    <div class="official-signature-box">
+                        <div class="signature-line"></div>
+                        <strong>Reviewed by</strong>
+                        <span>Name / Signature</span>
+                    </div>
+
+                    <div class="official-signature-box">
+                        <div class="signature-line"></div>
+                        <strong>Date Reviewed</strong>
+                        <span>Date</span>
+                    </div>
+                </div>
+            </section>
+
+
+            <footer class="result-footer">
+                <span>
+                    VISIONARICE
+                </span>
+
+                <p>
+                    Rice Leaf Disease Detection System
+                </p>
+            </footer>
+
+        </section>
+
+    </main>
+    <script src="/js/admin/admin-sidebar.js?v=20260916-4"></script>
+<script src="/js/admin/prediction-detail.js?v=20260916-1"></script>
+
+</body>
+</html>

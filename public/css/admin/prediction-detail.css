@@ -1,0 +1,3279 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --green-950: #123a27;
+    --green-900: #17462f;
+    --green-800: #1b5a39;
+    --green-700: #236c46;
+    --green-600: #2d7c50;
+    --green-soft: #eaf4ec;
+
+    --cream: #f7f5ec;
+    --surface: #ffffff;
+    --text: #17231c;
+    --muted: #6d7970;
+    --border: #e0e8e1;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family:
+        "Poppins",
+        sans-serif;
+
+    color:
+        var(--text);
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8f6ee 0%,
+            #f3f7f2 100%
+        );
+}
+
+button,
+select,
+a {
+    font: inherit;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.detail-page {
+    width:
+        min(
+            calc(100% - 42px),
+            1120px
+        );
+
+    margin:
+        0 auto;
+
+    padding:
+        24px 0 60px;
+}
+
+.detail-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 14px;
+}
+
+.back-link {
+    color:
+        var(--green-800);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.print-button,
+.back-button {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        9px 14px;
+
+    border-radius: 11px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.print-button {
+    border: 0;
+
+    color: #ffffff;
+
+    background:
+        var(--green-700);
+}
+
+.back-button {
+    border:
+        1px solid
+        #cfe0d3;
+
+    color:
+        var(--green-800);
+
+    background:
+        #f5faf6;
+}
+
+.prediction-result {
+    display: grid;
+    gap: 15px;
+}
+
+.print-header,
+.result-section {
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 20px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.98
+        );
+
+    box-shadow:
+        0 10px 28px
+        rgba(28, 69, 43, 0.06);
+}
+
+.print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+
+    padding: 20px;
+}
+
+.eyebrow {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color:
+        var(--green-700);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: .11em;
+}
+
+.print-header h1 {
+    margin:
+        0 0 5px;
+
+    color:
+        var(--green-950);
+
+    font-size: 28px;
+}
+
+.print-header p {
+    margin: 0;
+
+    color:
+        var(--muted);
+
+    font-size: 10px;
+}
+
+.print-meta {
+    min-width: 170px;
+
+    padding: 11px 12px;
+
+    border-radius: 12px;
+
+    background:
+        #f5f9f5;
+}
+
+.print-meta span,
+.print-meta strong {
+    display: block;
+}
+
+.print-meta span {
+    margin-bottom: 3px;
+
+    color:
+        var(--muted);
+
+    font-size: 8px;
+}
+
+.print-meta strong {
+    color:
+        var(--green-950);
+
+    font-size: 9px;
+
+    overflow-wrap: anywhere;
+}
+
+.overview-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(230px, .5fr);
+
+    gap: 15px;
+}
+
+.disease-card,
+.language-card {
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 20px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 10px 28px
+        rgba(28, 69, 43, 0.06);
+}
+
+.disease-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 20px;
+}
+
+.disease-card.healthy {
+    background:
+        linear-gradient(
+            135deg,
+            #eff8ef,
+            #ffffff
+        );
+}
+
+.disease-icon {
+    width: 58px;
+    height: 58px;
+
+    flex: 0 0 auto;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 17px;
+
+    background:
+        var(--green-soft);
+
+    font-size: 25px;
+}
+
+.disease-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.card-label {
+    color:
+        var(--muted);
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.disease-content h2 {
+    margin:
+        4px 0 11px;
+
+    color:
+        var(--green-950);
+
+    font-size: 22px;
+}
+
+.confidence-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 6px;
+
+    color:
+        var(--muted);
+
+    font-size: 9px;
+}
+
+.confidence-row strong {
+    color:
+        var(--green-800);
+
+    font-size: 11px;
+}
+
+.confidence-track,
+.mini-confidence-track {
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        #e8efe9;
+}
+
+.confidence-track {
+    height: 8px;
+}
+
+.confidence-fill,
+.mini-confidence-fill {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        var(--green-700);
+}
+
+.language-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 18px;
+}
+
+.language-card label {
+    color:
+        var(--green-950);
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.language-card select {
+    width: 100%;
+    height: 42px;
+
+    padding:
+        0 11px;
+
+    border:
+        1px solid
+        #dce5dd;
+
+    border-radius: 11px;
+
+    background:
+        #fbfdfb;
+
+    color:
+        var(--text);
+
+    font-size: 10px;
+}
+
+.language-card small {
+    color:
+        var(--muted);
+
+    font-size: 8px;
+
+    line-height: 1.5;
+}
+
+.result-section {
+    padding: 18px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 14px;
+}
+
+.section-heading > span {
+    width: 35px;
+    height: 35px;
+
+    flex: 0 0 auto;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background:
+        var(--green-soft);
+
+    font-size: 16px;
+}
+
+.section-heading h2 {
+    margin:
+        0 0 2px;
+
+    color:
+        var(--green-950);
+
+    font-size: 15px;
+}
+
+.section-heading p {
+    margin: 0;
+
+    color:
+        var(--muted);
+
+    font-size: 9px;
+}
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 9px;
+}
+
+.info-item {
+    padding: 11px 12px;
+
+    border:
+        1px solid
+        #e7ede8;
+
+    border-radius: 12px;
+
+    background:
+        #f8fbf8;
+}
+
+.info-item span,
+.info-item strong {
+    display: block;
+}
+
+.info-item span {
+    margin-bottom: 3px;
+
+    color:
+        var(--muted);
+
+    font-size: 8px;
+}
+
+.info-item strong {
+    color:
+        var(--green-950);
+
+    font-size: 9px;
+
+    overflow-wrap: anywhere;
+}
+
+.top-predictions-grid {
+    display: grid;
+    gap: 9px;
+}
+
+.top-prediction-item {
+    display: grid;
+
+    grid-template-columns:
+        34px
+        minmax(0, 1fr)
+        minmax(120px, .7fr);
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px;
+
+    border:
+        1px solid
+        #e4ebe5;
+
+    border-radius: 12px;
+
+    background:
+        #fafcfa;
+}
+
+.top-prediction-item.primary {
+    border-color:
+        #bad2c0;
+
+    background:
+        #eff7f0;
+}
+
+.prediction-rank {
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    color:
+        var(--green-800);
+
+    background:
+        #e1efe4;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.prediction-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    min-width: 0;
+}
+
+.prediction-info strong {
+    overflow: hidden;
+
+    color:
+        var(--green-950);
+
+    font-size: 10px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.prediction-info span {
+    color:
+        var(--green-700);
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.mini-confidence-track {
+    height: 6px;
+}
+
+.empty-scores {
+    padding: 12px;
+
+    border-radius: 11px;
+
+    color:
+        var(--muted);
+
+    background:
+        #f7f9f7;
+
+    font-size: 9px;
+}
+
+.recommendation-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 10px;
+}
+
+.recommendation-card {
+    display: flex;
+    gap: 10px;
+
+    padding: 12px;
+
+    border:
+        1px solid
+        #e3ebe4;
+
+    border-radius: 13px;
+
+    background:
+        #fbfdfb;
+}
+
+.recommendation-icon {
+    width: 32px;
+    height: 32px;
+
+    flex: 0 0 auto;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        var(--green-soft);
+
+    font-size: 14px;
+}
+
+.recommendation-card span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color:
+        var(--green-800);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.recommendation-card p {
+    margin: 0;
+
+    color:
+        #536057;
+
+    font-size: 9px;
+
+    line-height: 1.65;
+}
+
+.result-footer {
+    padding: 12px 4px 0;
+
+    text-align: center;
+}
+
+.result-footer span {
+    color:
+        var(--green-800);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing:
+        .08em;
+}
+
+.result-footer p {
+    margin:
+        2px 0 0;
+
+    color:
+        var(--muted);
+
+    font-size: 8px;
+}
+
+.detail-state {
+    min-height: 340px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    text-align: center;
+
+    color:
+        var(--green-950);
+
+    font-size: 11px;
+}
+
+.detail-state p {
+    margin: 0 0 6px;
+
+    color:
+        var(--muted);
+
+    font-size: 9px;
+}
+
+.detail-spinner {
+    width: 31px;
+    height: 31px;
+
+    border:
+        3px solid
+        #dfe9e0;
+
+    border-top-color:
+        var(--green-700);
+
+    border-radius: 50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+.state-icon {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    color:
+        #9b342c;
+
+    background:
+        #f8e9e7;
+
+    font-size: 18px;
+    font-weight: 800;
+}
+
+@keyframes spin {
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+@media screen and (max-width: 760px) {
+
+    body {
+        padding-bottom:
+            calc(
+                82px +
+                env(
+                    safe-area-inset-bottom
+                )
+            );
+    }
+
+    .detail-page {
+        width:
+            calc(
+                100% - 22px
+            );
+
+        padding:
+            18px 0 30px;
+    }
+
+    .overview-grid,
+    .info-grid,
+    .recommendation-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .print-header {
+        flex-direction: column;
+    }
+
+    .print-meta {
+        width: 100%;
+    }
+
+    .disease-card {
+        padding: 15px;
+    }
+
+    .disease-icon {
+        width: 50px;
+        height: 50px;
+
+        border-radius: 14px;
+
+        font-size: 21px;
+    }
+
+    .disease-content h2 {
+        font-size: 18px;
+    }
+
+    .top-prediction-item {
+        grid-template-columns:
+            32px
+            minmax(0, 1fr);
+
+        gap: 8px;
+    }
+
+    .top-prediction-item
+    .mini-confidence-track {
+        grid-column:
+            1 / -1;
+    }
+
+    .result-section,
+    .print-header {
+        padding: 14px;
+        border-radius: 16px;
+    }
+}
+
+
+/* =====================================================
+   PRINT
+===================================================== */
+
+@media print {
+
+    @page {
+        size: A4;
+        margin: 12mm;
+    }
+
+    html,
+    body {
+        background: #ffffff !important;
+    }
+
+    body {
+        padding: 0 !important;
+
+        color: #111111 !important;
+
+        -webkit-print-color-adjust:
+            exact;
+
+        print-color-adjust:
+            exact;
+    }
+
+    #adminSidebarContainer,
+    .no-print {
+        display: none !important;
+    }
+
+    .detail-page {
+        width: 100% !important;
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+    }
+
+    .prediction-result {
+        gap: 8px !important;
+    }
+
+    .print-header,
+    .result-section,
+    .disease-card {
+        break-inside: avoid;
+
+        box-shadow: none !important;
+
+        border-color:
+            #cfd8d0 !important;
+    }
+
+    .overview-grid {
+        grid-template-columns:
+            1fr !important;
+    }
+
+    .language-card {
+        display: none !important;
+    }
+
+    .info-grid {
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            ) !important;
+    }
+
+    .recommendation-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            ) !important;
+    }
+
+    .result-footer {
+        display: block !important;
+    }
+
+    .print-header h1 {
+        font-size: 20px !important;
+    }
+
+    .disease-content h2 {
+        font-size: 17px !important;
+    }
+
+    .section-heading h2 {
+        font-size: 12px !important;
+    }
+
+    .recommendation-card p,
+    .info-item strong,
+    .prediction-info strong {
+        font-size: 8px !important;
+    }
+
+    a {
+        color: inherit !important;
+        text-decoration: none !important;
+    }
+}
+
+
+/* =====================================================
+   STORED PREDICTION IMAGE
+===================================================== */
+
+.saved-image-section {
+    overflow: hidden;
+}
+
+.saved-image-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 240px;
+
+    padding: 14px;
+
+    border:
+        1px solid
+        #e4ebe5;
+
+    border-radius: 14px;
+
+    background:
+        #f8fbf8;
+}
+
+.saved-image-wrap img {
+    display: block;
+
+    width: auto;
+    max-width: 100%;
+
+    max-height: 520px;
+
+    object-fit: contain;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 5px 18px
+        rgba(28, 69, 43, 0.08);
+}
+
+@media screen and (max-width: 760px) {
+
+    .saved-image-wrap {
+        min-height: 190px;
+
+        padding: 10px;
+    }
+
+    .saved-image-wrap img {
+        max-height: 420px;
+    }
+}
+
+@media print {
+
+    .saved-image-section {
+        break-inside: avoid;
+    }
+
+    .saved-image-wrap {
+        min-height: 0 !important;
+
+        padding: 8px !important;
+
+        background: #ffffff !important;
+    }
+
+    .saved-image-wrap img {
+        max-height: 280px !important;
+
+        box-shadow: none !important;
+    }
+}
+
+
+/* =====================================================
+   OFFICIAL DOCUMENT PRINT LAYOUT
+===================================================== */
+
+.print-only {
+    display: none;
+}
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 14mm 14mm 15mm;
+    }
+
+    body {
+        font-family:
+            "Poppins",
+            Arial,
+            sans-serif !important;
+
+        font-size: 9pt !important;
+
+        background: #ffffff !important;
+    }
+
+    .print-only {
+        display: block !important;
+    }
+
+    .official-document-header {
+        margin-bottom: 10mm;
+
+        padding-bottom: 6mm;
+
+        border-bottom:
+            2px solid
+            #1b5a39;
+    }
+
+    .official-brand-block {
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 8px;
+    }
+
+    .official-mark {
+        width: 42px;
+        height: 42px;
+
+        display: grid;
+        place-items: center;
+
+        border:
+            1.5px solid
+            #1b5a39;
+
+        border-radius: 50%;
+
+        color:
+            #1b5a39;
+
+        font-size: 10pt;
+        font-weight: 800;
+    }
+
+    .official-system-name {
+        color:
+            #123a27;
+
+        font-size: 13pt;
+        font-weight: 800;
+
+        letter-spacing:
+            .08em;
+    }
+
+    .official-system-subtitle {
+        margin-top: 1px;
+
+        color:
+            #4d5c52;
+
+        font-size: 7.5pt;
+        font-weight: 500;
+    }
+
+    .official-document-title {
+        margin-top: 7mm;
+
+        color:
+            #111111;
+
+        font-size: 15pt;
+        font-weight: 800;
+
+        text-align: center;
+
+        letter-spacing:
+            .04em;
+    }
+
+    .official-document-note {
+        margin-top: 1mm;
+
+        color:
+            #666666;
+
+        font-size: 7.5pt;
+
+        text-align: center;
+    }
+
+    .print-header {
+        display: grid !important;
+
+        grid-template-columns:
+            1fr auto;
+
+        gap: 12px;
+
+        padding: 0 0 5mm !important;
+
+        border: 0 !important;
+        border-bottom:
+            1px solid
+            #bfc8c1 !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+
+        box-shadow: none !important;
+    }
+
+    .print-header .eyebrow {
+        display: none !important;
+    }
+
+    .print-header h1 {
+        margin: 0 0 2px !important;
+
+        color: #111111 !important;
+
+        font-size: 12pt !important;
+    }
+
+    .print-header p {
+        color: #555555 !important;
+
+        font-size: 7.5pt !important;
+    }
+
+    .print-meta {
+        min-width: 48mm !important;
+
+        padding: 3mm !important;
+
+        border:
+            1px solid
+            #cfd6d0 !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+    }
+
+    .print-meta span {
+        color: #666666 !important;
+
+        font-size: 6.5pt !important;
+
+        text-transform: uppercase;
+    }
+
+    .print-meta strong {
+        color: #111111 !important;
+
+        font-size: 7.5pt !important;
+    }
+
+    .overview-grid {
+        margin-top: 5mm;
+    }
+
+    .disease-card {
+        padding: 4mm !important;
+
+        border:
+            1px solid
+            #aeb8b0 !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+    }
+
+    .disease-icon {
+        width: 12mm !important;
+        height: 12mm !important;
+
+        border:
+            1px solid
+            #c8d0ca !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+
+        font-size: 15pt !important;
+    }
+
+    .card-label {
+        color: #555555 !important;
+
+        font-size: 6.5pt !important;
+
+        text-transform: uppercase;
+    }
+
+    .disease-content h2 {
+        margin:
+            1mm 0 2mm !important;
+
+        color: #111111 !important;
+
+        font-size: 12pt !important;
+    }
+
+    .confidence-row {
+        color: #444444 !important;
+
+        font-size: 7pt !important;
+    }
+
+    .confidence-row strong {
+        color: #111111 !important;
+
+        font-size: 8pt !important;
+    }
+
+    .confidence-track,
+    .mini-confidence-track {
+        background: #eeeeee !important;
+    }
+
+    .confidence-fill,
+    .mini-confidence-fill {
+        background: #1b5a39 !important;
+    }
+
+    .result-section {
+        margin-top: 4mm;
+
+        padding: 4mm !important;
+
+        border:
+            1px solid
+            #c2cbc4 !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+
+        box-shadow: none !important;
+
+        break-inside: avoid;
+    }
+
+    .section-heading {
+        margin-bottom: 3mm !important;
+
+        padding-bottom: 2mm;
+
+        border-bottom:
+            1px solid
+            #d3d9d4;
+    }
+
+    .section-heading > span {
+        display: none !important;
+    }
+
+    .section-heading h2 {
+        margin: 0 !important;
+
+        color: #111111 !important;
+
+        font-size: 9pt !important;
+
+        text-transform: uppercase;
+
+        letter-spacing:
+            .03em;
+    }
+
+    .section-heading p {
+        margin-top: 1mm !important;
+
+        color: #666666 !important;
+
+        font-size: 6.5pt !important;
+    }
+
+    .info-grid {
+        gap: 0 !important;
+
+        border-top:
+            1px solid
+            #cfd5d0;
+
+        border-left:
+            1px solid
+            #cfd5d0;
+    }
+
+    .info-item {
+        padding: 3mm !important;
+
+        border: 0 !important;
+
+        border-right:
+            1px solid
+            #cfd5d0 !important;
+
+        border-bottom:
+            1px solid
+            #cfd5d0 !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+    }
+
+    .info-item span {
+        color: #666666 !important;
+
+        font-size: 6.5pt !important;
+
+        text-transform: uppercase;
+    }
+
+    .info-item strong {
+        margin-top: 1mm;
+
+        color: #111111 !important;
+
+        font-size: 7.5pt !important;
+    }
+
+    .top-prediction-item {
+        padding: 3mm !important;
+
+        border:
+            1px solid
+            #cfd5d0 !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+    }
+
+    .top-prediction-item.primary {
+        border:
+            1.5px solid
+            #1b5a39 !important;
+
+        background: #ffffff !important;
+    }
+
+    .prediction-rank {
+        border:
+            1px solid
+            #b7c1b9;
+
+        border-radius: 0 !important;
+
+        color: #111111 !important;
+
+        background: #ffffff !important;
+    }
+
+    .recommendation-grid {
+        gap: 3mm !important;
+    }
+
+    .recommendation-card {
+        padding: 3mm !important;
+
+        border:
+            1px solid
+            #cfd5d0 !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+    }
+
+    .recommendation-icon {
+        display: none !important;
+    }
+
+    .recommendation-card span {
+        color: #111111 !important;
+
+        font-size: 6.5pt !important;
+
+        letter-spacing:
+            .03em;
+    }
+
+    .recommendation-card p {
+        color: #333333 !important;
+
+        font-size: 7pt !important;
+
+        line-height: 1.55 !important;
+    }
+
+    .saved-image-wrap {
+        min-height: 0 !important;
+
+        padding: 3mm !important;
+
+        border:
+            1px solid
+            #cfd5d0 !important;
+
+        border-radius: 0 !important;
+
+        background: #ffffff !important;
+    }
+
+    .saved-image-wrap img {
+        max-height: 65mm !important;
+
+        border-radius: 0 !important;
+
+        box-shadow: none !important;
+    }
+
+    .official-certification {
+        margin-top: 7mm;
+
+        padding-top: 5mm;
+
+        border-top:
+            1px solid
+            #aeb8b0;
+    }
+
+    .official-cert-text strong {
+        color: #111111;
+
+        font-size: 7.5pt;
+
+        text-transform: uppercase;
+    }
+
+    .official-cert-text p {
+        margin:
+            1mm 0 0;
+
+        color: #555555;
+
+        font-size: 6.5pt;
+
+        line-height: 1.5;
+    }
+
+    .official-signature-grid {
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 20mm;
+
+        margin-top: 12mm;
+    }
+
+    .official-signature-box {
+        text-align: center;
+    }
+
+    .signature-line {
+        height: 10mm;
+
+        border-bottom:
+            1px solid
+            #333333;
+    }
+
+    .official-signature-box strong {
+        display: block;
+
+        margin-top: 2mm;
+
+        color: #111111;
+
+        font-size: 7pt;
+    }
+
+    .official-signature-box span {
+        display: block;
+
+        margin-top: .5mm;
+
+        color: #666666;
+
+        font-size: 6pt;
+    }
+
+    .result-footer {
+        margin-top: 8mm;
+
+        padding-top: 3mm !important;
+
+        border-top:
+            1px solid
+            #d5dbd6;
+
+        text-align: center;
+    }
+
+    .result-footer span {
+        color: #333333 !important;
+
+        font-size: 6.5pt !important;
+
+        letter-spacing:
+            .08em;
+    }
+
+    .result-footer p {
+        color: #666666 !important;
+
+        font-size: 6pt !important;
+    }
+}
+
+
+/* =====================================================
+   DA-RFO I OFFICIAL TEMPLATE PRINT OVERRIDES
+   Based on the supplied TEMPLATE.docx.
+===================================================== */
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+
+        /* Space reserved for the official DA header and footer. */
+        margin:
+            38mm
+            14mm
+            24mm
+            14mm;
+    }
+
+    html,
+    body {
+        background:
+            #ffffff !important;
+    }
+
+    body {
+        color:
+            #000000 !important;
+
+        font-family:
+            Arial,
+            "Times New Roman",
+            sans-serif !important;
+
+        font-size:
+            8.5pt !important;
+    }
+
+    /*
+     * Official DA header repeats on printed pages in Chromium.
+     */
+    .da-template-header {
+        position: fixed;
+
+        top: -34mm;
+        left: 0;
+        right: 0;
+
+        height: 30mm;
+
+        z-index: 100;
+
+        display: block !important;
+
+        background:
+            #ffffff !important;
+    }
+
+    .da-header-grid {
+        position: relative;
+
+        display: grid;
+
+        grid-template-columns:
+            46mm
+            1fr
+            39mm;
+
+        align-items: center;
+
+        gap: 4mm;
+
+        height: 27mm;
+
+        padding:
+            1mm 0 0;
+    }
+
+    .da-header-left {
+        display: flex;
+
+        align-items: center;
+        justify-content: flex-start;
+
+        overflow: hidden;
+    }
+
+    .da-header-left img {
+        width: 44mm;
+        height: 20mm;
+
+        object-fit: contain;
+        object-position: center;
+
+        display: block;
+    }
+
+    .da-header-center {
+        text-align: center;
+
+        color: #000000;
+
+        line-height: 1.08;
+    }
+
+    .republic-line {
+        font-family:
+            "Times New Roman",
+            serif;
+
+        font-size: 7.7pt;
+    }
+
+    .department-line {
+        margin-top: .5mm;
+
+        font-family:
+            "Times New Roman",
+            serif;
+
+        font-size: 8.5pt;
+        font-weight: 700;
+    }
+
+    .regional-line,
+    .address-line,
+    .telephone-line {
+        font-family:
+            "Times New Roman",
+            serif;
+
+        font-size: 7pt;
+    }
+
+    .da-header-right {
+        display: flex;
+
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .da-header-right img {
+        width: 36mm;
+        height: 20mm;
+
+        object-fit: contain;
+
+        display: block;
+    }
+
+    /*
+     * Colored curved accent similar to the top-left element
+     * of the supplied DA template.
+     */
+    .da-template-accent-top {
+        position: absolute;
+
+        top: -2mm;
+        left: -14mm;
+
+        width: 67mm;
+        height: 8mm;
+
+        overflow: hidden;
+
+        border-radius:
+            0 0 60% 0;
+
+        background:
+            linear-gradient(
+                170deg,
+                #1f6d3a 0 28%,
+                #f3bd22 29% 46%,
+                #f7941d 47% 68%,
+                transparent 69%
+            );
+
+        opacity: .98;
+    }
+
+    /*
+     * Official footer repeats on every printed page.
+     */
+    .da-template-footer {
+        position: fixed;
+
+        bottom: -21mm;
+        left: 0;
+        right: 0;
+
+        height: 18mm;
+
+        z-index: 100;
+
+        display: block !important;
+
+        background:
+            #ffffff !important;
+    }
+
+    .da-footer-social {
+        position: absolute;
+
+        left: -1mm;
+        bottom: 1mm;
+
+        width: 85mm;
+        height: 6mm;
+
+        object-fit: contain;
+        object-position: left center;
+
+        display: block;
+    }
+
+    .da-footer-accent {
+        position: absolute;
+
+        right: -14mm;
+        bottom: -2mm;
+
+        width: 79mm;
+        height: 12mm;
+
+        object-fit: fill;
+
+        display: block;
+    }
+
+    /*
+     * Report title inside the body area of the template.
+     */
+    .official-report-title {
+        display: block !important;
+
+        margin:
+            0 0 5mm;
+
+        text-align: center;
+    }
+
+    .official-report-title h1 {
+        margin: 0;
+
+        color: #000000;
+
+        font-family:
+            "Times New Roman",
+            serif;
+
+        font-size: 13pt;
+        font-weight: 700;
+
+        letter-spacing:
+            .015em;
+    }
+
+    .official-report-title p {
+        margin:
+            1mm 0 0;
+
+        color:
+            #333333;
+
+        font-family:
+            "Times New Roman",
+            serif;
+
+        font-size: 8pt;
+    }
+
+    /*
+     * The old web-style print header becomes a compact
+     * report metadata row below the official title.
+     */
+    .print-header {
+        margin: 0 !important;
+
+        padding:
+            0 0 3mm !important;
+
+        border: 0 !important;
+
+        border-bottom:
+            1px solid
+            #777777 !important;
+
+        background:
+            #ffffff !important;
+
+        box-shadow:
+            none !important;
+    }
+
+    .print-header h1 {
+        display: none !important;
+    }
+
+    .print-header p {
+        margin: 0 !important;
+
+        color:
+            #444444 !important;
+
+        font-family:
+            Arial,
+            sans-serif;
+
+        font-size: 7pt !important;
+    }
+
+    .print-meta {
+        min-width: 43mm !important;
+
+        padding:
+            2mm 2.5mm !important;
+
+        border:
+            1px solid
+            #777777 !important;
+
+        background:
+            #ffffff !important;
+    }
+
+    .print-meta span {
+        font-size:
+            6pt !important;
+    }
+
+    .print-meta strong {
+        font-size:
+            7pt !important;
+    }
+
+    /*
+     * Consistent analyzed image size on every report.
+     * Landscape and portrait source images are contained
+     * within the exact same box.
+     */
+    .saved-image-wrap {
+        width: 76mm !important;
+        height: 48mm !important;
+
+        min-height: 48mm !important;
+
+        margin:
+            0 auto !important;
+
+        padding:
+            2mm !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: hidden !important;
+
+        border:
+            1px solid
+            #777777 !important;
+
+        background:
+            #ffffff !important;
+    }
+
+    .saved-image-wrap img {
+        width: 72mm !important;
+        height: 44mm !important;
+
+        max-width: 72mm !important;
+        max-height: 44mm !important;
+
+        object-fit: contain !important;
+        object-position: center !important;
+
+        border-radius: 0 !important;
+
+        box-shadow: none !important;
+    }
+
+    /*
+     * Keep document content formal and compact.
+     */
+    .prediction-result {
+        gap:
+            3mm !important;
+    }
+
+    .overview-grid {
+        margin-top:
+            3mm !important;
+    }
+
+    .disease-card,
+    .result-section {
+        border:
+            1px solid
+            #777777 !important;
+
+        border-radius:
+            0 !important;
+
+        box-shadow:
+            none !important;
+
+        background:
+            #ffffff !important;
+    }
+
+    .disease-card {
+        padding:
+            3mm !important;
+    }
+
+    .result-section {
+        margin-top:
+            2mm !important;
+
+        padding:
+            3mm !important;
+    }
+
+    .section-heading {
+        margin-bottom:
+            2.5mm !important;
+
+        padding-bottom:
+            1.5mm !important;
+
+        border-bottom:
+            1px solid
+            #999999 !important;
+    }
+
+    .section-heading h2 {
+        color:
+            #000000 !important;
+
+        font-family:
+            Arial,
+            sans-serif;
+
+        font-size:
+            8.3pt !important;
+
+        font-weight:
+            700 !important;
+    }
+
+    .section-heading p {
+        font-size:
+            6.2pt !important;
+    }
+
+    .info-grid {
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            ) !important;
+    }
+
+    .info-item {
+        min-height:
+            15mm;
+    }
+
+    .info-item span {
+        font-size:
+            5.8pt !important;
+    }
+
+    .info-item strong {
+        font-size:
+            7pt !important;
+    }
+
+    .recommendation-card p {
+        text-align:
+            justify;
+
+        font-size:
+            6.6pt !important;
+    }
+
+    /*
+     * A single report section should not split unless
+     * absolutely necessary.
+     */
+    .saved-image-section,
+    .disease-card,
+    .official-certification,
+    .top-prediction-item,
+    .recommendation-card {
+        break-inside:
+            avoid !important;
+
+        page-break-inside:
+            avoid !important;
+    }
+
+    .official-certification {
+        margin-top:
+            5mm !important;
+    }
+
+    .official-signature-grid {
+        margin-top:
+            9mm !important;
+    }
+
+    .result-footer {
+        /*
+         * Social/contact footer is supplied by the DA template,
+         * so avoid duplicating the web-app footer in print.
+         */
+        display:
+            none !important;
+    }
+}
+
+
+/* =====================================================
+   TEXT-DOCUMENT PRINT STYLE
+   Removes dashboard-style boxes/cards in print.
+===================================================== */
+
+@media print {
+
+    /*
+     * Remove every dashboard/card box.
+     */
+    .print-header,
+    .disease-card,
+    .result-section,
+    .top-prediction-item,
+    .recommendation-card,
+    .print-meta,
+    .saved-image-wrap,
+    .info-grid,
+    .info-item {
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    /*
+     * Main body reads like a formal document.
+     */
+    .prediction-result {
+        display: block !important;
+    }
+
+    .print-header {
+        display: block !important;
+
+        margin:
+            0 0 5mm !important;
+
+        padding:
+            0 0 3mm !important;
+
+        border-bottom:
+            1px solid
+            #666666 !important;
+    }
+
+    .print-header p {
+        margin:
+            0 !important;
+    }
+
+    .print-meta {
+        margin-top:
+            2mm !important;
+
+        padding:
+            0 !important;
+    }
+
+    .print-meta span,
+    .print-meta strong {
+        display:
+            inline !important;
+    }
+
+    .print-meta span::after {
+        content:
+            ": ";
+    }
+
+
+    /*
+     * Prediction result line
+     */
+    .document-overview {
+        display:
+            block !important;
+
+        margin:
+            0 0 5mm !important;
+    }
+
+    .disease-card {
+        display:
+            block !important;
+
+        padding:
+            0 !important;
+    }
+
+    .disease-icon {
+        display:
+            none !important;
+    }
+
+    .card-label {
+        display:
+            inline !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            7.5pt !important;
+
+        font-weight:
+            700 !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .card-label::after {
+        content:
+            ": ";
+    }
+
+    .disease-content h2 {
+        display:
+            inline !important;
+
+        margin:
+            0 !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            9pt !important;
+
+        font-weight:
+            700 !important;
+    }
+
+    .confidence-row {
+        display:
+            block !important;
+
+        margin-top:
+            2mm !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            7.5pt !important;
+    }
+
+    .confidence-row span::after {
+        content:
+            ": ";
+    }
+
+    .confidence-row strong {
+        color:
+            #000000 !important;
+
+        font-size:
+            7.5pt !important;
+    }
+
+    .confidence-track,
+    .mini-confidence-track {
+        display:
+            none !important;
+    }
+
+
+    /*
+     * Sections become headings + plain text.
+     */
+    .document-section {
+        margin:
+            0 0 5mm !important;
+
+        padding:
+            0 !important;
+    }
+
+    .section-heading {
+        display:
+            block !important;
+
+        margin:
+            0 0 2mm !important;
+
+        padding:
+            0 !important;
+
+        border-bottom:
+            1px solid
+            #777777 !important;
+    }
+
+    .section-heading > span {
+        display:
+            none !important;
+    }
+
+    .section-heading h2 {
+        margin:
+            0 0 1mm !important;
+
+        color:
+            #000000 !important;
+
+        font-family:
+            "Times New Roman",
+            serif !important;
+
+        font-size:
+            10pt !important;
+
+        font-weight:
+            700 !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .section-heading p {
+        display:
+            none !important;
+    }
+
+
+    /*
+     * Analysis Information becomes simple label/value text.
+     */
+    .info-grid {
+        display:
+            grid !important;
+
+        grid-template-columns:
+            1fr 1fr !important;
+
+        gap:
+            1.5mm 8mm !important;
+    }
+
+    .info-item {
+        min-height:
+            0 !important;
+
+        padding:
+            0 !important;
+    }
+
+    .info-item span,
+    .info-item strong {
+        display:
+            inline !important;
+    }
+
+    .info-item span {
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            700 !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .info-item span::after {
+        content:
+            ": ";
+    }
+
+    .info-item strong {
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            400 !important;
+    }
+
+
+    /*
+     * Fixed image size, but no surrounding box.
+     */
+    .saved-image-wrap {
+        width:
+            76mm !important;
+
+        height:
+            48mm !important;
+
+        min-height:
+            48mm !important;
+
+        margin:
+            2mm auto 0 !important;
+
+        padding:
+            0 !important;
+
+        display:
+            flex !important;
+
+        align-items:
+            center !important;
+
+        justify-content:
+            center !important;
+
+        overflow:
+            hidden !important;
+    }
+
+    .saved-image-wrap img {
+        width:
+            72mm !important;
+
+        height:
+            44mm !important;
+
+        max-width:
+            72mm !important;
+
+        max-height:
+            44mm !important;
+
+        object-fit:
+            contain !important;
+
+        object-position:
+            center !important;
+
+        border-radius:
+            0 !important;
+
+        box-shadow:
+            none !important;
+    }
+
+
+    /*
+     * Top 3 becomes a clean ranked text list.
+     */
+    .top-predictions-grid {
+        display:
+            block !important;
+    }
+
+    .top-prediction-item {
+        display:
+            grid !important;
+
+        grid-template-columns:
+            8mm
+            1fr
+            auto !important;
+
+        gap:
+            2mm !important;
+
+        align-items:
+            baseline !important;
+
+        margin:
+            0 0 1.5mm !important;
+
+        padding:
+            0 !important;
+    }
+
+    .prediction-rank {
+        width:
+            auto !important;
+
+        height:
+            auto !important;
+
+        display:
+            block !important;
+
+        color:
+            #000000 !important;
+
+        background:
+            transparent !important;
+
+        border:
+            0 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            700 !important;
+    }
+
+    .prediction-rank::after {
+        content:
+            ".";
+    }
+
+    .prediction-info {
+        display:
+            contents !important;
+    }
+
+    .prediction-info strong {
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            400 !important;
+
+        white-space:
+            normal !important;
+    }
+
+    .prediction-info span {
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            400 !important;
+    }
+
+
+    /*
+     * Recommendations become plain paragraphs.
+     */
+    .recommendation-grid {
+        display:
+            block !important;
+    }
+
+    .recommendation-card {
+        display:
+            block !important;
+
+        margin:
+            0 0 3mm !important;
+
+        padding:
+            0 !important;
+    }
+
+    .recommendation-icon {
+        display:
+            none !important;
+    }
+
+    .recommendation-card span {
+        display:
+            block !important;
+
+        margin:
+            0 0 .5mm !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        font-weight:
+            700 !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .recommendation-card p {
+        margin:
+            0 !important;
+
+        color:
+            #000000 !important;
+
+        font-size:
+            7pt !important;
+
+        line-height:
+            1.45 !important;
+
+        text-align:
+            justify !important;
+    }
+
+
+    /*
+     * Document note and signatures stay simple.
+     */
+    .official-certification {
+        border-top:
+            1px solid
+            #777777 !important;
+
+        padding-top:
+            3mm !important;
+    }
+
+    .official-cert-text strong {
+        font-family:
+            "Times New Roman",
+            serif !important;
+
+        font-size:
+            8pt !important;
+
+        text-transform:
+            none !important;
+    }
+
+    .official-cert-text p {
+        color:
+            #000000 !important;
+
+        font-size:
+            6.5pt !important;
+    }
+
+    .signature-line {
+        border-bottom:
+            1px solid
+            #000000 !important;
+    }
+
+}
+
+
+/* =====================================================
+   FINAL ONE-PAGE PRINT FIX
+   - Keeps all report content on one A4 page
+   - Prevents DA yellow/green accents from entering body
+   - Moves certification/signatures above footer
+   - Compresses spacing without changing web view
+===================================================== */
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin:
+            34mm
+            11mm
+            18mm
+            11mm;
+    }
+
+    html,
+    body {
+        width: 210mm !important;
+        min-height: 297mm !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: visible !important;
+
+        background: #ffffff !important;
+    }
+
+    body {
+        font-size: 7.4pt !important;
+        line-height: 1.24 !important;
+    }
+
+    .detail-page {
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .prediction-result {
+        display: block !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    /* -------------------------------------------------
+       OFFICIAL HEADER
+    ------------------------------------------------- */
+
+    .da-template-header {
+        top: -31mm !important;
+
+        height: 26mm !important;
+
+        overflow: hidden !important;
+    }
+
+    .da-header-grid {
+        height: 24mm !important;
+
+        grid-template-columns:
+            42mm
+            1fr
+            34mm !important;
+
+        gap: 3mm !important;
+    }
+
+    .da-header-left img {
+        width: 40mm !important;
+        height: 18mm !important;
+    }
+
+    .da-header-right img {
+        width: 31mm !important;
+        height: 18mm !important;
+    }
+
+    .republic-line {
+        font-size: 6.8pt !important;
+    }
+
+    .department-line {
+        font-size: 7.6pt !important;
+    }
+
+    .regional-line,
+    .address-line,
+    .telephone-line {
+        font-size: 6.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       TOP YELLOW/GREEN ACCENT
+       Confine it to header only.
+    ------------------------------------------------- */
+
+    .da-template-accent-top {
+        top: -1mm !important;
+        left: -11mm !important;
+
+        width: 58mm !important;
+        height: 6mm !important;
+
+        overflow: hidden !important;
+
+        z-index: 0 !important;
+
+        border-radius:
+            0 0 50% 0 !important;
+    }
+
+
+    /* -------------------------------------------------
+       FOOTER
+       Keep accent below content and out of signatures.
+    ------------------------------------------------- */
+
+    .da-template-footer {
+        bottom: -16mm !important;
+
+        height: 13mm !important;
+
+        overflow: hidden !important;
+    }
+
+    .da-footer-social {
+        left: 0 !important;
+        bottom: 1.5mm !important;
+
+        width: 74mm !important;
+        height: 5mm !important;
+    }
+
+    .da-footer-accent {
+        right: -11mm !important;
+        bottom: -1mm !important;
+
+        width: 57mm !important;
+        height: 8mm !important;
+
+        object-fit: fill !important;
+    }
+
+
+    /* -------------------------------------------------
+       REPORT TITLE + METADATA
+    ------------------------------------------------- */
+
+    .official-report-title {
+        margin:
+            0 0 3mm !important;
+    }
+
+    .official-report-title h1 {
+        font-size: 11pt !important;
+    }
+
+    .official-report-title p {
+        margin-top: .5mm !important;
+
+        font-size: 6.8pt !important;
+    }
+
+    .print-header {
+        margin:
+            0 0 2.5mm !important;
+
+        padding:
+            0 0 1.8mm !important;
+    }
+
+    .print-header p {
+        font-size: 6.4pt !important;
+    }
+
+    .print-meta {
+        margin-top: 1mm !important;
+    }
+
+    .print-meta span,
+    .print-meta strong {
+        font-size: 6.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       DISEASE + CONFIDENCE
+    ------------------------------------------------- */
+
+    .document-overview {
+        margin:
+            0 0 3mm !important;
+    }
+
+    .card-label,
+    .disease-content h2,
+    .confidence-row,
+    .confidence-row strong {
+        font-size: 7pt !important;
+    }
+
+    .confidence-row {
+        margin-top: 1mm !important;
+    }
+
+
+    /* -------------------------------------------------
+       DOCUMENT SECTIONS
+    ------------------------------------------------- */
+
+    .document-section {
+        margin:
+            0 0 3mm !important;
+
+        padding: 0 !important;
+
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .section-heading {
+        margin:
+            0 0 1.2mm !important;
+
+        padding:
+            0 0 .8mm !important;
+    }
+
+    .section-heading h2 {
+        font-size: 8.4pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       FIXED IMAGE SIZE
+       Smaller to guarantee one-page output.
+    ------------------------------------------------- */
+
+    .saved-image-section {
+        margin-bottom:
+            2.5mm !important;
+    }
+
+    .saved-image-wrap {
+        width: 58mm !important;
+        height: 36mm !important;
+
+        min-height: 36mm !important;
+
+        margin:
+            1mm auto 0 !important;
+    }
+
+    .saved-image-wrap img {
+        width: 56mm !important;
+        height: 34mm !important;
+
+        max-width: 56mm !important;
+        max-height: 34mm !important;
+
+        object-fit: contain !important;
+    }
+
+
+    /* -------------------------------------------------
+       ANALYSIS INFORMATION
+    ------------------------------------------------- */
+
+    .info-grid {
+        gap:
+            .8mm 5mm !important;
+    }
+
+    .info-item {
+        min-height: 0 !important;
+    }
+
+    .info-item span,
+    .info-item strong {
+        font-size: 6.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       TOP 3
+    ------------------------------------------------- */
+
+    .top-prediction-item {
+        grid-template-columns:
+            6mm
+            1fr
+            auto !important;
+
+        gap: 1mm !important;
+
+        margin:
+            0 0 .6mm !important;
+    }
+
+    .prediction-rank,
+    .prediction-info strong,
+    .prediction-info span {
+        font-size: 6.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       RECOMMENDATIONS
+    ------------------------------------------------- */
+
+    .recommendation-card {
+        margin:
+            0 0 1.4mm !important;
+    }
+
+    .recommendation-card span {
+        margin:
+            0 0 .2mm !important;
+
+        font-size: 6.2pt !important;
+    }
+
+    .recommendation-card p {
+        font-size: 6pt !important;
+        line-height: 1.26 !important;
+    }
+
+
+    /* -------------------------------------------------
+       DOCUMENT NOTE + SIGNATURES
+       Keep these attached to report, not on page 2.
+    ------------------------------------------------- */
+
+    .official-certification {
+        margin-top:
+            2.5mm !important;
+
+        padding-top:
+            1.5mm !important;
+
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .official-cert-text strong {
+        font-size: 6.4pt !important;
+    }
+
+    .official-cert-text p {
+        margin:
+            .5mm 0 0 !important;
+
+        font-size: 5.6pt !important;
+        line-height: 1.25 !important;
+    }
+
+    .official-signature-grid {
+        gap: 14mm !important;
+
+        margin-top: 5mm !important;
+    }
+
+    .signature-line {
+        height: 5mm !important;
+    }
+
+    .official-signature-box strong {
+        margin-top: 1mm !important;
+
+        font-size: 5.8pt !important;
+    }
+
+    .official-signature-box span {
+        margin-top: .2mm !important;
+
+        font-size: 5.2pt !important;
+    }
+
+
+    /* -------------------------------------------------
+       REMOVE ANY EXTRA WEB FOOTER IN PRINT
+    ------------------------------------------------- */
+
+    .result-footer {
+        display: none !important;
+    }
+
+}
+
+
+/* =====================================================
+   FINAL PRINT TEMPLATE: SINGLE FULL-PAGE BACKGROUND
+   Uses the complete rendered TEMPLATE.docx page as one
+   background image instead of separate header/footer pieces.
+===================================================== */
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    html,
+    body {
+        width: 210mm !important;
+        height: 297mm !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #ffffff !important;
+    }
+
+    body {
+        position: relative !important;
+    }
+
+    /*
+     * Hide all previously separated template components.
+     * The complete template is now one single image.
+     */
+    .da-template-header,
+    .da-template-footer {
+        display: none !important;
+    }
+
+    /*
+     * Full-page template image.
+     * This is a normal IMG, not CSS background-image,
+     * so it prints more reliably in browsers.
+     */
+    .da-fullpage-background {
+        display: block !important;
+
+        position: fixed !important;
+
+        top: 0 !important;
+        left: 0 !important;
+
+        width: 210mm !important;
+        height: 297mm !important;
+
+        max-width: none !important;
+        max-height: none !important;
+
+        object-fit: fill !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        z-index: -10 !important;
+
+        pointer-events: none !important;
+    }
+
+    /*
+     * Content sits inside the blank writing area of the
+     * official DA template.
+     */
+    .detail-page {
+        position: relative !important;
+
+        z-index: 1 !important;
+
+        width: auto !important;
+
+        margin: 0 !important;
+
+        padding:
+            46mm
+            17mm
+            22mm
+            17mm !important;
+    }
+
+    .prediction-result {
+        position: relative !important;
+
+        z-index: 2 !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: transparent !important;
+    }
+
+    /*
+     * The report title begins below the official header
+     * already contained in the background image.
+     */
+    .official-report-title {
+        margin:
+            0 0 2.5mm !important;
+    }
+
+    .official-report-title h1 {
+        font-size:
+            10.5pt !important;
+    }
+
+    .official-report-title p {
+        font-size:
+            6.5pt !important;
+    }
+
+    /*
+     * Keep content compact enough to remain above the
+     * printed footer artwork contained in the background.
+     */
+    .print-header {
+        margin-bottom:
+            2mm !important;
+
+        padding-bottom:
+            1.2mm !important;
+    }
+
+    .document-overview {
+        margin-bottom:
+            2mm !important;
+    }
+
+    .document-section {
+        margin-bottom:
+            2.3mm !important;
+    }
+
+    .section-heading {
+        margin-bottom:
+            .8mm !important;
+
+        padding-bottom:
+            .5mm !important;
+    }
+
+    .saved-image-wrap {
+        width:
+            54mm !important;
+
+        height:
+            32mm !important;
+
+        min-height:
+            32mm !important;
+
+        margin:
+            .5mm auto 0 !important;
+    }
+
+    .saved-image-wrap img {
+        width:
+            52mm !important;
+
+        height:
+            30mm !important;
+
+        max-width:
+            52mm !important;
+
+        max-height:
+            30mm !important;
+
+        object-fit:
+            contain !important;
+    }
+
+    .recommendation-card {
+        margin-bottom:
+            1mm !important;
+    }
+
+    .recommendation-card p {
+        font-size:
+            5.8pt !important;
+
+        line-height:
+            1.18 !important;
+    }
+
+    .official-certification {
+        margin-top:
+            1.5mm !important;
+
+        padding-top:
+            1mm !important;
+    }
+
+    .official-cert-text p {
+        font-size:
+            5.3pt !important;
+
+        line-height:
+            1.18 !important;
+    }
+
+    .official-signature-grid {
+        margin-top:
+            3mm !important;
+
+        gap:
+            13mm !important;
+    }
+
+    .signature-line {
+        height:
+            3mm !important;
+    }
+
+}
+
+
+/* =====================================================
+   ADMIN DETAIL PAGE INTEGRATION
+   ===================================================== */
+
+@media print {
+    #adminSidebarContainer {
+        display: none !important;
+    }
+}
