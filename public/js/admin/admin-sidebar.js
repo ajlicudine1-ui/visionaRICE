@@ -68,17 +68,15 @@
                 .join(' ')
                 .trim();
 
-        return (
+        return String(
             fullName ||
-            String(
-                profile.full_name ||
-                profile.fullName ||
-                profile.name ||
-                profile.username ||
-                profile.email ||
-                ''
-            ).trim()
-        );
+            profile.full_name ||
+            profile.fullName ||
+            profile.name ||
+            profile.username ||
+            profile.email ||
+            ''
+        ).trim();
 
     }
 
@@ -101,7 +99,7 @@
         } catch (error) {
 
             console.warn(
-                'Unable to cache admin profile.',
+                'VISIONARICE: unable to cache admin profile.',
                 error
             );
 
@@ -127,143 +125,126 @@
     }
 
 
-    // =====================================================
-    // IMMEDIATE ADMIN HEADER
-    // =====================================================
+    function escapeHTML(value) {
 
-    const cachedAdminProfile =
-        getCachedAdminProfile();
+        return String(value || '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#039;');
+
+    }
+
+
+    // =====================================================
+    // RENDER HEADER IMMEDIATELY
+    // =====================================================
 
     const cachedAdminName =
         getAdminDisplayName(
-            cachedAdminProfile
+            getCachedAdminProfile()
+        );
+
+    const safeCachedAdminName =
+        escapeHTML(
+            cachedAdminName
         );
 
 
-    const ADMIN_SIDEBAR_HTML = `
+    const HEADER_HTML = `
 
-        <header class="admin-topnav">
+        <header class="topbar">
 
-            <div class="admin-topnav-inner">
+            <div class="topbar-inner">
 
                 <a
+                    class="brand"
                     href="/admin/dashboard.html"
-                    class="admin-brand"
-                    aria-label="VISIONARICE Admin Dashboard"
                 >
-                    <div class="admin-brand-mark">
-                        🌾
-                    </div>
+                    <span class="brand-icon">🌾</span>
 
-                    <div class="admin-brand-copy">
-                        <strong>
-                            VISION<span>A</span>RICE
-                        </strong>
+                    <span class="brand-name">
+                        VISION<span>A</span>RICE
+                    </span>
 
-                        <small>
-                            Admin
-                        </small>
-                    </div>
+                    <small>Admin</small>
                 </a>
 
 
-                <nav
-                    class="admin-nav"
-                    aria-label="Administrator navigation"
-                >
+                <nav class="desktop-nav">
 
                     <a
                         href="/admin/dashboard.html"
                         data-admin-page="dashboard"
                     >
-                        <span class="admin-nav-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-                                <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-                                <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-                                <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-                            </svg>
-                        </span>
-
-                        <span>Dashboard</span>
+                        Dashboard
                     </a>
 
                     <a
                         href="/admin/predictions.html"
                         data-admin-page="predictions"
                     >
-                        <span class="admin-nav-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M4 6h16"></path>
-                                <path d="M4 12h16"></path>
-                                <path d="M4 18h10"></path>
-                            </svg>
-                        </span>
-
-                        <span>Predictions</span>
+                        Predictions
                     </a>
 
                     <a
                         href="/admin/users.html"
                         data-admin-page="users"
                     >
-                        <span class="admin-nav-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="9" cy="8" r="3"></circle>
-                                <path d="M3.5 19c.8-3.1 2.8-5 5.5-5s4.7 1.9 5.5 5"></path>
-                                <path d="M16 7.5a2.5 2.5 0 0 1 0 5"></path>
-                                <path d="M17 14c2.1.3 3.4 1.9 3.9 4"></path>
-                            </svg>
-                        </span>
-
-                        <span>Users</span>
+                        Users
                     </a>
 
                     <a
                         href="/admin/profile.html"
                         data-admin-page="profile"
                     >
-                        <span class="admin-nav-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="12" cy="8" r="4"></circle>
-                                <path d="M4.5 21c.8-4.2 3.5-6.5 7.5-6.5s6.7 2.3 7.5 6.5"></path>
-                            </svg>
-                        </span>
-
-                        <span>Profile</span>
+                        Profile
                     </a>
 
                     <a
                         href="/admin/notifications.html"
                         data-admin-page="notifications"
+                        class="desktop-notification-bell"
+                        aria-label="Notifications"
+                        title="Notifications"
                     >
-                        <span class="admin-nav-icon">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-                                <path d="M10 21h4"></path>
-                            </svg>
-                        </span>
-
-                        <span>Notifications</span>
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                            <path d="M10 21h4"></path>
+                        </svg>
                     </a>
 
                 </nav>
 
 
-                <div class="admin-account-actions">
+                <div class="account-area">
 
-                    <div class="admin-session-card">
-                        <strong id="adminSessionName">${cachedAdminName}</strong>
+                    <div class="account-copy">
+
+                        <small>
+                            ADMINISTRATOR
+                        </small>
+
+                        <strong id="adminSessionName">${safeCachedAdminName}</strong>
+
                     </div>
 
+
                     <button
-                        type="button"
-                        class="admin-logout-button"
                         id="adminLogoutButton"
+                        class="logout-button"
+                        type="button"
                         title="Logout"
                         aria-label="Logout"
                     >
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
                             <path d="M10 17l5-5-5-5"></path>
                             <path d="M15 12H3"></path>
                             <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
@@ -278,7 +259,7 @@
 
 
         <nav
-            class="admin-mobile-bottom-nav"
+            class="mobile-nav"
             aria-label="Administrator mobile navigation"
         >
 
@@ -286,86 +267,43 @@
                 href="/admin/dashboard.html"
                 data-admin-page="dashboard"
             >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
-                        <rect x="14" y="3" width="7" height="7" rx="1"></rect>
-                        <rect x="3" y="14" width="7" height="7" rx="1"></rect>
-                        <rect x="14" y="14" width="7" height="7" rx="1"></rect>
-                    </svg>
-                </span>
-
-                <small>Dashboard</small>
+                Dashboard
             </a>
 
             <a
                 href="/admin/predictions.html"
                 data-admin-page="predictions"
             >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M4 6h16"></path>
-                        <path d="M4 12h16"></path>
-                        <path d="M4 18h10"></path>
-                    </svg>
-                </span>
-
-                <small>Predictions</small>
+                Predictions
             </a>
 
             <a
                 href="/admin/users.html"
                 data-admin-page="users"
             >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="9" cy="8" r="3"></circle>
-                        <path d="M3.5 19c.8-3.1 2.8-5 5.5-5s4.7 1.9 5.5 5"></path>
-                    </svg>
-                </span>
-
-                <small>Users</small>
+                Users
             </a>
 
             <a
                 href="/admin/profile.html"
                 data-admin-page="profile"
             >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="12" cy="8" r="4"></circle>
-                        <path d="M4.5 21c.8-4.2 3.5-6.5 7.5-6.5s6.7 2.3 7.5 6.5"></path>
-                    </svg>
-                </span>
-
-                <small>Profile</small>
+                Profile
             </a>
 
             <a
                 href="/admin/notifications.html"
                 data-admin-page="notifications"
             >
-                <span class="admin-nav-icon">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-                        <path d="M10 21h4"></path>
-                    </svg>
-                </span>
-
-                <small>Alerts</small>
+                Alerts
             </a>
 
         </nav>
     `;
 
 
-    /*
-     * Render immediately.
-     * No fetch of /admin/components/sidebar.html.
-     * Cached name is already inside the header HTML.
-     */
     container.innerHTML =
-        ADMIN_SIDEBAR_HTML;
+        HEADER_HTML;
 
 
     // =====================================================
@@ -374,9 +312,11 @@
 
     function activateCurrentPage() {
 
-        const page =
-            document.body.dataset.adminPage ||
-            '';
+        const currentPage =
+            String(
+                document.body.dataset.adminPage ||
+                ''
+            ).toLowerCase();
 
         container
             .querySelectorAll(
@@ -386,8 +326,11 @@
 
                 link.classList.toggle(
                     'active',
-                    link.dataset.adminPage ===
-                        page
+                    String(
+                        link.dataset.adminPage ||
+                        ''
+                    ).toLowerCase() ===
+                        currentPage
                 );
 
             });
@@ -396,10 +339,10 @@
 
 
     // =====================================================
-    // ADMIN IDENTITY
+    // LIVE ADMIN SESSION REFRESH
     // =====================================================
 
-    async function loadAdminIdentity() {
+    async function refreshAdminIdentity() {
 
         const nameElement =
             container.querySelector(
@@ -427,8 +370,9 @@
 
                 clearAdminProfile();
 
-                window.location.href =
-                    '/login.html';
+                window.location.replace(
+                    '/login.html'
+                );
 
                 return;
 
@@ -448,47 +392,43 @@
 
                 clearAdminProfile();
 
-                window.location.href =
-                    '/login.html';
+                window.location.replace(
+                    '/login.html'
+                );
 
                 return;
 
             }
 
-            /*
-             * Save profile for immediate rendering
-             * on the next admin page.
-             */
             saveAdminProfile(
                 result.user
             );
 
-            if (nameElement) {
+            const freshName =
+                getAdminDisplayName(
+                    result.user
+                );
 
-                const displayName =
-                    getAdminDisplayName(
-                        result.user
-                    );
+            if (
+                nameElement &&
+                freshName &&
+                nameElement.textContent !== freshName
+            ) {
 
-                if (displayName) {
-
-                    nameElement.textContent =
-                        displayName;
-
-                }
+                nameElement.textContent =
+                    freshName;
 
             }
 
         } catch (error) {
 
             console.error(
-                'Admin identity error:',
+                'VISIONARICE admin identity refresh:',
                 error
             );
 
             /*
-             * Keep the cached name visible if
-             * the background refresh fails.
+             * Keep the cached name already on screen.
              */
 
         }
@@ -534,7 +474,7 @@
                 } catch (error) {
 
                     console.error(
-                        'Admin logout error:',
+                        'VISIONARICE admin logout:',
                         error
                     );
 
@@ -542,8 +482,9 @@
 
                     clearAdminProfile();
 
-                    window.location.href =
-                        '/login.html';
+                    window.location.replace(
+                        '/login.html'
+                    );
 
                 }
 
@@ -562,9 +503,8 @@
     bindLogout();
 
     /*
-     * Verify/refresh the admin session silently.
-     * The cached name is already visible.
+     * The cached name is already visible before this request.
      */
-    loadAdminIdentity();
+    refreshAdminIdentity();
 
 })();
