@@ -167,6 +167,24 @@
                         src="/images/visionarice_logo.png"
                         alt="VISIONARICE Logo"
                         class="brand-logo"
+                        style="
+                            width: 46px !important;
+                            height: 46px !important;
+                            min-width: 46px !important;
+                            max-width: 46px !important;
+                            min-height: 46px !important;
+                            max-height: 46px !important;
+                            flex: 0 0 46px !important;
+                            display: block !important;
+                            object-fit: contain !important;
+                            object-position: center !important;
+                            background: transparent !important;
+                            border: 0 !important;
+                            border-radius: 0 !important;
+                            box-shadow: none !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                        "
                     >
 
                     <span class="brand-name">
