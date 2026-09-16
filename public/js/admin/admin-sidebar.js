@@ -161,19 +161,13 @@
                 <a
                     class="brand"
                     href="/admin/dashboard.html"
+                    aria-label="VISIONARICE Admin Dashboard"
                 >
-                    <span class="brand-icon">
-                        <img
-                            src="/images/visionarice_logo.png"
-                            alt="VISIONARICE Logo"
-                            style="
-                                width: 100%;
-                                height: 100%;
-                                display: block;
-                                object-fit: contain;
-                            "
-                        >
-                    </span>
+                    <img
+                        src="/images/visionarice_logo.png"
+                        alt="VISIONARICE Logo"
+                        class="brand-logo"
+                    >
 
                     <span class="brand-name">
                         VISION<span>A</span>RICE
