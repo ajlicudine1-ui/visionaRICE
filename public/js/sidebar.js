@@ -139,12 +139,63 @@
             return;
         }
 
+        const pickName = value => {
+            if (!value) {
+                return '';
+            }
+
+            if (typeof value === 'string') {
+                return value.trim();
+            }
+
+            if (typeof value !== 'object') {
+                return '';
+            }
+
+            return String(
+                value.full_name ||
+                value.fullName ||
+                value.display_name ||
+                value.displayName ||
+                value.name ||
+                value.username ||
+                value.user_name ||
+                value.user_metadata?.full_name ||
+                value.user_metadata?.name ||
+                ''
+            ).trim();
+        };
+
+        const applyName = value => {
+            const name = pickName(value);
+
+            if (!name) {
+                return false;
+            }
+
+            nameElement.textContent = name;
+            return true;
+        };
+
+        /*
+         * 1. Try the authenticated profile endpoint first.
+         * Support the common response shapes:
+         * { profile: {...} }
+         * { user: {...} }
+         * { data: {...} }
+         * { data: { profile: {...} } }
+         */
         try {
             const response =
                 await fetch(
                     '/api/auth/me',
                     {
-                        credentials: 'include'
+                        method: 'GET',
+                        credentials: 'include',
+                        cache: 'no-store',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
                     }
                 );
 
@@ -152,37 +203,110 @@
                 const payload =
                     await response.json();
 
-                const profile =
-                    payload.profile ||
-                    payload.user ||
-                    payload.data ||
-                    payload;
+                const candidates = [
+                    payload?.profile,
+                    payload?.user,
+                    payload?.data?.profile,
+                    payload?.data?.user,
+                    payload?.data,
+                    payload
+                ];
 
-                const fullName =
-                    profile.full_name ||
-                    profile.fullName ||
-                    profile.name ||
-                    profile.username ||
-                    '';
-
-                if (fullName) {
-                    nameElement.textContent =
-                        fullName;
-                    return;
+                for (const candidate of candidates) {
+                    if (applyName(candidate)) {
+                        return;
+                    }
                 }
             }
         } catch (error) {
-            // Fall back to local storage below.
+            console.warn(
+                'VISIONARICE: unable to load /api/auth/me',
+                error
+            );
         }
 
-        const savedName =
-            localStorage.getItem('full_name') ||
-            localStorage.getItem('fullName') ||
-            localStorage.getItem('name') ||
-            localStorage.getItem('username');
+        /*
+         * 2. Check browser storage used by many login flows.
+         * Both plain name values and JSON user/session objects
+         * are supported.
+         */
+        const storages = [
+            localStorage,
+            sessionStorage
+        ];
 
-        nameElement.textContent =
-            savedName || 'User';
+        const directKeys = [
+            'full_name',
+            'fullName',
+            'display_name',
+            'displayName',
+            'name',
+            'username',
+            'user_name'
+        ];
+
+        const objectKeys = [
+            'user',
+            'currentUser',
+            'current_user',
+            'profile',
+            'authUser',
+            'auth_user',
+            'session',
+            'authSession',
+            'supabase.auth.token'
+        ];
+
+        for (const storage of storages) {
+
+            for (const key of directKeys) {
+                const value =
+                    storage.getItem(key);
+
+                if (applyName(value)) {
+                    return;
+                }
+            }
+
+            for (const key of objectKeys) {
+                const raw =
+                    storage.getItem(key);
+
+                if (!raw) {
+                    continue;
+                }
+
+                try {
+                    const parsed =
+                        JSON.parse(raw);
+
+                    const candidates = [
+                        parsed?.profile,
+                        parsed?.user,
+                        parsed?.currentUser,
+                        parsed?.session?.user,
+                        parsed?.data?.user,
+                        parsed?.data?.profile,
+                        parsed
+                    ];
+
+                    for (const candidate of candidates) {
+                        if (applyName(candidate)) {
+                            return;
+                        }
+                    }
+
+                } catch (error) {
+                    // Ignore storage values that are not JSON.
+                }
+            }
+        }
+
+        /*
+         * Keep the fallback only when no authenticated
+         * name could be found anywhere.
+         */
+        nameElement.textContent = 'User';
     }
 
 
