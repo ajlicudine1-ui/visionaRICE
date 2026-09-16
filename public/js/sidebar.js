@@ -20,6 +20,69 @@
      * disappears during a normal HTML-page navigation and
      * only returns after fetch() finishes.
      */
+    // =====================================================
+    // IMMEDIATE CACHED USER NAME
+    // =====================================================
+
+    function getCachedHeaderName() {
+
+        try {
+
+            const profile =
+                JSON.parse(
+                    sessionStorage.getItem(
+                        'devt_profile'
+                    ) || 'null'
+                );
+
+            if (!profile) {
+                return '';
+            }
+
+            const firstName =
+                String(
+                    profile.first_name ||
+                    profile.firstName ||
+                    ''
+                ).trim();
+
+            const lastName =
+                String(
+                    profile.last_name ||
+                    profile.lastName ||
+                    ''
+                ).trim();
+
+            const fullName =
+                [
+                    firstName,
+                    lastName
+                ]
+                    .filter(Boolean)
+                    .join(' ')
+                    .trim();
+
+            return String(
+                fullName ||
+                profile.full_name ||
+                profile.fullName ||
+                profile.name ||
+                profile.username ||
+                ''
+            ).trim();
+
+        } catch (error) {
+
+            return '';
+
+        }
+    }
+
+
+    const cachedHeaderName =
+        getCachedHeaderName();
+
+
     const SIDEBAR_HTML = `
         <header class="sidebar">
             <div class="sidebar-inner">
@@ -97,7 +160,10 @@
 
                     <div class="user-session-card">
                         <span>USER</span>
-                        <strong id="headerUserName" class="header-user-name-loading"></strong>
+                        <strong
+                            id="headerUserName"
+                            class="${cachedHeaderName ? '' : 'header-user-name-loading'}"
+                        >${cachedHeaderName}</strong>
                     </div>
 
                     <button
@@ -191,6 +257,44 @@
             nameElement.classList.remove(
                 'header-user-name-loading'
             );
+
+            try {
+
+                const existingProfile =
+                    JSON.parse(
+                        sessionStorage.getItem(
+                            'devt_profile'
+                        ) || '{}'
+                    );
+
+                sessionStorage.setItem(
+                    'devt_profile',
+                    JSON.stringify({
+                        ...existingProfile,
+
+                        first_name:
+                            firstName ||
+                            existingProfile.first_name ||
+                            '',
+
+                        last_name:
+                            lastName ||
+                            existingProfile.last_name ||
+                            '',
+
+                        full_name:
+                            displayName
+                    })
+                );
+
+            } catch (error) {
+
+                console.warn(
+                    'VISIONARICE: header profile cache could not be updated.',
+                    error
+                );
+
+            }
 
             return true;
         };
