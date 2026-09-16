@@ -2022,3 +2022,132 @@
     }
 }
 
+/* =====================================================
+   FINAL HEADER BRAND SIZE / SPACING UPDATE
+   Bigger VISIONaRICE text + less empty desktop space
+===================================================== */
+
+.sidebar-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex: 0 0 auto !important;
+    margin-right: 26px !important;
+    text-decoration: none !important;
+}
+
+.sidebar-logo-img {
+    display: block !important;
+    width: 54px !important;
+    height: 54px !important;
+    object-fit: contain !important;
+    flex: 0 0 auto !important;
+}
+
+.sidebar-brand-text {
+    display: inline-flex !important;
+    align-items: baseline !important;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 31px !important;
+    font-style: normal !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    letter-spacing: -1px !important;
+    white-space: nowrap !important;
+    color: var(--green-700) !important;
+}
+
+.sidebar-brand-text .brand-vision,
+.sidebar-brand-text .brand-rice {
+    color: var(--green-700) !important;
+}
+
+.sidebar-brand-text .brand-a {
+    color: var(--orange) !important;
+}
+
+@media screen and (min-width: 1101px) {
+    .sidebar-inner {
+        width: calc(100% - 44px) !important;
+        max-width: 1540px !important;
+        min-height: 78px !important;
+        gap: 18px !important;
+    }
+
+    .sidebar-brand {
+        margin-right: 22px !important;
+    }
+
+    .sidebar-logo-img {
+        width: 56px !important;
+        height: 56px !important;
+    }
+
+    .sidebar-brand-text {
+        font-size: 34px !important;
+        letter-spacing: -1.2px !important;
+    }
+
+    .sidebar-nav {
+        margin-left: 34px !important;
+    }
+
+    .notification-bell {
+        margin-left: auto !important;
+    }
+}
+
+@media screen and (min-width: 761px) and (max-width: 1100px) {
+    .sidebar-inner {
+        width: calc(100% - 28px) !important;
+        gap: 12px !important;
+    }
+
+    .sidebar-brand {
+        margin-right: 10px !important;
+        gap: 9px !important;
+    }
+
+    .sidebar-logo-img {
+        width: 46px !important;
+        height: 46px !important;
+    }
+
+    .sidebar-brand-text {
+        font-size: 26px !important;
+        letter-spacing: -0.8px !important;
+    }
+
+    .sidebar-nav {
+        margin-left: auto !important;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    .sidebar-brand {
+        margin-right: 0 !important;
+        gap: 9px !important;
+    }
+
+    .sidebar-logo-img {
+        width: 52px !important;
+        height: 52px !important;
+    }
+
+    .sidebar-brand-text {
+        font-size: 29px !important;
+        letter-spacing: -1px !important;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .sidebar-logo-img {
+        width: 46px !important;
+        height: 46px !important;
+    }
+
+    .sidebar-brand-text {
+        font-size: 25px !important;
+    }
+}
+
