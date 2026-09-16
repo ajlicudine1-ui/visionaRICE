@@ -2054,150 +2054,100 @@
     }
 }
 
+
+
 /* =====================================================
-   USER HEADER ACCOUNT — ADMIN-STYLE
-   Matches the admin header: role + name + logout button.
+   USER ACCOUNT AREA — MATCH ADMIN HEADER EXACTLY
 ===================================================== */
 
-.header-user-account {
+.user-account-actions {
     display: flex;
     align-items: center;
-    gap: 14px;
-
-    margin-left: 10px;
-
-    flex: 0 0 auto;
+    gap: 8px;
+    margin-left: 5px;
 }
 
-.header-user-details {
-    min-width: 96px;
-
+.user-session-card {
+    max-width: 130px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-
     line-height: 1.05;
 }
 
-.header-user-role {
-    display: block;
-
-    margin-bottom: 4px;
-
-    color: #7f8b83;
-
-    font-family: "Poppins", sans-serif;
-    font-size: 8px;
-    font-weight: 700;
-
-    letter-spacing: 1.5px;
-
+.user-session-card span {
+    color: var(--text-muted);
+    font-size: 7px;
+    font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: .8px;
 }
 
-.header-user-name {
-    display: block;
-
-    max-width: 150px;
-
+.user-session-card strong {
+    margin-top: 3px;
+    color: var(--green-900);
+    font-size: 9px;
+    font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    color: var(--green-900);
-
-    font-family: "Poppins", sans-serif;
-    font-size: 12px;
-    font-weight: 700;
 }
 
-.header-logout {
-    width: 44px;
-    height: 44px;
-
-    display: grid;
-    place-items: center;
-
+.user-logout-button {
+    width: 40px;
+    height: 40px;
     flex: 0 0 auto;
 
-    border: 1px solid #dce6de;
-    border-radius: 12px;
-
-    background: #f7faf7;
-
-    color: var(--green-800);
-
-    text-decoration: none;
-
-    font-size: 24px;
-    line-height: 1;
-
-    transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        transform 0.18s ease,
-        box-shadow 0.18s ease;
-}
-
-.header-logout:hover {
-    border-color: #c6d9ca;
-
-    background: var(--green-100);
-
-    color: var(--green-900);
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 4px 12px
-        rgba(28, 94, 58, 0.08);
-}
-
-.header-logout span {
     display: grid;
     place-items: center;
 
-    transform: rotate(180deg);
+    border: 1px solid #dce6de;
+    border-radius: 11px;
+
+    background: #f7faf7;
+    color: var(--green-800);
+
+    cursor: pointer;
+    text-decoration: none;
+
+    transition:
+        background .16s ease,
+        border-color .16s ease;
 }
 
+.user-logout-button:hover {
+    background: var(--green-100);
+    border-color: #c6d9ca;
+}
 
-/* Compact desktop / tablet */
-@media screen and (min-width: 761px) and (max-width: 1180px) {
+.user-logout-button svg {
+    width: 17px;
+    height: 17px;
 
-    .header-user-account {
-        gap: 8px;
-        margin-left: 4px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Match admin responsive behavior */
+@media screen and (max-width: 1150px) and (min-width: 761px) {
+    .user-session-card {
+        display: none;
     }
 
-    .header-user-details {
-        min-width: 72px;
-    }
-
-    .header-user-name {
-        max-width: 95px;
-        font-size: 10px;
-    }
-
-    .header-user-role {
-        font-size: 7px;
-    }
-
-    .header-logout {
+    .user-logout-button {
         width: 38px;
         height: 38px;
-
-        border-radius: 10px;
-
-        font-size: 20px;
     }
 }
 
-
-/* Keep the existing mobile header clean */
 @media screen and (max-width: 760px) {
+    .user-session-card {
+        display: none;
+    }
 
-    .header-user-account {
+    .user-account-actions {
         display: none !important;
     }
 }
-

@@ -93,21 +93,27 @@
                     <span aria-hidden="true">🔔</span>
                 </a>
 
-                <div class="header-user-account">
-                    <div class="header-user-details">
-                        <span class="header-user-role">USER</span>
-                        <span class="header-user-name" id="headerUserName">User</span>
+                <div class="user-account-actions">
+
+                    <div class="user-session-card">
+                        <span>USER</span>
+                        <strong id="headerUserName">User</strong>
                     </div>
 
-                    <a
-                        href="/login.html"
-                        class="header-logout"
-                        id="headerLogout"
+                    <button
+                        id="headerLogoutButton"
+                        class="user-logout-button"
+                        type="button"
                         aria-label="Logout"
                         title="Logout"
                     >
-                        <span aria-hidden="true">↪</span>
-                    </a>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M10 17l5-5-5-5"></path>
+                            <path d="M15 12H3"></path>
+                            <path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"></path>
+                        </svg>
+                    </button>
+
                 </div>
 
             </div>
@@ -120,10 +126,10 @@
 
 
     // =====================================================
-    // HEADER USER NAME
+    // USER ACCOUNT
     // =====================================================
 
-    function setHeaderUserName() {
+    async function loadHeaderUser() {
         const nameElement =
             container.querySelector(
                 '#headerUserName'
@@ -133,67 +139,82 @@
             return;
         }
 
-        let displayName = '';
-
-        const directKeys = [
-            'full_name',
-            'fullName',
-            'name',
-            'username',
-            'user_name'
-        ];
-
-        for (const key of directKeys) {
-            const value =
-                localStorage.getItem(key);
-
-            if (
-                value &&
-                value.trim()
-            ) {
-                displayName = value.trim();
-                break;
-            }
-        }
-
-        if (!displayName) {
-            const objectKeys = [
-                'user',
-                'currentUser',
-                'profile',
-                'auth_user'
-            ];
-
-            for (const key of objectKeys) {
-                const raw =
-                    localStorage.getItem(key);
-
-                if (!raw) {
-                    continue;
-                }
-
-                try {
-                    const parsed =
-                        JSON.parse(raw);
-
-                    displayName =
-                        parsed.full_name ||
-                        parsed.fullName ||
-                        parsed.name ||
-                        parsed.username ||
-                        '';
-
-                    if (displayName) {
-                        break;
+        try {
+            const response =
+                await fetch(
+                    '/api/auth/me',
+                    {
+                        credentials: 'include'
                     }
-                } catch (error) {
-                    // Ignore non-JSON values.
+                );
+
+            if (response.ok) {
+                const payload =
+                    await response.json();
+
+                const profile =
+                    payload.profile ||
+                    payload.user ||
+                    payload.data ||
+                    payload;
+
+                const fullName =
+                    profile.full_name ||
+                    profile.fullName ||
+                    profile.name ||
+                    profile.username ||
+                    '';
+
+                if (fullName) {
+                    nameElement.textContent =
+                        fullName;
+                    return;
                 }
             }
+        } catch (error) {
+            // Fall back to local storage below.
         }
+
+        const savedName =
+            localStorage.getItem('full_name') ||
+            localStorage.getItem('fullName') ||
+            localStorage.getItem('name') ||
+            localStorage.getItem('username');
 
         nameElement.textContent =
-            displayName || 'User';
+            savedName || 'User';
+    }
+
+
+    function bindHeaderLogout() {
+        const button =
+            container.querySelector(
+                '#headerLogoutButton'
+            );
+
+        if (!button) {
+            return;
+        }
+
+        button.addEventListener(
+            'click',
+            async () => {
+                try {
+                    await fetch(
+                        '/api/auth/logout',
+                        {
+                            method: 'POST',
+                            credentials: 'include'
+                        }
+                    );
+                } catch (error) {
+                    // Continue to login page even if the request fails.
+                }
+
+                window.location.href =
+                    '/login.html';
+            }
+        );
     }
 
 
@@ -667,7 +688,9 @@
     // INITIALIZE
     // =====================================================
 
-    setHeaderUserName();
+    loadHeaderUser();
+
+    bindHeaderLogout();
 
     setActiveNavigation();
 
