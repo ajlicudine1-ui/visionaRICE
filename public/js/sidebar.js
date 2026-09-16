@@ -139,174 +139,126 @@
             return;
         }
 
-        const pickName = value => {
-            if (!value) {
-                return '';
-            }
+        const setName = profile => {
+            const fullName =
+                String(
+                    profile?.full_name ||
+                    profile?.fullName ||
+                    profile?.name ||
+                    profile?.username ||
+                    ''
+                ).trim();
 
-            if (typeof value === 'string') {
-                return value.trim();
-            }
-
-            if (typeof value !== 'object') {
-                return '';
-            }
-
-            return String(
-                value.full_name ||
-                value.fullName ||
-                value.display_name ||
-                value.displayName ||
-                value.name ||
-                value.username ||
-                value.user_name ||
-                value.user_metadata?.full_name ||
-                value.user_metadata?.name ||
-                ''
-            ).trim();
-        };
-
-        const applyName = value => {
-            const name = pickName(value);
-
-            if (!name) {
+            if (!fullName) {
                 return false;
             }
 
-            nameElement.textContent = name;
+            nameElement.textContent =
+                fullName;
+
             return true;
         };
 
         /*
-         * 1. Try the authenticated profile endpoint first.
-         * Support the common response shapes:
-         * { profile: {...} }
-         * { user: {...} }
-         * { data: {...} }
-         * { data: { profile: {...} } }
+         * FIRST: use the exact profile already saved by
+         * the VISIONARICE auth/session script.
          */
         try {
-            const response =
-                await fetch(
-                    '/api/auth/me',
-                    {
-                        method: 'GET',
-                        credentials: 'include',
-                        cache: 'no-store',
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    }
-                );
+            if (
+                window.DevTAuth &&
+                typeof window.DevTAuth.getProfile === 'function'
+            ) {
+                const profile =
+                    window.DevTAuth.getProfile();
 
-            if (response.ok) {
-                const payload =
-                    await response.json();
-
-                const candidates = [
-                    payload?.profile,
-                    payload?.user,
-                    payload?.data?.profile,
-                    payload?.data?.user,
-                    payload?.data,
-                    payload
-                ];
-
-                for (const candidate of candidates) {
-                    if (applyName(candidate)) {
-                        return;
-                    }
+                if (setName(profile)) {
+                    return;
                 }
             }
         } catch (error) {
             console.warn(
-                'VISIONARICE: unable to load /api/auth/me',
+                'VISIONARICE: DevTAuth profile unavailable.',
                 error
             );
         }
 
         /*
-         * 2. Check browser storage used by many login flows.
-         * Both plain name values and JSON user/session objects
-         * are supported.
+         * SECOND: read the exact sessionStorage key used
+         * by the auth script.
          */
-        const storages = [
-            localStorage,
-            sessionStorage
-        ];
+        try {
+            const cachedProfile =
+                JSON.parse(
+                    sessionStorage.getItem(
+                        'devt_profile'
+                    ) || 'null'
+                );
 
-        const directKeys = [
-            'full_name',
-            'fullName',
-            'display_name',
-            'displayName',
-            'name',
-            'username',
-            'user_name'
-        ];
-
-        const objectKeys = [
-            'user',
-            'currentUser',
-            'current_user',
-            'profile',
-            'authUser',
-            'auth_user',
-            'session',
-            'authSession',
-            'supabase.auth.token'
-        ];
-
-        for (const storage of storages) {
-
-            for (const key of directKeys) {
-                const value =
-                    storage.getItem(key);
-
-                if (applyName(value)) {
-                    return;
-                }
+            if (setName(cachedProfile)) {
+                return;
             }
-
-            for (const key of objectKeys) {
-                const raw =
-                    storage.getItem(key);
-
-                if (!raw) {
-                    continue;
-                }
-
-                try {
-                    const parsed =
-                        JSON.parse(raw);
-
-                    const candidates = [
-                        parsed?.profile,
-                        parsed?.user,
-                        parsed?.currentUser,
-                        parsed?.session?.user,
-                        parsed?.data?.user,
-                        parsed?.data?.profile,
-                        parsed
-                    ];
-
-                    for (const candidate of candidates) {
-                        if (applyName(candidate)) {
-                            return;
-                        }
-                    }
-
-                } catch (error) {
-                    // Ignore storage values that are not JSON.
-                }
-            }
+        } catch (error) {
+            console.warn(
+                'VISIONARICE: devt_profile could not be read.',
+                error
+            );
         }
 
         /*
-         * Keep the fallback only when no authenticated
-         * name could be found anywhere.
+         * THIRD: ask the auth helper to validate the
+         * session and return the current profile.
          */
-        nameElement.textContent = 'User';
+        try {
+            if (
+                window.DevTAuth &&
+                typeof window.DevTAuth.ensureAuthenticated === 'function'
+            ) {
+                const profile =
+                    await window.DevTAuth.ensureAuthenticated();
+
+                if (setName(profile)) {
+                    return;
+                }
+            }
+        } catch (error) {
+            console.warn(
+                'VISIONARICE: authenticated profile unavailable.',
+                error
+            );
+        }
+
+        /*
+         * LAST FALLBACK: request /api/auth/me.
+         * The shared auth wrapper will automatically attach
+         * the Bearer token when it is already loaded.
+         */
+        try {
+            const response =
+                await window.fetch(
+                    '/api/auth/me',
+                    {
+                        method: 'GET',
+                        cache: 'no-store'
+                    }
+                );
+
+            if (response.ok) {
+                const result =
+                    await response.json();
+
+                if (setName(result?.profile)) {
+                    return;
+                }
+            }
+        } catch (error) {
+            console.warn(
+                'VISIONARICE: /api/auth/me failed.',
+                error
+            );
+        }
+
+        nameElement.textContent =
+            'User';
     }
 
 
@@ -323,20 +275,26 @@
         button.addEventListener(
             'click',
             async () => {
-                try {
-                    await fetch(
-                        '/api/auth/logout',
-                        {
-                            method: 'POST',
-                            credentials: 'include'
-                        }
-                    );
-                } catch (error) {
-                    // Continue to login page even if the request fails.
+
+                if (
+                    window.DevTAuth &&
+                    typeof window.DevTAuth.logout === 'function'
+                ) {
+                    await window.DevTAuth.logout();
+                    return;
                 }
 
-                window.location.href =
-                    '/login.html';
+                sessionStorage.removeItem(
+                    'devt_access_token'
+                );
+
+                sessionStorage.removeItem(
+                    'devt_profile'
+                );
+
+                window.location.replace(
+                    '/login.html'
+                );
             }
         );
     }
