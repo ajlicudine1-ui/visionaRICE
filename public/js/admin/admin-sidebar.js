@@ -162,7 +162,13 @@
                     class="brand"
                     href="/admin/dashboard.html"
                 >
-                    <span class="brand-icon">🌾</span>
+                    <div class="admin-brand-mark">
+                        <img
+                            src="/images/visionarice_logo.png"
+                            alt="VISIONARICE Logo"
+                            class="admin-brand-logo"
+                        >
+                    </div>
 
                     <span class="brand-name">
                         VISION<span>A</span>RICE
